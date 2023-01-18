@@ -42,25 +42,24 @@ class Bullet {
         
     }
 
-    checkCollisionWithAsteroids(){
-        let tmp = new Line(this.game);
-        tmp.addEndPoints(this.x1, this.y1, this.x2, this.y2);
+    // checkCollisionWithAsteroids(){
+    //     let tmp = new Line(this.game);
+    //     tmp.addEndPoints(this.x1, this.y1, this.x2, this.y2);
 
-        this.game.gameManager.entities.forEach(asteroid => {
-            if (asteroid instanceof Asteroid){
+    //     this.game.manager.entities.forEach(asteroid => {
+    //         if (asteroid instanceof Asteroid){
                 
-                if (!asteroid.isDying && asteroid.checkCollisionWithLineSegment(tmp)){
-                    asteroid.dying();
-                    this.game.gameManager.totalAsteroids--;
-                    this.removeFromWorld = true;
-                }
-            }
-        });
-    }
+    //             if (!asteroid.isDying && asteroid.checkCollisionWithLineSegment(tmp)){
+    //                 asteroid.dying();
+    //                 this.game.manager.totalAsteroids--;
+    //                 this.removeFromWorld = true;
+    //             }
+    //         }
+    //     });
+    // }
 
     update() {
         this.updatePos();
-        this.checkCollisionWithAsteroids();
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd) {

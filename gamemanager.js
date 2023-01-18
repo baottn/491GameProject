@@ -22,6 +22,8 @@ class GameManager {
         this.difficulty = 1;
         this.difficultyThreshold = 15;
         this.asteroids = [];
+        this.powerups = [];
+        this.bullets = [];
 
         this.playerLives = 3; 
     };
@@ -93,9 +95,17 @@ class GameManager {
 
         this.mainCharacter.update();
 
+        //Calling update for the asteroids
         this.asteroids.forEach(asteroid => {
             asteroid.update();
         });
+
+        //Deleting the entities from the world
+        for (let i = this.asteroids.length - 1; i >= 0; --i) {
+            if (this.asteroids[i].removeFromWorld) {
+                this.asteroids.splice(i, 1);
+            }
+        }
     };
 
     drawGameOver(ctx) {
@@ -121,9 +131,20 @@ class GameManager {
         //     this.entities[i].draw(this.ctx, this);
         // }
         this.mainCharacter.draw(ctx);
+
+        this.bullets.forEach(bullet => {
+            bullet.draw(ctx);
+        })
+
         this.asteroids.forEach(asteroid => {
             asteroid.draw(ctx);
         });
+
+        this.powerups.forEach(powerup => {
+            powerup.draw(ctx);
+        });
+
+        ;
 
        
     };
