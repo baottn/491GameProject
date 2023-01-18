@@ -14,4 +14,8 @@ class Bullet {
     shootRight() {
         this.x += this.speed * this.game.clockTick;
     }
+
+    draw(ctx) {
+       ctx.drawImage(ASSET_MANAGER.getAsset("./Bullet.png"),0,0)
+    }
 }
