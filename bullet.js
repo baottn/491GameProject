@@ -16,6 +16,6 @@ class Bullet {
     }
 
     draw(ctx) {
-       ctx.drawImage(ASSET_MANAGER.getAsset("./Bullet.png"),0,0)
+       ctx.drawImage(ASSET_MANAGER.getAsset("./Bullet.png"),0,0);
     }
 }
