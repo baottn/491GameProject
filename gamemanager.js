@@ -144,8 +144,7 @@ class GameManager {
             powerup.draw(ctx);
         });
 
-        ;
-
+        
        
     };
 };

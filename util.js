@@ -1,6 +1,6 @@
 /** Global Parameters Object */
 const params = {
-    CANVAS_SIZE: 1200,
+    CANVAS_SIZE: 1000,
     DEBUG: false,
  };
 
