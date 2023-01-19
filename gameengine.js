@@ -14,17 +14,23 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
+        this.spacePressed = false;
 
         // Options and the Details
         this.options = options || {
             debugging: false,
         };
+
+        this.manager = null;
     };
 
     init(ctx) {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
+
+        //Start a new game
+        this.manager = new GameManager(this, ctx);
     };
 
     start() {
@@ -37,43 +43,61 @@ class GameEngine {
     };
 
     startInput() {
+        const that = this;
         const getXandY = e => ({
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
-        
-        this.ctx.canvas.addEventListener("mousemove", e => {
-            if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
-            }
-            this.mouse = getXandY(e);
-        });
 
-        this.ctx.canvas.addEventListener("click", e => {
-            if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
-            }
-            this.click = getXandY(e);
-        });
+        function mouseListener(e) {
+            that.mouse = getXandY(e);
+        }
 
-        this.ctx.canvas.addEventListener("wheel", e => {
-            if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
-            }
+        function mouseClickListener(e) {
+            that.click = getXandY(e);
+            if (params.DEBUG) console.log(that.click);
+        }
+
+        function wheelListener(e) {
             e.preventDefault(); // Prevent Scrolling
-            this.wheel = e;
-        });
+            that.wheel = e.deltaY;
+        }
 
-        this.ctx.canvas.addEventListener("contextmenu", e => {
-            if (this.options.debugging) {
-                console.log("RIGHT_CLICK", getXandY(e));
+        function keydownListener(e) {
+            that.keyboardActive = true;
+            e.preventDefault();
+            switch (e.code) {
+                case "Space":
+                    that.spacePressed = true;
+                    break;
             }
-            e.preventDefault(); // Prevent Context Menu
-            this.rightclick = getXandY(e);
-        });
+        }
 
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        function keyUpListener(e) {
+            that.keyboardActive = false;
+            e.preventDefault();
+            switch (e.code) {
+                case "Space":
+                    that.spacePressed = false;
+                    break;
+            }
+        }
+
+        that.mousemove = mouseListener;
+        that.leftclick = mouseClickListener;
+        that.wheelscroll = wheelListener;
+        that.keydown = keydownListener;
+        that.keyup = keyUpListener;
+
+        this.ctx.canvas.addEventListener("mousemove", that.mousemove, false);
+
+        this.ctx.canvas.addEventListener("click", that.leftclick, false);
+
+        this.ctx.canvas.addEventListener("wheel", that.wheelscroll, false);
+
+        this.ctx.canvas.addEventListener("keydown", that.keydown, false);
+
+        this.ctx.canvas.addEventListener("keyup", that.keyup, false);
     };
 
     addEntity(entity) {
@@ -84,6 +108,8 @@ class GameEngine {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
+        this.manager.draw(this.ctx);
+
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
@@ -91,6 +117,7 @@ class GameEngine {
     };
 
     update() {
+        this.manager.update();
         let entitiesCount = this.entities.length;
 
         for (let i = 0; i < entitiesCount; i++) {
