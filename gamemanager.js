@@ -12,20 +12,14 @@ class GameManager {
     constructor(game, ctx) {
         Object.assign(this, { game, ctx});
         
-        this.gameOver = false;
+        
         //Add main character
-        this.mainCharacter =  new Ollie(this, game, 100, params.CANVAS_SIZE/2);
-        this.score = 0;
-
-        this.totalAsteroids = 0;
-
-        this.difficulty = 1;
-        this.difficultyThreshold = 15;
+      
+        
         this.asteroids = [];
         this.powerups = [];
         this.bullets = [];
-
-        this.playerLives = 3; 
+        this.game.camera = new SceneManager(game);
     };
 
     addEntity(entity) {
@@ -90,30 +84,10 @@ class GameManager {
     // }
 
     update() {
-        if (!this.mainCharacter.isDying && !this.gameOver)
-        this.score += 0.005;
-
-        this.mainCharacter.update();
-
-        //Calling update for the asteroids
-        this.asteroids.forEach(asteroid => {
-            asteroid.update();
-        });
-
-        //Deleting the entities from the world
-        for (let i = this.asteroids.length - 1; i >= 0; --i) {
-            if (this.asteroids[i].removeFromWorld) {
-                this.asteroids.splice(i, 1);
-            }
-        }
+        
     };
 
-    drawGameOver(ctx) {
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.font = "58px serif";
-        ctx.strokeText("Game Over!", params.CANVAS_SIZE / 2 - 450, params.CANVAS_SIZE / 2);
-    }
+   
 
     draw(ctx){
          //Displaying the score
