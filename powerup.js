@@ -1,12 +1,11 @@
 class Powerup{
     static POWERUP_HEIGHT = 10;
     static POWERUP_RADIUS = 35;
-    constructor(game) {
-        
+    constructor(game, x = 0, y = 0) {
         this.game = game;
 
-        this.x = Track.XStart() + POWERUP_HEIGHT;
-        this.y = Track.YStart() + POWERUP_HEIGHT;
+        this.x = x;
+        this.y = y;
         this.radius = POWERUP_RADIUS;
         this.collision = false;
     }
