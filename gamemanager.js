@@ -10,20 +10,16 @@ class GameManager {
      * @param {*} game the game engine
      */
     constructor(game, ctx) {
-        Object.assign(this, { game, ctx });
-
-        this.gameOver = false;
+        Object.assign(this, { game, ctx});
+        
+        
         //Add main character
-        this.mainCharacter = new Ollie(this, game, 100, params.CANVAS_SIZE / 2);
-        this.score = 0;
-
-        this.totalAsteroids = 0;
-
-        this.difficulty = 1;
-        this.difficultyThreshold = 15;
+      
+        
         this.asteroids = [];
-
-        this.playerLives = 3;
+        this.powerups = [];
+        this.bullets = [];
+        this.game.camera = new SceneManager(game);
     };
 
     addEntity(entity) {
@@ -44,7 +40,7 @@ class GameManager {
     //         this.addEntity(asteroid);
     //         this.totalAsteroids++;
     //     }
-
+       
 
     // }
 
@@ -56,10 +52,10 @@ class GameManager {
     //                 bullet.x2 - Bullet.BULLET_LENGTH * 3 >= params.CANVAS_SIZE || bullet.x2 + Bullet.BULLET_LENGTH * 3 <= 0 ||
     //                 bullet.y2 - Bullet.BULLET_LENGTH * 3 >= params.CANVAS_SIZE || bullet.y2 + Bullet.BULLET_LENGTH * 3 <= 0
     //                 ){
-
+                    
     //                 bullet.removeFromWorld = true;
     //             }
-
+               
     //         }
     //     });
     // }
@@ -70,15 +66,15 @@ class GameManager {
     //             if (asteroid.x - asteroid.radius * 3 >= params.CANVAS_SIZE || asteroid.x + asteroid.radius * 3 <= 0 ||
     //                 asteroid.y - asteroid.radius * 3 >= params.CANVAS_SIZE || asteroid.y + asteroid.radius * 3 <= 0
     //                 ){
-
+                    
     //                 asteroid.removeFromWorld = true;
     //                 this.totalAsteroids--;
     //             }
-
+                
     //             if (GameManager.CHEAT != "TOAN")
     //                 asteroid.checkCollisionPlayer();
     //         }
-
+            
     //     });
     // }
 
@@ -88,29 +84,17 @@ class GameManager {
     // }
 
     update() {
-        if (!this.mainCharacter.isDying && !this.gameOver)
-            this.score += 0.005;
-
-        this.mainCharacter.update();
-
-        this.asteroids.forEach(asteroid => {
-            asteroid.update();
-        });
+        
     };
 
-    drawGameOver(ctx) {
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.font = "58px serif";
-        ctx.strokeText("Game Over!", params.CANVAS_SIZE / 2 - 450, params.CANVAS_SIZE / 2);
-    }
+   
 
-    draw(ctx) {
-        //Displaying the score
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.font = "28px serif";
-        ctx.fillText("Score: " + this.score.toFixed(0), 10, 35);
+    draw(ctx){
+         //Displaying the score
+         ctx.fillStyle = "black";
+         ctx.strokeStyle = "black";
+         ctx.font = "28px serif";
+         ctx.fillText("Score: " + this.score.toFixed(0), 10, 35);
 
         if (this.gameOver) {
             this.drawGameOver(this.ctx);
@@ -121,10 +105,21 @@ class GameManager {
         //     this.entities[i].draw(this.ctx, this);
         // }
         this.mainCharacter.draw(ctx);
+
+        this.bullets.forEach(bullet => {
+            bullet.draw(ctx);
+        })
+
         this.asteroids.forEach(asteroid => {
             asteroid.draw(ctx);
         });
 
+        this.powerups.forEach(powerup => {
+            powerup.draw(ctx);
+        });
 
+        
+       
     };
 };
+

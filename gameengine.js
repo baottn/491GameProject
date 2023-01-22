@@ -16,21 +16,23 @@ class GameEngine {
         this.keys = {};
         this.spacePressed = false;
 
+        this.camera = null;
+        this.mainCharacter = null;
+
         // Options and the Details
         this.options = options || {
             debugging: false,
         };
-
-        this.manager = null;
     };
 
     init(ctx) {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
-
+        this.camera = new SceneManager(this);
+        this.mainCharacter = new Ollie(this, params.CANVAS_SIZE / 4, params.CANVAS_SIZE/2);
+        this.addEntity(this.mainCharacter);
         //Start a new game
-        this.manager = new GameManager(this, ctx);
     };
 
     start() {
@@ -107,19 +109,23 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        //Draw the background
+        this.ctx.drawImage(ASSET_MANAGER.getAsset("./img/background.jpg"), 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
 
-        this.manager.draw(this.ctx);
+        
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
-        this.camera.draw(this.ctx);
     };
 
     update() {
-        this.manager.update();
         let entitiesCount = this.entities.length;
+
+        this.camera.update();
+        if (!this.mainCharacter.isDying && !this.gameOver)
+            this.camera.score += 0.005;
 
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
@@ -128,7 +134,7 @@ class GameEngine {
                 entity.update();
             }
         }
-        this.camera.update();
+        
 
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
