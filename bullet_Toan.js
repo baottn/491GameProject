@@ -3,7 +3,7 @@
  */
 class Bullet {
     static BULLET_SPEED = 500;
-    static BULLET_LENGTH = 30;
+    static BULLET_LENGTH = 30; //sprite bullet length = 7 px
 
     constructor(game, x1, y1, angle = 5) {
         Object.assign(this, { game, x1, y1, angle });
@@ -15,7 +15,7 @@ class Bullet {
         this.x2 = Math.cos(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.x1;
         this.y2 = Math.sin(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.y1;
 
-   
+
     }
 
     updatePos() {
@@ -23,17 +23,17 @@ class Bullet {
         this.y1 += this.dy * this.game.clockTick;
 
         this.x2 += this.dx * this.game.clockTick;
-    this.y2 += this.dy * this.game.clockTick;
+        this.y2 += this.dy * this.game.clockTick;
     }
 
-    checkCollisionWithAsteroids(){
+    checkCollisionWithAsteroids() {
         let tmp = new Line(this.game);
         tmp.addEndPoints(this.x1, this.y1, this.x2, this.y2);
 
         this.game.gameManager.entities.forEach(asteroid => {
-            if (asteroid instanceof Asteroid){
-                
-                if (asteroid.dyingTickAnimation <= 0 && asteroid.checkCollisionWithLineSegment(tmp)){
+            if (asteroid instanceof Asteroid) {
+
+                if (asteroid.dyingTickAnimation <= 0 && asteroid.checkCollisionWithLineSegment(tmp)) {
                     asteroid.dying();
                     this.game.gameManager.totalAsteroids--;
                     this.removeFromWorld = true;
