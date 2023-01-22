@@ -22,6 +22,6 @@ class Powerup{
 
 
     draw(ctx) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./Powerup.png"),0,0);
+        //draw circle
     }
 }
