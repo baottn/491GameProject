@@ -27,4 +27,22 @@ class SceneManager {
             this.x = this.game.mainCharacter.x - limitPoint;
         }
     };
+
+    draw(ctx){
+        //Draw the thruster bar
+        ctx.beginPath();
+        ctx.fillStyle = "green";
+        ctx.strokeStyle = "green";
+        let thrusterBar = {width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3};
+        let thrusterCurrentVolume = this.game.mainCharacter.thrusterVolume / this.game.mainCharacter.maximumThursterVolume;
+        
+        ctx.strokeRect(params.CANVAS_SIZE - 50, params.CANVAS_SIZE / 2 - 200, thrusterBar.width, thrusterBar.height);
+        ctx.fillRect(params.CANVAS_SIZE - 50, params.CANVAS_SIZE / 2 - 200  + thrusterBar.height, thrusterBar.width, - thrusterBar.height * thrusterCurrentVolume);
+        //this.game.mainCharacter
+        
+        ctx.stroke();
+        ctx.fill();
+
+        ctx.closePath();
+    }
 };

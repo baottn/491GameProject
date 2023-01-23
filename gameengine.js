@@ -110,9 +110,10 @@ class GameEngine {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         //Draw the background
-        this.ctx.drawImage(ASSET_MANAGER.getAsset("./img/background.jpg"), 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+        this.ctx.drawImage(ASSET_MANAGER.getAsset("./img/background.jpg"), (this.camera.x) % (2560 - params.CANVAS_SIZE), 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE,  params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
 
-        
+        //Draw the HUD
+        this.camera.draw(this.ctx);
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
