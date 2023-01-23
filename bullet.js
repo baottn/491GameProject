@@ -1,4 +1,6 @@
 class Bullet {
+    static BULLET_SPEED = 500
+    static BULLET_LENGTH = 25
     constructor(game) {
         this.game = game;
 
@@ -15,7 +17,17 @@ class Bullet {
         this.x += this.speed * this.game.clockTick;
     }
 
+    checkCollisionWithOllie() {
+        let dx = this.x - Ollie.x;
+        let dy = this.y - Ollie.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < this.radius + Ollie.radius) {
+            collision = true;
+        }
+    }
+
     draw(ctx) {
-       ctx.drawImage(ASSET_MANAGER.getAsset("./Bullet.png"),0,0)
+       // draw line
     }
 }
