@@ -1,31 +1,43 @@
 class Ollie {
     static RELOAD_SPEED = 75;
-    static JUMP_DURATION = 100;
-
-    constructor(manager, game, x, y) {
-        Object.assign(this, { manager, game, x, y });
+    static GRAVITY = 250;
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
 
         this.height = 100;
         this.width = 50;
 
-        //Moving Direction
-        this.dx = 100;
-        this.dy = 9.8;
-
-        this.head = {x : this.x + this.width / 2, y: this.y};
+        this.head = { x: this.x + this.width / 2, y: this.y };
 
         this.isDying = false;
         this.reload = 0;
         this.jumping = 0;
         this.angle = Math.PI / 2; //Point upward
+        this.state = 0; // State of Ollie, 1 for walking, 2 for jumping, etc.
+
+         //Moving Direction
+         this.dx = 100;
+         this.dy = 9.8;
+        //Displacement for x axis
+        //Displacement for the y axis
+        this.forceY = 0;
+
+        //Speed constraints
+        this.maxVerticalVelocity = 350;
+        this.thrusterPower = -5;
+        this.maximumThrusterPower = -30;
+
+        this.maximumThursterVolume = 100;
+        this.thrusterVolume = this.maximumThursterVolume;
+        
     }
 
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
-            this.reload = Starship.RELOAD_SPEED;
+            this.reload = Ollie.RELOAD_SPEED;
             let bullet = new Bullet(this.game, this.head.x, this.head.y, this.angle);
 
-            this.game.manager.addEntity(bullet);
+            this.game.addEntity(bullet);
 
 
         }
@@ -34,48 +46,63 @@ class Ollie {
         this.reload = Math.max(this.reload, 0);
     }
 
-    jump(){
-        if (this.jumping > 0 || !this.game.spacePressed){
-            this.dy = 10;
+    vectorNormalize(x, y) {
+        let mag = Math.sqrt(x ** 2 + y ** 2);
+        if (mag == 0)
+            return;
+        return [x / mag, y / mag];
+
+    }
+
+    updatePos() {
+        let newDy = this.dy + this.forceY * this.game.clockTick;
+        if (Math.abs(newDy) > this.maxVerticalVelocity) {
+            this.dy = this.maxVerticalVelocity * (newDy > 0 ? 1 : -1);
         }
-        else{
-            this.dy = -100;
-            this.jumping = this.JUMP_DURATION;
-            this.jumping--;
+        else {
+            this.dy = newDy;
         }
         
+
+        this.x += this.dx * this.game.clockTick;
+        this.y += this.dy * this.game.clockTick;
     }
 
     update() {
-        if (this.game.mouse){
-            //Check vertical line
-            this.angle = this.game.mouse.x == this.head.x ? 
+        //Update mouse location
+        if (this.game.mouse) {
+            //Check vertical line and update angle
+            this.angle = this.game.mouse.x == this.head.x ?
                 Math.PI / 2 :
                 Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x));
         }
 
-        if (this.game.spacePressed){
-            this.jump();
+        console.log(this.thrusterVolume);
+        if (this.game.spacePressed && this.thrusterVolume >= 0) {
+            console.log("Jumping" + this.forceY);
+            this.thrusterVolume -= 0.5;
+
+            if (this.forceY != Ollie.GRAVITY){
+                this.forceY += this.thrusterPower;
+            }
+            else{
+                this.forceY = this.thrusterPower;
+            }
+
+            if (this.forceY > this.maximumThrusterPower) {
+                this.forceY = this.maximumThrusterPower;
+            }
+        } 
+        else {
+            this.forceY = Ollie.GRAVITY;
+            this.thrusterVolume += 0.5;
+            this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
+
         }
 
-
-        this.x += this.dx * this.game.clockTick;
-        this.y += this.dy * this.game.clockTick;
-
-        if (this.x + this.width >= params.CANVAS_SIZE) {
-            this.x = 0;
-        }
-        if (this.x < 0) {
-            this.x = params.CANVAS_SIZE - this.width;
-        }
-
-        if (this.y + this.height >= params.CANVAS_SIZE) {
-            this.y = 0;
-        }
-        if (this.y < 0) {
-            this.y = params.CANVAS_SIZE - this.height;
-        }
-    }
+        
+        this.updatePos();
+    };
 
     draw(ctx) {
         //Template code
@@ -83,7 +110,7 @@ class Ollie {
 
         ctx.fillStyle = "green";
         ctx.strokeStyle = "green";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
         ctx.fill();
         ctx.stroke();
 
@@ -91,8 +118,8 @@ class Ollie {
         ctx.strokeStyle = "red";
 
         //Temporary drawing this, begin testing zone
-        if (this.game.mouse){
-            ctx.moveTo(this.x + this.width / 2, this.y);
+        if (this.game.mouse) {
+            ctx.moveTo(this.x + this.width / 2 - this.game.camera.x, this.y);
             ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
         }
         ctx.fill();
@@ -100,8 +127,8 @@ class Ollie {
 
         ctx.fillStyle = "blue";
         ctx.strokeStyle = "blue";
-        ctx.moveTo(this.x + this.width / 2, this.y);
         if (this.game.click) {
+            ctx.moveTo(this.x + this.width / 2 - this.game.camera.x, this.y);
             ctx.lineTo(this.game.click.x, this.game.click.y);
         }
         ctx.fill();
@@ -109,5 +136,5 @@ class Ollie {
         //End testing zone
 
         ctx.closePath();
-    }
+    };
 }
