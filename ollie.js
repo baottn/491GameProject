@@ -1,15 +1,11 @@
 class Ollie {
     static RELOAD_SPEED = 75;
-    static GRAVITY = 350;
+    static GRAVITY = 250;
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
         this.height = 100;
         this.width = 50;
-
-        //Moving Direction
-        this.dx = 100;
-        this.dy = 9.8;
 
         this.head = { x: this.x + this.width / 2, y: this.y };
 
@@ -19,16 +15,17 @@ class Ollie {
         this.angle = Math.PI / 2; //Point upward
         this.state = 0; // State of Ollie, 1 for walking, 2 for jumping, etc.
 
+         //Moving Direction
+         this.dx = 100;
+         this.dy = 9.8;
         //Displacement for x axis
-        this.dx = 0;
         //Displacement for the y axis
-        this.dy = 0;
         this.forceY = 0;
 
         //Speed constraints
-        this.fallingVelocity = 250;
-        this.thrusterPower = -1;
-        this.maximumThrusterPower = -20;
+        this.maxVerticalVelocity = 350;
+        this.thrusterPower = -5;
+        this.maximumThrusterPower = -30;
 
         this.maximumThursterVolume = 100;
         this.thrusterVolume = this.maximumThursterVolume;
@@ -59,30 +56,19 @@ class Ollie {
 
     updatePos() {
         let newDy = this.dy + this.forceY * this.game.clockTick;
-
-        // if (Math.abs(newDy) > this.fallingVelocity) {
-        //     [newDx, newDy] = this.vectorNormalize(newDx, newDy);
-        //     this.dx = newDx * this.maximumSpeed;
-        //     this.dy =;
-        // }
-        // else {
-        //     this.dx = newDx;
-        //     this.dy = newDy;
-        // }
-        this.dy = newDy;
+        if (Math.abs(newDy) > this.maxVerticalVelocity) {
+            this.dy = this.maxVerticalVelocity * (newDy > 0 ? 1 : -1);
+        }
+        else {
+            this.dy = newDy;
+        }
+        
 
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick;
     }
 
     update() {
-        const TICK = this.game.clockTick;
-        // I used this page to approximate my constants
-        // https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
-        // I converted these values from hex and into units of pixels and seconds.
-
-
-
         //Update mouse location
         if (this.game.mouse) {
             //Check vertical line and update angle
@@ -94,7 +80,7 @@ class Ollie {
         console.log(this.thrusterVolume);
         if (this.game.spacePressed && this.thrusterVolume >= 0) {
             console.log("Jumping" + this.forceY);
-            this.thrusterVolume -= 0.1;
+            this.thrusterVolume -= 0.5;
 
             if (this.forceY != Ollie.GRAVITY){
                 this.forceY += this.thrusterPower;
@@ -109,7 +95,7 @@ class Ollie {
         } 
         else {
             this.forceY = Ollie.GRAVITY;
-            this.thrusterVolume += 0.01;
+            this.thrusterVolume += 0.5;
             this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
 
         }
