@@ -4,9 +4,21 @@ class Track{
         this.width = xEnd - xStart;
         this.length = yEnd - yStart;
     }
+
+    checkCollisionWithOllie() {
+        OllieLeft = Ollie.x;
+        OllieRight = Ollie.x + Ollie.width;
+        OllieTop = Ollie.y;
+        OllieBottom = Ollie.y + Ollie.height;
+        if (this.xEnd <= OllieLeft || this.xStart >= OllieRight || this.yStart > OllieBottom || this.yEnd <= OllieTop) return false;
+        return true;
+    }
+
     
     draw(ctx) {
-        // draw rectangle
+        ctx.fillStyle = "green";
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.xStart, this.yStart, this.width, this.length);
      }
 
 }

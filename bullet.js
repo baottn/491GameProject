@@ -1,8 +1,8 @@
 class Bullet {
     static BULLET_SPEED = 500
     static BULLET_LENGTH = 25
-    constructor(game) {
-        this.game = game;
+    constructor(game, x1, y1, angle = 5) {
+        Object.assign(this, { game, x1, y1, angle });
 
         //Randomize movement
         this.dx = Math.cos(this.angle).toFixed(4) * Bullet.BULLET_SPEED;
@@ -11,14 +11,15 @@ class Bullet {
         this.x2 = Math.cos(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.x1;
         this.y2 = Math.sin(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.y1;
 
+   
     }
 
-    shootUp() {
-        this.y += this.speed * this.game.clockTick;
-    }
+    updatePos() {
+        this.x1 += this.dx * this.game.clockTick;
+        this.y1 += this.dy * this.game.clockTick;
 
-    shootRight() {
-        this.x += this.speed * this.game.clockTick;
+        this.x2 += this.dx * this.game.clockTick;
+        this.y2 += this.dy * this.game.clockTick;
     }
 
     checkCollisionWithOllie() {
@@ -32,6 +33,6 @@ class Bullet {
     }
 
     draw(ctx) {
-       // draw line
+       
     }
 }
