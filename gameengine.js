@@ -31,7 +31,12 @@ class GameEngine {
         this.timer = new Timer();
         this.camera = new SceneManager(this);
         this.mainCharacter = new Ollie(this, params.CANVAS_SIZE / 4, params.CANVAS_SIZE/2);
+        this.track = new Track(this, params.CANVAS_SIZE / 4, params.CANVAS_SIZE/2, 1000,  params.CANVAS_SIZE/2 + 10);
+        this.powerUp = new PowerUp(this, params.CANVAS_SIZE / 4 + 30, params.CANVAS_SIZE/2 - 20);
         this.addEntity(this.mainCharacter);
+        this.addEntity(this.track);
+        this.addEntity(this.powerUp);
+        //this.addEntity(this.powerUp);
         //Start a new game
     };
 

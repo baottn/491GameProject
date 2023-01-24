@@ -21,7 +21,7 @@ class Bullet {
         this.x2 += this.dx * this.game.clockTick;
         this.y2 += this.dy * this.game.clockTick;
     }
-
+/*
     checkCollisionWithOllie() {
         let dx = this.x - Ollie.x;
         let dy = this.y - Ollie.y;
@@ -31,8 +31,27 @@ class Bullet {
             collision = true;
         }
     }
+    */
+
+    update() {
+        this.updatePos();
+        this.checkCollisionWithAsteroids();
+    }
+
+    drawLine(ctx, xStart, yStart, xEnd, yEnd) {
+        ctx.fillStyle = "green";
+        ctx.strokeStyle = "green";
+
+        ctx.beginPath();
+        ctx.moveTo(xStart, yStart);
+        ctx.lineTo(xEnd, yEnd);
+
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+    }
 
     draw(ctx) {
-       
+        this.drawLine(ctx, this.x1, this.y1, this.x2, this.y2);
     }
 }
