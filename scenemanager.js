@@ -36,8 +36,8 @@ class SceneManager {
         let thrusterBar = {width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3};
         let thrusterCurrentVolume = this.game.mainCharacter.thrusterVolume / this.game.mainCharacter.maximumThursterVolume;
         
-        ctx.strokeRect(params.CANVAS_SIZE - 50, params.CANVAS_SIZE / 2 - 200, thrusterBar.width, thrusterBar.height);
-        ctx.fillRect(params.CANVAS_SIZE - 50, params.CANVAS_SIZE / 2 - 200  + thrusterBar.height, thrusterBar.width, - thrusterBar.height * thrusterCurrentVolume);
+        ctx.strokeRect( 50, params.CANVAS_SIZE / 2 - 200, thrusterBar.width, thrusterBar.height);
+        ctx.fillRect( 50, params.CANVAS_SIZE / 2 - 200  + thrusterBar.height, thrusterBar.width, - thrusterBar.height * thrusterCurrentVolume);
         //this.game.mainCharacter
         
         ctx.stroke();

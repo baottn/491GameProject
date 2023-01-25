@@ -13,12 +13,19 @@ class Track{
         if (this.xEnd <= OllieLeft || this.xStart >= OllieRight || this.yStart > OllieBottom || this.yEnd <= OllieTop) return false;
         return true;
     }
+
+    update(){
+        if (this.checkCollisionWithOllie()){
+            console.log("I hit the player");
+        }
+    }
+
+
     
     draw(ctx) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.xStart, this.yStart, this.width, this.length);
+        ctx.fillStyle = "green";
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.xStart, this.yStart, this.width, this.length);
      }
 
-    update() {
-    }
 }
