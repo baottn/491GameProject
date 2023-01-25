@@ -1,12 +1,4 @@
 class Line {
-    // constructor(game) {
-    //     this.game = game;
-    //     this.intRadius = 3;
-
-    //     this.points = [];
-    //     this.length = 0;
-    // };
-
     constructor(game, x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
         this.game = game;
         this.intRadius = 3;
@@ -60,14 +52,20 @@ class Line {
         (this.points[0].y >= y && y >= this.points[1].y);
     };
 
-    collide(other) {
-        if (this.slope() === other.slope()) return false;
-        if(!other.slope()) return {x: other.points[1].x, y: this.slope() * other.points[1].x + this.yInt()};
+    collideLine(otherLine) {
+        if (this.slope() === otherLine.slope()) return false;
+        if(!otherLine.slope()) return {x: otherLine.points[1].x, y: this.slope() * otherLine.points[1].x + this.yInt()};
 
         var intersect = {};
-        intersect.x = (other.yInt() - this.yInt()) / (this.slope() - other.slope());
+        intersect.x = (otherLine.yInt() - this.yInt()) / (this.slope() - otherLine.slope());
         intersect.y = this.slope() * intersect.x + this.yInt();
        
         return intersect;
     };
+
+    collide(other){
+        if (other instanceof Line){
+            return this.collideLine(other);
+        }
+    }
 }

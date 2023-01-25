@@ -14,6 +14,13 @@ class Track{
         return true;
     }
 
+    update(){
+        if (this.checkCollisionWithOllie()){
+            console.log("I hit the player");
+        }
+    }
+
+
     
     draw(ctx) {
         ctx.fillStyle = "green";

@@ -15,9 +15,9 @@ class Ollie {
         this.angle = Math.PI / 2; //Point upward
         this.state = 0; // State of Ollie, 1 for walking, 2 for jumping, etc.
 
-         //Moving Direction
-         this.dx = 100;
-         this.dy = 9.8;
+        //Moving Direction
+        this.dx = 100;
+        this.dy = 9.8;
         //Displacement for x axis
         //Displacement for the y axis
         this.forceY = 0;
@@ -29,7 +29,7 @@ class Ollie {
 
         this.maximumThursterVolume = 100;
         this.thrusterVolume = this.maximumThursterVolume;
-        
+
     }
 
     shoot() {
@@ -62,7 +62,7 @@ class Ollie {
         else {
             this.dy = newDy;
         }
-        
+
 
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick;
@@ -82,17 +82,17 @@ class Ollie {
             console.log("Jumping" + this.forceY);
             this.thrusterVolume -= 0.5;
 
-            if (this.forceY != Ollie.GRAVITY){
+            if (this.forceY != Ollie.GRAVITY) {
                 this.forceY += this.thrusterPower;
             }
-            else{
+            else {
                 this.forceY = this.thrusterPower;
             }
 
             if (this.forceY > this.maximumThrusterPower) {
                 this.forceY = this.maximumThrusterPower;
             }
-        } 
+        }
         else {
             this.forceY = Ollie.GRAVITY;
             this.thrusterVolume += 0.5;
@@ -100,7 +100,7 @@ class Ollie {
 
         }
 
-        
+
         this.updatePos();
     };
 
