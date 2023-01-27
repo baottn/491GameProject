@@ -20,6 +20,10 @@ class SceneManager {
         ctx.strokeText("Game Over!", params.CANVAS_SIZE / 2 - 450, params.CANVAS_SIZE / 2);
     }
 
+    spawnTrack(){
+        
+    }
+
     update() {
         let limitPoint = params.CANVAS_SIZE / 4;
 

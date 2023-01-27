@@ -1,31 +1,40 @@
 class Track{
-    constructor(game, xStart = 0, yStart= 0, xEnd = 0, yEnd = 0) {
-        Object.assign(this, {xStart, yStart, xEnd, yEnd});
-        this.width = xEnd - xStart;
-        this.length = yEnd - yStart;
-    }
+    constructor(game, x = 0, y = 0, width = 0, height = 0) {
+        Object.assign(this, {game, x, y, width, height});
+        
+        //Adjus the height
+        if (this.height < 0) this.height *= -1;
+        if (this.width < 0) this.width *= -1;
+        
+        this.dx = 0;
+        this.dy = 0;
 
-    checkCollisionWithOllie() {
-        OllieLeft = Ollie.x;
-        OllieRight = Ollie.x + Ollie.width;
-        OllieTop = Ollie.y;
-        OllieBottom = Ollie.y + Ollie.height;
-        if (this.xEnd <= OllieLeft || this.xStart >= OllieRight || this.yStart > OllieBottom || this.yEnd <= OllieTop) return false;
-        return true;
-    }
+        this.fillStyle = "black";
+        this.strokeStyle = "green";
 
+        this.updateBB();
+    }
+    updateBB(){
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+    }
     update(){
-        if (this.checkCollisionWithOllie()){
-            console.log("I hit the player");
-        }
+        this.x += this.dx * this.game.clockTick ;
+        this.y += this.dy * this.game.clockTick; 
+
+        this.updateBB();
     }
 
 
     
     draw(ctx) {
-        ctx.fillStyle = "green";
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.xStart, this.yStart, this.width, this.length);
+        ctx.beginPath();
+        ctx.fillStyle =  this.fillStyle;
+        ctx.strokeStyle = this.strokeStyle;
+        ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+        //this.BB.draw(ctx);
      }
 
 }
