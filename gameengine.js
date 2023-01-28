@@ -124,7 +124,7 @@ class GameEngine {
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
-            this.entities[i].draw(this.ctx, this);
+            this.entities[i].draw(this.ctx);
         }
     };
 
