@@ -58,7 +58,7 @@ class Ollie {
         this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2, 0, true, true);
 
         // Idle animation
-        this.animations[2] = new Animator(this.spritesheet, 0, 0, 97, 12, 1, 100000);
+        this.animations[2] = new Animator(this.spritesheet, 0, 0, 49, 12, 1, 100000);
     }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
