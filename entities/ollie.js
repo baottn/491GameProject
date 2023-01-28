@@ -42,7 +42,7 @@ class Ollie {
 
         //Animate Olliee
         // Get the spriteshhett
-        this.spritesheet = ASSET_MANAGER.getAsset("../img/tank_body_spritesheet.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./img/tank_body_spritesheet.png");
 
         // tank's body animations
         this.animations = [];
