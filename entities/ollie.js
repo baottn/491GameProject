@@ -41,18 +41,31 @@ class Ollie {
         //this.BB = new BoundingBox(x, y, this.width, this.height);
 
         //Animate Olliee
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./img/tank.png"), 0, 0, 50, 50, 10, 0.2);
+        // Get the spriteshhett
+        this.spritesheet = ASSET_MANAGER.getAsset("../img/tank_body_spritesheet.png");
 
+        // tank's body animations
+        this.animations = [];
+        this.loadAnimations();
     }
 
+    loadAnimations() {
+
+        // Walking right animation
+        this.animations[0] = new Animator(this.spritesheet, 0, 0, 97, 12, 2, 0.2);
+
+        // Walking left animation
+        this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2);
+
+        // Idle animation
+        this.animations[2] = new Animator(this.spritesheet, 0, 0, 97, 12, 1, 100000);
+    }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
             this.reload = Ollie.RELOAD_SPEED;
             let bullet = new Bullet(this.game, this.head.x, this.head.y, this.angle);
 
             this.game.addEntity(bullet);
-
-
         }
 
         this.reload--;
@@ -107,6 +120,20 @@ class Ollie {
 
     updateBB() {
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+    }
+
+    updateAnimations() {
+        // Update based on player movement.
+        if (this.game.keys["d"] || this.game.keys["D"]) {
+            this.x += this.speed * this.game.clockTick;
+            this.index = 0;
+        } else if (this.game.keys["a"] || this.game.keys["A"]) {
+            this.x -= this.speed * this.game.clockTick;
+            this.index = 1;
+        } else {
+            // If the player is not pressing a key
+            this.index = 2
+        }
     }
 
     checkCollisionWithTrack(entity) {
@@ -217,7 +244,7 @@ class Ollie {
 
         }
 
-
+        this.updateAnimations();
         this.updatePos();
         this.updateBB();
 
@@ -225,6 +252,7 @@ class Ollie {
     };
 
     draw(ctx) {
+        /*
         //Template code
         ctx.beginPath();
 
@@ -263,5 +291,9 @@ class Ollie {
         //End testing zone
 
         ctx.closePath();
+        */
+
+        // Draw the animations
+        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x, this.y);
     };
 }
