@@ -55,7 +55,7 @@ class Ollie {
         this.animations[0] = new Animator(this.spritesheet, 0, 0, 97, 12, 2, 0.2);
 
         // Walking left animation
-        this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2);
+        this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2, 0, true, true);
 
         // Idle animation
         this.animations[2] = new Animator(this.spritesheet, 0, 0, 97, 12, 1, 100000);
