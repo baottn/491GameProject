@@ -294,6 +294,6 @@ class Ollie {
         */
 
         // Draw the animations
-        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x, this.y, 5);
+        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 5);
     };
 }
