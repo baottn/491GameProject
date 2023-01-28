@@ -58,7 +58,7 @@ class Ollie {
         this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2, 0, true, true);
 
         // Idle animation
-        this.animations[2] = new Animator(this.spritesheet, 3, 0, 44, 12, 1, 100000);
+        this.animations[2] = new Animator(this.spritesheet, 3, 0, 44, 12, 1, 0.5);
     }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
@@ -133,7 +133,7 @@ class Ollie {
         }
     }
 
-    checkCollisionWithTrack(entity) {
+    checkCollisionWithTrack(entity, behavior) {
         let topLine = entity.BB.collideLine(this.BB.lines[0]);//Check whether the top part is touching
         let botLine = entity.BB.collideLine(this.BB.lines[2]);
         let left = entity.BB.collideLine(this.BB.lines[3]);
@@ -160,8 +160,7 @@ class Ollie {
         if (entity.BB.collideBox(this.BB)) {
             //console.log("Hit a box");
             //entity.removeFromWorld = true;
-            entity.fillStyle = "blue";
-
+            behavior(this, entity);
             //Collide horizontally
 
             // if (this.BB.y + this.BB.height >= entity.BB.y && this.BB.y <= entity.BB.y + entity.BB.height) {
@@ -202,7 +201,16 @@ class Ollie {
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
-                this.checkCollisionWithTrack(entity);
+                this.checkCollisionWithTrack(entity, (player, track)=>{
+                    track.fillStyle = "blue";
+                    let going = 1;//Going Up
+                    if (player.y < track.y){
+                        //Going down
+                        going = -1;
+                    }
+                    player.dy += 50 * going;
+
+                });
             }
             else if (entity instanceof Powerup) {
                 this.checkCollisionWithPowerup(entity);
