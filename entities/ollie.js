@@ -252,7 +252,7 @@ class Ollie {
     };
 
     draw(ctx) {
-        /*
+        
         //Template code
         ctx.beginPath();
 
@@ -291,9 +291,11 @@ class Ollie {
         //End testing zone
 
         ctx.closePath();
-        */
+        
+
 
         // Draw the animations
         this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 5);
+    
     };
 }
