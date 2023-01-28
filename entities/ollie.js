@@ -25,7 +25,7 @@ class Ollie {
         //Speed constraints
         this.maxVerticalVelocity = 350;
         this.thrusterPower = -5;
-        this.maximumThrusterPower = -30;
+        this.maximumThrusterPower = -800;
 
         this.maximumThursterVolume = 100;
         this.thrusterVolume = this.maximumThursterVolume;
@@ -230,7 +230,7 @@ class Ollie {
                 this.forceY = this.thrusterPower;
             }
 
-            if (this.forceY > this.maximumThrusterPower) {
+            if (Math.abs(this.forceY) > Math.abs(this.maximumThrusterPower)) {
                 this.forceY = this.maximumThrusterPower;
             }
         }
