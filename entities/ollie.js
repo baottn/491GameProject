@@ -4,8 +4,8 @@ class Ollie {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
-        this.height = 100;
-        this.width = 50;
+        this.height = 60;
+        this.width = 215;
 
         this.head = { x: this.x + this.width / 2, y: this.y };
 
@@ -42,7 +42,7 @@ class Ollie {
 
         //Animate Olliee
         // Get the spriteshhett
-        this.spritesheet = ASSET_MANAGER.getAsset("../img/tank_body_spritesheet.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./img/tank_body_spritesheet.png");
 
         // tank's body animations
         this.animations = [];
@@ -52,13 +52,13 @@ class Ollie {
     loadAnimations() {
 
         // Walking right animation
-        this.animations[0] = new Animator(this.spritesheet, 0, 0, 97, 12, 2, 0.2);
+        this.animations[0] = new Animator(this.spritesheet, 0, 0, 44, 12, 2, 0.2);
 
         // Walking left animation
         this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2, 0, true, true);
 
         // Idle animation
-        this.animations[2] = new Animator(this.spritesheet, 0, 0, 49, 12, 1, 100000);
+        this.animations[2] = new Animator(this.spritesheet, 3, 0, 44, 12, 1, 100000);
     }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
@@ -124,13 +124,10 @@ class Ollie {
 
     updateAnimations() {
         // Update based on player movement.
-        if (this.game.keys["d"] || this.game.keys["D"]) {
-            this.x += this.speed * this.game.clockTick;
+        if (this.game.spacePressed) {
             this.index = 0;
-        } else if (this.game.keys["a"] || this.game.keys["A"]) {
-            this.x -= this.speed * this.game.clockTick;
-            this.index = 1;
-        } else {
+        } 
+        else{
             // If the player is not pressing a key
             this.index = 2
         }
@@ -252,7 +249,7 @@ class Ollie {
     };
 
     draw(ctx) {
-        /*
+
         //Template code
         ctx.beginPath();
 
@@ -291,9 +288,9 @@ class Ollie {
         //End testing zone
 
         ctx.closePath();
-        */
+        
 
         // Draw the animations
-        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x, this.y, 5);
+        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 5);
     };
 }
