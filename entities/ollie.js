@@ -30,6 +30,9 @@ class Ollie {
         this.maximumThursterVolume = 100;
         this.thrusterVolume = this.maximumThursterVolume;
 
+        //Animate Olliee
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./img/tank.png"), 0, 0, 50, 50, 10, 0.2);
+
     }
 
     shoot() {
