@@ -33,6 +33,7 @@ class Animator {
         }
     };
 
+    //Class
     currentFrame() {
         return Math.floor(this.elapsedTime / this.frameDuration);
     };
