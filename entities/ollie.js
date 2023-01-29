@@ -1,6 +1,7 @@
 class Ollie {
     static RELOAD_SPEED = 75;
     static GRAVITY = 250;
+    static MOVING_SPEED = 50;
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
@@ -16,14 +17,14 @@ class Ollie {
         this.state = 0; // State of Ollie, 1 for walking, 2 for jumping, etc.
 
         //Moving Direction
-        this.dx = 50;
+        this.dx = Ollie.MOVING_SPEED;
         this.dy = 9.8;
         //Displacement for x axis
         //Displacement for the y axis
         this.forceY = 0;
 
         //Speed constraints
-        this.maxVerticalVelocity = 350;
+        this.maxVerticalVelocity = 450;
         this.thrusterPower = -5;
         this.maximumThrusterPower = -800;
 
@@ -31,12 +32,7 @@ class Ollie {
         this.thrusterVolume = this.maximumThursterVolume;
 
         //Old Speed
-        this.oldDX = this.dx;
-        this.oldDY = this.dy;
-
-        //Collision Check
-        this.collidingVertically = false;
-        this.collidingHorizontally = false;
+        this.booster = 0;
 
         //this.BB = new BoundingBox(x, y, this.width, this.height);
 
@@ -93,24 +89,6 @@ class Ollie {
             this.oldDy = this.dy;
         }
 
-        if (this.collidingHorizontally) {
-
-            this.dy = 0;
-        }
-        else {
-            //this.dy = this.oldDY;
-        }
-
-        if (this.collidingVertically) {
-            if (this.dx != 0) {
-                this.oldDX = this.dx;
-            }
-            this.dx = 0;
-        }
-        else {
-            this.dx = this.oldDX;
-        }
-
 
 
 
@@ -133,87 +111,29 @@ class Ollie {
         }
     }
 
-    checkCollisionWithTrack(entity, behavior) {
-        let topLine = entity.BB.collideLine(this.BB.lines[0]);//Check whether the top part is touching
-        let botLine = entity.BB.collideLine(this.BB.lines[2]);
-        let left = entity.BB.collideLine(this.BB.lines[3]);
-        let right = entity.BB.collideLine(this.BB.lines[1]);
-
-        //console.log(topLine, botLine);
-        // if (right.length > 0 && (right.includes(1))){
-        //     console.log("Hit the vertical: ", left);
-        //     this.collidingVertically = true;
-        // }
-        // else{
-        //     this.collidingVertically = false;
-        // }
-
-        // if (topLine.length > 0 && (topLine.includes(1))){
-        //     console.log("Hit the vertical: ", topLine);
-        //     this.collidingHorizontally = true;
-        // }
-        // else{
-        //     this.collidingHorizontally = false;
-        // }
-
-
-        if (entity.BB.collideBox(this.BB)) {
-            //console.log("Hit a box");
-            //entity.removeFromWorld = true;
-            behavior(this, entity);
-            //Collide horizontally
-
-            // if (this.BB.y + this.BB.height >= entity.BB.y && this.BB.y <= entity.BB.y + entity.BB.height) {
-            //     this.collidingHorizontally = true;
-            // }
-            // else {
-            //     this.collidingHorizontally = false;
-            // }
-
-            // //Collide vertically
-            // if (!this.collidingHorizontally && this.BB.x + this.BB.width >= entity.BB.x && this.BB.x + this.BB.width <= entity.BB.x + entity.BB.width) {
-            //     this.collidingVertically = true;
-            // }
-            // else {
-            //     this.collidingVertically = false;
-            // }
-
-
-        }
-        else {
-            entity.fillStyle = "black";
-            this.collidingVertically = false;
-            this.collidingHorizontally = false;
-        }
-    }
-
-    checkCollisionWithPowerup(entity){
-        let collisionRes = this.BB.collideCircle(entity.BC);
-    
-        if (collisionRes.length > 0){
-            entity.fillStyle = "grey";
-        }
-        else{
-            entity.fillStyle = "yellow";
-        }
-    }
-
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
-                this.checkCollisionWithTrack(entity, (player, track)=>{
+                entity.checkCollisionWithPlayer(this, (player, track) =>{
                     track.fillStyle = "blue";
-                    let going = 1;//Going Up
+                    let going = 1;
                     if (player.y < track.y){
-                        //Going down
+                        //Going Up
                         going = -1;
+                        
                     }
-                    player.dy += 50 * going;
-
+                    //Going down
+                    player.dy = player.maxVerticalVelocity * going;
                 });
             }
             else if (entity instanceof Powerup) {
-                this.checkCollisionWithPowerup(entity);
+                entity.checkCollisionWithPlayer(this, (player, powerup) =>{
+                    powerup.fillStyle = "grey";
+                    player.dx += 30;
+                    player.booster = 100;
+
+                });
+                console.log(this.dx);
             }
 
         });
@@ -227,6 +147,15 @@ class Ollie {
                 Math.PI / 2 :
                 Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x));
         }
+
+        if (this.booster > 0){
+            this.booster--;
+        }
+        else{
+            this.booster = 0;
+            this.dx = Ollie.MOVING_SPEED;
+        }
+        
 
         if (this.game.spacePressed && this.thrusterVolume >= 0) {//Condition for jumping
             this.thrusterVolume -= 0.5;

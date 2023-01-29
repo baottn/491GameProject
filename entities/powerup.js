@@ -15,6 +15,17 @@ class Powerup{
         this.BC = new BoundingCircle(this.x, this.y, this.radius);
     }
 
+    checkCollisionWithPlayer(player, behavior){
+        let collisionRes = player.BB.collideCircle(this.BC);
+    
+        if (collisionRes.length > 0){
+            behavior(player, this);
+        }
+        else{
+            this.fillStyle = "yellow";
+        }
+    }
+
     update(){
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick; 
