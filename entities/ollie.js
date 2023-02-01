@@ -1,5 +1,5 @@
 class Ollie {
-    static RELOAD_SPEED = 75;
+    static RELOAD_SPEED = 105;
     static GRAVITY = 250;
     static MOVING_SPEED = 100;
     constructor(game, x, y) {
@@ -59,7 +59,13 @@ class Ollie {
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
             this.reload = Ollie.RELOAD_SPEED;
-            let bullet = new Bullet(this.game, this.head.x - this.game.camera.x, this.head.y, this.angle);
+
+            let turnetHead = {
+                x: this.head.x + this.turnetWidth * Math.cos(this.angle) - this.game.camera.x,
+                y: this.head.y + this.turnetWidth * Math.sin(this.angle),
+            };
+
+            let bullet = new Bullet(this.game, turnetHead.x, turnetHead.y, this.angle);
 
             this.game.addEntity(bullet);
             this.game.shooting = false;
