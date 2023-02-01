@@ -25,7 +25,7 @@ class SceneManager {
     }
 
     update() {
-        let limitPoint = params.CANVAS_SIZE / 4;
+        let limitPoint = params.CANVAS_SIZE / 9;
 
         if (this.x < this.game.mainCharacter.x - limitPoint) {
             this.x = this.game.mainCharacter.x - limitPoint;

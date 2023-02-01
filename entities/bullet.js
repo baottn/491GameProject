@@ -1,6 +1,10 @@
+/**
+ * Bullet is basically a straight line
+ */
 class Bullet {
-    static BULLET_SPEED = 500
-    static BULLET_LENGTH = 25
+    static BULLET_SPEED = 500;
+    static BULLET_LENGTH = 80;
+
     constructor(game, x1, y1, angle = 5) {
         Object.assign(this, { game, x1, y1, angle });
 
@@ -19,23 +23,28 @@ class Bullet {
         this.y1 += this.dy * this.game.clockTick;
 
         this.x2 += this.dx * this.game.clockTick;
-        this.y2 += this.dy * this.game.clockTick;
+    this.y2 += this.dy * this.game.clockTick;
     }
-/*
-    checkCollisionWithOllie() {
-        let dx = this.x - Ollie.x;
-        let dy = this.y - Ollie.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < this.radius + Ollie.radius) {
-            collision = true;
-        }
+    checkCollisionWithAsteroids(){
+        let tmp = new Line(this.game);
+        tmp.addEndPoints(this.x1, this.y1, this.x2, this.y2);
+
+        this.game.gameManager.entities.forEach(asteroid => {
+            if (asteroid instanceof Asteroid){
+                
+                if (asteroid.dyingTickAnimation <= 0 && asteroid.checkCollisionWithLineSegment(tmp)){
+                    asteroid.dying();
+                    this.game.gameManager.totalAsteroids--;
+                    this.removeFromWorld = true;
+                }
+            }
+        });
     }
-    */
 
     update() {
         this.updatePos();
-        this.checkCollisionWithAsteroids();
+        //this.checkCollisionWithAsteroids();
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd) {

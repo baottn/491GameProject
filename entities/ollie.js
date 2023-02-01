@@ -13,7 +13,7 @@ class Ollie {
         this.isDying = false;
         this.reload = 0;
         this.jumping = 0;
-        this.angle = Math.PI / 2; //Point upward
+        this.angle = 0;
         this.state = 0; // State of Ollie, 1 for walking, 2 for jumping, etc.
 
         //Moving Direction
@@ -36,6 +36,7 @@ class Ollie {
         //Collision Check
 
         this.BB = new BoundingBox(x, y, this.width, this.height);
+        this.turnetWidth = this.width / 4 * 3;
 
         //Animate Olliee
         // Get the spriteshhett
@@ -50,17 +51,18 @@ class Ollie {
     loadAnimations() {
 
         // jumping animation
-        this.animations[0] = new Animator(this.spritesheet, 0, 0, 45, 41  , 2, 0.2);       
+        this.animations[0] = new Animator(this.spritesheet, 0, 0, 45, 41, 2, 0.2);
 
         // Idle animation
-        this.animations[2] = new Animator(this.spritesheet, 0, 0, 45, 30, 1, 10000);
+        this.animations[1] = new Animator(this.spritesheet, 0, 0, 45, 30, 2, 0.2);
     }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
             this.reload = Ollie.RELOAD_SPEED;
-            let bullet = new Bullet(this.game, this.head.x, this.head.y, this.angle);
+            let bullet = new Bullet(this.game, this.head.x - this.game.camera.x, this.head.y, this.angle);
 
             this.game.addEntity(bullet);
+            this.game.shooting = false;
         }
 
         this.reload--;
@@ -91,6 +93,20 @@ class Ollie {
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick;
         this.head = { x: this.x + this.width / 2, y: this.y + 10 };
+
+        //Update mouse location
+        if (this.game.mouse) {
+            //Check vertical line and update angle
+            if (this.game.mouse.x <= this.head.x - this.game.camera.x) {
+                this.angle = Math.PI / 3;
+                if (this.game.mouse.y < this.head.y) {
+                    this.angle *= -1;
+                }
+            }
+            else
+                this.angle = Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x + this.game.camera.x));
+        }
+
     }
 
     updateBB() {
@@ -101,58 +117,49 @@ class Ollie {
         // Update based on player movement.
         if (this.game.spacePressed) {
             this.index = 0;
-        } 
-        else{
+        }
+        else {
             // If the player is not pressing a key
-            this.index = 2
+            this.index = 1;
         }
     }
 
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
-                entity.checkCollisionWithPlayer(this, (player, track) =>{
+                entity.checkCollisionWithPlayer(this, (player, track) => {
                     track.fillStyle = "blue";
                     let going = 1;
-                    if (player.y < track.y){
+                    if (player.y < track.y) {
                         //Going Up
                         going = -1;
-                        
+
                     }
                     //Going down
                     player.dy = player.maxVerticalVelocity * going;
                 });
             }
             else if (entity instanceof Powerup) {
-                entity.checkCollisionWithPlayer(this, (player, powerup) =>{
+                entity.checkCollisionWithPlayer(this, (player, powerup) => {
                     powerup.fillStyle = "grey";
                     player.dx += 30;
                     player.booster = 100;
 
                 });
-                console.log(this.dx);
             }
 
         });
     }
 
     update() {
-        //Update mouse location
-        if (this.game.mouse) {
-            //Check vertical line and update angle
-            this.angle = this.game.mouse.x == this.head.x ?
-                Math.PI / 2 :
-                Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x));
-        }
-
-        if (this.booster > 0){
+        if (this.booster > 0) {
             this.booster--;
         }
-        else{
+        else {
             this.booster = 0;
             this.dx = Ollie.MOVING_SPEED;
         }
-        
+
 
         if (this.game.spacePressed && this.thrusterVolume >= 0) {//Condition for jumping
             this.thrusterVolume -= 0.5;
@@ -179,12 +186,27 @@ class Ollie {
         this.updatePos();
         this.updateBB();
 
+        if (this.game.click) {
+            this.shoot();
+        }
+
         this.checkCollisionWithEntity();
     };
 
-    drawTurnet(ctx){
-        //(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
-        ctx.drawImage(this.turnetSpritesheet, 0, 1, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.width / 2, 10);
+    drawTurnet(ctx) {
+
+        // var offScreenCanvas = document.createElement("canvas");
+        // offScreenCanvas.width = 100;
+        // offScreenCanvas.height = 200;
+        // var offScreenCtx = offScreenCanvas.getContext('2d');
+
+        ctx.save();
+        ctx.translate(this.head.x - this.game.camera.x, this.head.y);//this.x - this.game.camera.x , this.y);
+        ctx.rotate(this.angle);
+        ctx.translate(-this.head.x + this.game.camera.x, -this.head.y);
+
+        ctx.drawImage(this.turnetSpritesheet, 0, 1, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+        ctx.restore();
     }
 
     draw(ctx) {
@@ -201,9 +223,9 @@ class Ollie {
             ctx.strokeStyle = "green";
         }
 
-        ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
-        ctx.fill();
-        ctx.stroke();
+        // ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
+        // ctx.fill();
+        // ctx.stroke();
 
         ctx.fillStyle = "red";
         ctx.strokeStyle = "red";
@@ -224,12 +246,14 @@ class Ollie {
         }
         ctx.fill();
         ctx.stroke();
-    
+
         ctx.closePath();
         //End testing and debugging zone
-        
-        this.drawTurnet(ctx);
+
+
         // Draw the animations
         this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
+
+        this.drawTurnet(ctx);
     };
 }
