@@ -15,6 +15,7 @@ class GameEngine {
         this.wheel = null;
         this.keys = {};
         this.spacePressed = false;
+        this.shooting = false;
 
         this.camera = null;
         this.mainCharacter = null;
@@ -31,10 +32,10 @@ class GameEngine {
         this.timer = new Timer();
         this.camera = new SceneManager(this);
         
-        this.mainCharacter = new Ollie(this, params.CANVAS_SIZE / 4, params.CANVAS_SIZE/2);
+        this.mainCharacter = new Ollie(this, params.CANVAS_SIZE / 9, params.CANVAS_SIZE/2);
         this.addEntity(this.mainCharacter);
 
-        let testBox = new Track(this, params.CANVAS_SIZE / 2 + 100, params.CANVAS_SIZE / 2 + 50, 300, 50);
+        let testBox = new Track(this, params.CANVAS_SIZE / 2 + 400, params.CANVAS_SIZE / 2 + 50, 300, 50);
         this.addEntity(testBox);
 
         let testPowerUp = new Powerup(this, params.CANVAS_SIZE / 2, 300, 50);
@@ -64,6 +65,7 @@ class GameEngine {
 
         function mouseClickListener(e) {
             that.click = getXandY(e);
+            that.shooting = true;
             if (params.DEBUG) console.log(that.click);
         }
 
