@@ -1,13 +1,14 @@
 class Ollie {
     static RELOAD_SPEED = 75;
     static GRAVITY = 250;
+    static MOVING_SPEED = 100;
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
-        this.height = 125;
+        this.height = 100;
         this.width = 215;
 
-        this.head = { x: this.x + this.width / 2, y: this.y };
+        this.head = { x: this.x + this.width / 2, y: this.y + 10 };
 
         this.isDying = false;
         this.reload = 0;
@@ -16,7 +17,7 @@ class Ollie {
         this.state = 0; // State of Ollie, 1 for walking, 2 for jumping, etc.
 
         //Moving Direction
-        this.dx = 50;
+        this.dx = Ollie.MOVING_SPEED;
         this.dy = 9.8;
         //Displacement for x axis
         //Displacement for the y axis
@@ -30,19 +31,16 @@ class Ollie {
         this.maximumThursterVolume = 100;
         this.thrusterVolume = this.maximumThursterVolume;
 
-        //Old Speed
-        this.oldDX = this.dx;
-        this.oldDY = this.dy;
+        this.booster = 0;
 
         //Collision Check
-        this.collidingVertically = false;
-        this.collidingHorizontally = false;
 
-        //this.BB = new BoundingBox(x, y, this.width, this.height);
+        this.BB = new BoundingBox(x, y, this.width, this.height);
 
         //Animate Olliee
         // Get the spriteshhett
         this.spritesheet = ASSET_MANAGER.getAsset("./img/tank_body_fire.png");
+        this.turnetSpritesheet = ASSET_MANAGER.getAsset("./img/tank_turret.png");
 
         // tank's body animations
         this.animations = [];
@@ -90,29 +88,9 @@ class Ollie {
             this.oldDy = this.dy;
         }
 
-        if (this.collidingHorizontally) {
-
-            this.dy = 0;
-        }
-        else {
-            //this.dy = this.oldDY;
-        }
-
-        if (this.collidingVertically) {
-            if (this.dx != 0) {
-                this.oldDX = this.dx;
-            }
-            this.dx = 0;
-        }
-        else {
-            this.dx = this.oldDX;
-        }
-
-
-
-
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick;
+        this.head = { x: this.x + this.width / 2, y: this.y + 10 };
     }
 
     updateBB() {
@@ -130,79 +108,29 @@ class Ollie {
         }
     }
 
-    checkCollisionWithTrack(entity) {
-        let topLine = entity.BB.collideLine(this.BB.lines[0]);//Check whether the top part is touching
-        let botLine = entity.BB.collideLine(this.BB.lines[2]);
-        let left = entity.BB.collideLine(this.BB.lines[3]);
-        let right = entity.BB.collideLine(this.BB.lines[1]);
-
-        //console.log(topLine, botLine);
-        // if (right.length > 0 && (right.includes(1))){
-        //     console.log("Hit the vertical: ", left);
-        //     this.collidingVertically = true;
-        // }
-        // else{
-        //     this.collidingVertically = false;
-        // }
-
-        // if (topLine.length > 0 && (topLine.includes(1))){
-        //     console.log("Hit the vertical: ", topLine);
-        //     this.collidingHorizontally = true;
-        // }
-        // else{
-        //     this.collidingHorizontally = false;
-        // }
-
-
-        if (entity.BB.collideBox(this.BB)) {
-            //console.log("Hit a box");
-            //entity.removeFromWorld = true;
-            entity.fillStyle = "blue";
-
-            //Collide horizontally
-
-            // if (this.BB.y + this.BB.height >= entity.BB.y && this.BB.y <= entity.BB.y + entity.BB.height) {
-            //     this.collidingHorizontally = true;
-            // }
-            // else {
-            //     this.collidingHorizontally = false;
-            // }
-
-            // //Collide vertically
-            // if (!this.collidingHorizontally && this.BB.x + this.BB.width >= entity.BB.x && this.BB.x + this.BB.width <= entity.BB.x + entity.BB.width) {
-            //     this.collidingVertically = true;
-            // }
-            // else {
-            //     this.collidingVertically = false;
-            // }
-
-
-        }
-        else {
-            entity.fillStyle = "black";
-            this.collidingVertically = false;
-            this.collidingHorizontally = false;
-        }
-    }
-
-    checkCollisionWithPowerup(entity){
-        let collisionRes = this.BB.collideCircle(entity.BC);
-    
-        if (collisionRes.length > 0){
-            entity.fillStyle = "grey";
-        }
-        else{
-            entity.fillStyle = "yellow";
-        }
-    }
-
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
-                this.checkCollisionWithTrack(entity);
+                entity.checkCollisionWithPlayer(this, (player, track) =>{
+                    track.fillStyle = "blue";
+                    let going = 1;
+                    if (player.y < track.y){
+                        //Going Up
+                        going = -1;
+                        
+                    }
+                    //Going down
+                    player.dy = player.maxVerticalVelocity * going;
+                });
             }
             else if (entity instanceof Powerup) {
-                this.checkCollisionWithPowerup(entity);
+                entity.checkCollisionWithPlayer(this, (player, powerup) =>{
+                    powerup.fillStyle = "grey";
+                    player.dx += 30;
+                    player.booster = 100;
+
+                });
+                console.log(this.dx);
             }
 
         });
@@ -216,6 +144,15 @@ class Ollie {
                 Math.PI / 2 :
                 Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x));
         }
+
+        if (this.booster > 0){
+            this.booster--;
+        }
+        else{
+            this.booster = 0;
+            this.dx = Ollie.MOVING_SPEED;
+        }
+        
 
         if (this.game.spacePressed && this.thrusterVolume >= 0) {//Condition for jumping
             this.thrusterVolume -= 0.5;
@@ -245,6 +182,11 @@ class Ollie {
         this.checkCollisionWithEntity();
     };
 
+    drawTurnet(ctx){
+        //(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+        ctx.drawImage(this.turnetSpritesheet, 0, 1, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.width / 2, 10);
+    }
+
     draw(ctx) {
 
         //Template code
@@ -268,7 +210,7 @@ class Ollie {
 
         //Temporary drawing this, begin testing zone
         if (this.game.mouse) {
-            ctx.moveTo(this.x + this.width / 2 - this.game.camera.x, this.y);
+            ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
             ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
         }
         ctx.fill();
@@ -277,17 +219,17 @@ class Ollie {
         ctx.fillStyle = "blue";
         ctx.strokeStyle = "blue";
         if (this.game.click) {
-            ctx.moveTo(this.x + this.width / 2 - this.game.camera.x, this.y);
+            ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
             ctx.lineTo(this.game.click.x, this.game.click.y);
         }
         ctx.fill();
         ctx.stroke();
-        //End testing zone
-
+    
         ctx.closePath();
+        //End testing and debugging zone
         
-
+        this.drawTurnet(ctx);
         // Draw the animations
-        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 30, 5);
+        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
     };
 }
