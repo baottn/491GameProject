@@ -34,7 +34,7 @@ class GameEngine {
         this.mainCharacter = new Ollie(this, params.CANVAS_SIZE / 4, params.CANVAS_SIZE/2);
         this.addEntity(this.mainCharacter);
 
-        let testBox = new Track(this, params.CANVAS_SIZE / 2, params.CANVAS_SIZE/2, 100, 200);
+        let testBox = new Track(this, params.CANVAS_SIZE / 2 + 100, params.CANVAS_SIZE / 2 + 50, 300, 50);
         this.addEntity(testBox);
 
         let testPowerUp = new Powerup(this, params.CANVAS_SIZE / 2, 300, 50);

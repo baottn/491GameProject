@@ -24,7 +24,16 @@ class Track{
         this.updateBB();
     }
 
-
+    checkCollisionWithPlayer(player, behavior) {
+        if (player.BB.collideBox(this.BB)) {
+            behavior(player, this);
+        }
+        else {
+            this.fillStyle = "black";
+            player.collidingVertically = false;
+            player.collidingHorizontally = false;
+        }
+    }
     
     draw(ctx) {
         ctx.beginPath();
