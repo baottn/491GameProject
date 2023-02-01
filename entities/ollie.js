@@ -4,7 +4,7 @@ class Ollie {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
-        this.height = 60;
+        this.height = 125;
         this.width = 215;
 
         this.head = { x: this.x + this.width / 2, y: this.y };
@@ -42,7 +42,7 @@ class Ollie {
 
         //Animate Olliee
         // Get the spriteshhett
-        this.spritesheet = ASSET_MANAGER.getAsset("./img/tank_body_spritesheet.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./img/tank_body_fire.png");
 
         // tank's body animations
         this.animations = [];
@@ -51,14 +51,11 @@ class Ollie {
 
     loadAnimations() {
 
-        // Walking right animation
-        this.animations[0] = new Animator(this.spritesheet, 0, 0, 44, 12, 2, 0.2);
-
-        // Walking left animation
-        this.animations[1] = new Animator(this.spritesheet, 50, 0, 97, 12, 2, 0.2, 0, true, true);
+        // jumping animation
+        this.animations[0] = new Animator(this.spritesheet, 0, 0, 45, 41  , 2, 0.2);       
 
         // Idle animation
-        this.animations[2] = new Animator(this.spritesheet, 3, 0, 44, 12, 1, 100000);
+        this.animations[2] = new Animator(this.spritesheet, 0, 0, 45, 30, 1, 10000);
     }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
@@ -291,6 +288,6 @@ class Ollie {
         
 
         // Draw the animations
-        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 5);
+        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 30, 5);
     };
 }
