@@ -1,7 +1,7 @@
 class SceneManager {
     constructor(game) {
         this.game = game;
-
+        this.highScore = 0;
         this.newGame();
         // this.powerupsAnimation = new Animeation(ASSET_MANAGER.getAsset("./img/powerups.png"), 0, 160, 8, 8, 4, 0.2, 0, false, true);
     };
@@ -26,6 +26,7 @@ class SceneManager {
 
 
     drawGameOver(ctx) {
+        this.highScore = Math.max(this.score, this.highScore);
         ctx.fillStyle = "black";
         ctx.strokeStyle = "black";
         let fontSize = 58;
@@ -34,6 +35,7 @@ class SceneManager {
         ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2 - (displayGameOverText.length * fontSize) / 4, params.CANVAS_SIZE / 2 - 100);
         
         let displayScore = "Score: " + this.score.toFixed(1);
+        displayScore += " Highscore: " + this.highScore.toFixed(1);
         ctx.strokeText(displayScore, params.CANVAS_SIZE / 2 - (displayScore.length * fontSize) / 4, params.CANVAS_SIZE / 2 + fontSize - 100);
 
         displayGameOverText = "Press S to start again!";

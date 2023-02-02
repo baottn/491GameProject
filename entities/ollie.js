@@ -2,6 +2,9 @@ class Ollie {
     static RELOAD_SPEED = 105;
     static GRAVITY = 250;
     static MOVING_SPEED = 100;
+    static INVINC_TIME = 100; //Tick that does not take damage
+
+
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
@@ -47,6 +50,7 @@ class Ollie {
         this.animations = [];
         this.loadAnimations();
         this.unlimitedBoost = false;
+        this.invicibility = 0;
 
         this.index = 1;
     }
@@ -64,7 +68,7 @@ class Ollie {
             this.reload = Ollie.RELOAD_SPEED;
 
             let turnetHead = {
-                x: this.head.x + this.turnetWidth * Math.cos(this.angle) - this.game.camera.x,
+                x: this.head.x + this.turnetWidth * Math.cos(this.angle),
                 y: this.head.y + this.turnetWidth * Math.sin(this.angle),
             };
 
@@ -139,12 +143,7 @@ class Ollie {
             }
             else if (entity instanceof Powerup) {
                 //Boost speed and Invicibility
-                entity.checkCollisionWithPlayer(this, (player, powerup) => {
-                    powerup.fillStyle = "grey";
-                    player.dx += 30;
-                    player.booster = 100;
-
-                });
+                entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
             }
@@ -152,7 +151,8 @@ class Ollie {
         });
     }
 
-    update() {
+    updateStatus() {
+        //Check Horizontal Booster
         if (this.booster > 0) {
             this.booster--;
         }
@@ -161,10 +161,14 @@ class Ollie {
             this.dx = Ollie.MOVING_SPEED;
         }
 
-
-        if (this.game.spacePressed && this.thrusterVolume >= 0) {//Condition for jumping
+        //Update boosting
+        if (this.game.spacePressed && this.thrusterVolume >= 0) {
             if (!this.unlimitedBoost)
                 this.thrusterVolume -= 0.5;
+            else {
+                this.thrusterVolume += 0.5;
+                this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
+            }
 
             if (this.forceY != Ollie.GRAVITY) {
                 this.forceY += this.thrusterPower;
@@ -185,6 +189,11 @@ class Ollie {
             this.index = 1;
         }
 
+
+    }
+
+    update() {
+        this.updateStatus();
         this.updatePos();
         this.updateBB();
 
@@ -252,7 +261,6 @@ class Ollie {
         ctx.closePath();
         //End testing and debugging zone
 
-        console.log(this, this.animations[this.index], this.index);
         // Draw the animations
         this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
 

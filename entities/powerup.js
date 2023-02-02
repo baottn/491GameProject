@@ -1,6 +1,4 @@
 class Powerup{
-    static POWERUP_HEIGHT = 10;
-    static POWERUP_RADIUS = 35;
     constructor(game, x = 0, y = 0, radius = 35) {
         Object.assign(this, { game, x, y, radius });
         this.updateBC();
@@ -10,18 +8,30 @@ class Powerup{
         this.fillStyle = "yellow";
         this.strokeStyle = "black";
 
-        this.type = 0; 
+        this.type = 0; //Speed up
     }
 
     updateBC(){
         this.BC = new BoundingCircle(this.x, this.y, this.radius);
     }
 
-    checkCollisionWithPlayer(player, behavior){
+    checkCollisionWithPlayer(player){
         let collisionRes = player.BB.collideCircle(this.BC);
     
         if (collisionRes.length > 0){
-            behavior(player, this);
+            switch (this.type) {
+                //Invincible & Speed
+                case 0:
+                    invincibleSpeedBuff(player, this);
+                    break;
+                //Unlimited Booster + Score
+                case 1:
+                   
+                    break;
+                //
+                case 2:
+                    break;
+            }
         }
         else{
             this.fillStyle = "yellow";
@@ -55,3 +65,11 @@ class Powerup{
         ctx.closePath();
     }
 }
+
+//Type 0
+const invincibleSpeedBuff = (player, powerup) => {
+    powerup.fillStyle = "grey";
+    player.dx += 30;
+    player.booster = 100;
+    player.invincible
+}; 

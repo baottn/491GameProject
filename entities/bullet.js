@@ -2,7 +2,7 @@
  * Bullet is basically a straight line
  */
 class Bullet {
-    static BULLET_SPEED = 500;
+    static BULLET_SPEED = 900;
     static BULLET_LENGTH = 80;
 
     constructor(game, x1, y1, angle = 5) {
@@ -51,8 +51,8 @@ class Bullet {
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd) {
-        ctx.fillStyle = "green";
-        ctx.strokeStyle = "green";
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "red";
 
         ctx.beginPath();
         ctx.moveTo(xStart, yStart);
@@ -64,6 +64,6 @@ class Bullet {
     }
 
     draw(ctx) {
-        this.drawLine(ctx, this.x1, this.y1, this.x2, this.y2);
+        this.drawLine(ctx, this.x1 - this.game.camera.x, this.y1, this.x2 - this.game.camera.x, this.y2);
     }
 }

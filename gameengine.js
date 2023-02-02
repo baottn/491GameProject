@@ -34,8 +34,8 @@ class GameEngine {
             if (entity.y > params.CANVAS_SIZE || entity.y < 0) {
                 entity.removeFromWorld = true;
             }
-
-            if (entity.x - this.camera.x > params.CANVAS_SIZE || entity.x - this.camera.x < 0) {
+            
+            if ( entity.x < this.camera.x - params.CANVAS_SIZE) {
                 entity.removeFromWorld = true;
             }
 
@@ -142,7 +142,6 @@ class GameEngine {
         //Draw the HUD
         this.camera.draw(this.ctx);
 
-        console.log(this.entities);
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx);
