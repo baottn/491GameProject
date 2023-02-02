@@ -9,6 +9,8 @@ class Powerup{
         this.dy = 0;
         this.fillStyle = "yellow";
         this.strokeStyle = "black";
+
+        this.type = 0; 
     }
 
     updateBC(){

@@ -19,6 +19,7 @@ class GameEngine {
 
         this.camera = null;
         this.mainCharacter = null;
+        this.down = false;
 
         // Options and the Details
         this.options = options || {
@@ -26,21 +27,27 @@ class GameEngine {
         };
     };
 
+    cleanUpOffScreenEntity() {
+        //Clean anything that goes out of bound except player
+        this.entities.filter(entity => !(entity instanceof Ollie)).forEach(entity => {
+
+            if (entity.y > params.CANVAS_SIZE || entity.y < 0) {
+                entity.removeFromWorld = true;
+            }
+
+            if (entity.x - this.camera.x > params.CANVAS_SIZE || entity.x - this.camera.x < 0) {
+                entity.removeFromWorld = true;
+            }
+
+        });
+    }
+
     init(ctx) {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
         this.camera = new SceneManager(this);
         
-        this.mainCharacter = new Ollie(this, params.CANVAS_SIZE / 9, params.CANVAS_SIZE/2);
-        this.addEntity(this.mainCharacter);
-
-        let testBox = new Track(this, params.CANVAS_SIZE / 2 + 400, params.CANVAS_SIZE / 2 + 50, 300, 50);
-        this.addEntity(testBox);
-
-        let testPowerUp = new Powerup(this, params.CANVAS_SIZE / 2, 300, 50);
-        this.addEntity(testPowerUp);
-      
     };
 
     start() {
@@ -81,6 +88,9 @@ class GameEngine {
                 case "Space":
                     that.spacePressed = true;
                     break;
+                case "KeyS":
+                    that.down = true;
+                    break;
             }
         }
 
@@ -90,6 +100,9 @@ class GameEngine {
             switch (e.code) {
                 case "Space":
                     that.spacePressed = false;
+                    break;
+                case "KeyS":
+                    that.down = false;
                     break;
             }
         }
@@ -118,23 +131,49 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+        if (this.camera.gameOver) {
+            this.camera.drawGameOver(this.ctx);
+            return;
+        }
         //Draw the background
-        this.ctx.drawImage(ASSET_MANAGER.getAsset("./img/background.jpg"), (this.camera.x) % (2560 - params.CANVAS_SIZE), 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE,  params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+        this.ctx.drawImage(ASSET_MANAGER.getAsset("./img/background.jpg"), (this.camera.x) % (2560 - params.CANVAS_SIZE), 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
 
         //Draw the HUD
         this.camera.draw(this.ctx);
 
+        console.log(this.entities);
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx);
         }
     };
 
+    reset() {
+        for (let i = this.entities.length - 1; i >= 0; --i) {
+            this.entities[i].removeFromWorld = true;
+            //this.entities.splice(i, 1);
+        }
+        this.entities = [];
+        this.camera.newGame();
+        console.log(this.mainCharacter);
+    }
+
     update() {
         let entitiesCount = this.entities.length;
 
         this.camera.update();
-        if (!this.mainCharacter.isDying && !this.gameOver)
+
+        //Won't update If game is over.
+        if (this.camera.gameOver) {
+            //Resetting
+            if (this.down) {
+                this.reset();
+            }
+            return;
+        }
+
+        if (!this.mainCharacter.isDying)
             this.camera.score += 0.005;
 
         for (let i = 0; i < entitiesCount; i++) {
@@ -144,7 +183,8 @@ class GameEngine {
                 entity.update();
             }
         }
-        
+
+        this.cleanUpOffScreenEntity();
 
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {

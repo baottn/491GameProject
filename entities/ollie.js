@@ -46,6 +46,9 @@ class Ollie {
         // tank's body animations
         this.animations = [];
         this.loadAnimations();
+        this.unlimitedBoost = false;
+
+        this.index = 1;
     }
 
     loadAnimations() {
@@ -119,17 +122,6 @@ class Ollie {
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
     }
 
-    updateAnimations() {
-        // Update based on player movement.
-        if (this.game.spacePressed) {
-            this.index = 0;
-        }
-        else {
-            // If the player is not pressing a key
-            this.index = 1;
-        }
-    }
-
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
@@ -146,12 +138,15 @@ class Ollie {
                 });
             }
             else if (entity instanceof Powerup) {
+                //Boost speed and Invicibility
                 entity.checkCollisionWithPlayer(this, (player, powerup) => {
                     powerup.fillStyle = "grey";
                     player.dx += 30;
                     player.booster = 100;
 
                 });
+                //Unlimited boost
+                //Point 
             }
 
         });
@@ -168,7 +163,8 @@ class Ollie {
 
 
         if (this.game.spacePressed && this.thrusterVolume >= 0) {//Condition for jumping
-            this.thrusterVolume -= 0.5;
+            if (!this.unlimitedBoost)
+                this.thrusterVolume -= 0.5;
 
             if (this.forceY != Ollie.GRAVITY) {
                 this.forceY += this.thrusterPower;
@@ -180,15 +176,15 @@ class Ollie {
             if (Math.abs(this.forceY) > Math.abs(this.maximumThrusterPower)) {
                 this.forceY = this.maximumThrusterPower;
             }
+            this.index = 0;
         }
         else {
             this.forceY = Ollie.GRAVITY;
             this.thrusterVolume += 0.5;
             this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
-
+            this.index = 1;
         }
 
-        this.updateAnimations();
         this.updatePos();
         this.updateBB();
 
@@ -256,7 +252,7 @@ class Ollie {
         ctx.closePath();
         //End testing and debugging zone
 
-
+        console.log(this, this.animations[this.index], this.index);
         // Draw the animations
         this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
 

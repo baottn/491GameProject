@@ -1,23 +1,43 @@
 class SceneManager {
     constructor(game) {
         this.game = game;
+
+        this.newGame();
+        // this.powerupsAnimation = new Animeation(ASSET_MANAGER.getAsset("./img/powerups.png"), 0, 160, 8, 8, 4, 0.2, 0, false, true);
+    };
+    
+    newGame(){
         this.score = 0;
-
-        this.totalAsteroids = 0;
-
         this.difficulty = 1;
         this.difficultyThreshold = 15;
         this.gameOver = false;
         this.x = 0;
-        this.playerLives = 3; 
-        // this.powerupsAnimation = new Animeation(ASSET_MANAGER.getAsset("./img/powerups.png"), 0, 160, 8, 8, 4, 0.2, 0, false, true);
-    };
+
+        this.game.mainCharacter = new Ollie(this.game, params.CANVAS_SIZE / 9, params.CANVAS_SIZE / 2);
+        this.game.addEntity(this.game.mainCharacter);
+
+        let testBox = new Track(this.game, params.CANVAS_SIZE / 2 + 400, params.CANVAS_SIZE / 2 + 50, 300, 50);
+        this.game.addEntity(testBox);
+
+        let testPowerUp = new Powerup(this.game, params.CANVAS_SIZE / 2, 300, 50);
+        this.game.addEntity(testPowerUp);
+
+    }
+
 
     drawGameOver(ctx) {
         ctx.fillStyle = "black";
         ctx.strokeStyle = "black";
-        ctx.font = "58px serif";
-        ctx.strokeText("Game Over!", params.CANVAS_SIZE / 2 - 450, params.CANVAS_SIZE / 2);
+        let fontSize = 58;
+        ctx.font = fontSize + "px serif";
+        let displayGameOverText = "You died!";
+        ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2 - (displayGameOverText.length * fontSize) / 4, params.CANVAS_SIZE / 2 - 100);
+        
+        let displayScore = "Score: " + this.score.toFixed(1);
+        ctx.strokeText(displayScore, params.CANVAS_SIZE / 2 - (displayScore.length * fontSize) / 4, params.CANVAS_SIZE / 2 + fontSize - 100);
+
+        displayGameOverText = "Press S to start again!";
+        ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2 - (displayGameOverText.length * fontSize) / 5, params.CANVAS_SIZE / 2 - 100 + fontSize * 2);
     }
 
     spawnTrack(){
@@ -30,9 +50,21 @@ class SceneManager {
         if (this.x < this.game.mainCharacter.x - limitPoint) {
             this.x = this.game.mainCharacter.x - limitPoint;
         }
+
+        //Going over bounds
+        if (this.game.mainCharacter.y + this.game.mainCharacter.height < 0 || this.game.mainCharacter.y - this.game.mainCharacter.height > params.CANVAS_SIZE){
+           
+            this.gameOver = true;
+        }
     };
 
     draw(ctx){
+        //Displaying the score
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
+        ctx.font = "28px serif";
+        ctx.fillText("Score: " + this.score.toFixed(1), 10, 35);
+
         //Draw the thruster bar
         ctx.beginPath();
         ctx.fillStyle = "green";
@@ -48,5 +80,7 @@ class SceneManager {
         ctx.fill();
 
         ctx.closePath();
+
+
     }
 };

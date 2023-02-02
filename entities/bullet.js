@@ -15,7 +15,8 @@ class Bullet {
         this.x2 = Math.cos(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.x1;
         this.y2 = Math.sin(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.y1;
 
-   
+        this.x = x1;
+        this.y = y1;
     }
 
     updatePos() {
@@ -23,17 +24,19 @@ class Bullet {
         this.y1 += this.dy * this.game.clockTick;
 
         this.x2 += this.dx * this.game.clockTick;
-    this.y2 += this.dy * this.game.clockTick;
+        this.y2 += this.dy * this.game.clockTick;
+        this.x = this.x1;
+        this.y = this.y1;
     }
 
-    checkCollisionWithAsteroids(){
+    checkCollisionWithAsteroids() {
         let tmp = new Line(this.game);
         tmp.addEndPoints(this.x1, this.y1, this.x2, this.y2);
 
         this.game.gameManager.entities.forEach(asteroid => {
-            if (asteroid instanceof Asteroid){
-                
-                if (asteroid.dyingTickAnimation <= 0 && asteroid.checkCollisionWithLineSegment(tmp)){
+            if (asteroid instanceof Asteroid) {
+
+                if (asteroid.dyingTickAnimation <= 0 && asteroid.checkCollisionWithLineSegment(tmp)) {
                     asteroid.dying();
                     this.game.gameManager.totalAsteroids--;
                     this.removeFromWorld = true;
