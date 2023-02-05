@@ -136,6 +136,8 @@ class Ollie {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
                 entity.checkCollisionWithPlayer(this, (player, track) => {
+                    if (player.invicibility)
+                        return;
                     track.fillStyle = "blue";
                     let going = 1;
                     if (player.y < track.y) {
