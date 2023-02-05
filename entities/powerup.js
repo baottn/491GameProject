@@ -29,6 +29,7 @@ class Powerup{
         let collisionRes = player.BB.collideCircle(this.BC);
     
         if (collisionRes.length > 0){
+            this.removeFromWorld = true;
             switch (this.type) {
                 //Invincible & Speed
                 case 0:
@@ -42,7 +43,7 @@ class Powerup{
                 case 2:
                     break;
             }
-            this.removeFromWorld = true;
+            
         }
         else{
             this.fillStyle = "yellow";
@@ -80,8 +81,8 @@ class Powerup{
 //Type 0
 const invincibleSpeedBuff = (player, powerup, game) => {
     powerup.fillStyle = "grey";
-    player.dx += 30;
-    player.booster = 300;
+    player.dx *= 3;
+    player.booster = 500;
     player.invicibility = true;
-    game.camera.score += 1;
+    game.camera.score += 25;
 }; 

@@ -21,7 +21,7 @@ class Ollie {
 
         //Moving Direction
         this.dx = Ollie.MOVING_SPEED;
-        this.dy = 9.8;
+        this.dy = 20;
         //Displacement for x axis
         //Displacement for the y axis
         this.forceY = 0;
@@ -56,7 +56,6 @@ class Ollie {
     }
 
     loadAnimations() {
-
         // jumping animation
         this.animations[0] = new Animator(this.spritesheet, 0, 0, 45, 41, 2, 0.2);
 
@@ -248,12 +247,12 @@ class Ollie {
         ctx.strokeStyle = "red";
 
         //Temporary drawing this, begin testing zone
-        if (this.game.mouse) {
-            ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
-            ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
-        }
-        ctx.fill();
-        ctx.stroke();
+        // if (this.game.mouse) {
+        //     ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
+        //     ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
+        // }
+        // ctx.fill();
+        // ctx.stroke();
 
         // ctx.fillStyle = "blue";
         // ctx.strokeStyle = "blue";
@@ -267,7 +266,6 @@ class Ollie {
         ctx.closePath();
         //End testing and debugging zone
 
-        console.log(this.game.timer.gameTime, parseInt(this.game.timer.gameTime * 10) % 2);
         if (this.invicibility){//Not drawing to show invincibility
             if (parseInt(this.game.timer.gameTime * 10) % 2 == 0){
                 return;

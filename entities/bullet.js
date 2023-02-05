@@ -8,9 +8,9 @@ class Bullet {
     constructor(game, x1, y1, angle = 5) {
         Object.assign(this, { game, x1, y1, angle });
 
-        //Randomize movement
-        this.dx = Math.cos(this.angle).toFixed(4) * Bullet.BULLET_SPEED;
-        this.dy = Math.sin(this.angle).toFixed(4) * Bullet.BULLET_SPEED;
+        let speed = Bullet.BULLET_SPEED + this.game.mainCharacter.dx;//Bullet speed is relative to the moving speed of player
+        this.dx = Math.cos(this.angle).toFixed(4) * speed;
+        this.dy = Math.sin(this.angle).toFixed(4) * speed;
 
         this.x2 = Math.cos(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.x1;
         this.y2 = Math.sin(this.angle).toFixed(3) * Bullet.BULLET_LENGTH + this.y1;
