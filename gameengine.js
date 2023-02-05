@@ -154,8 +154,10 @@ class GameEngine {
             //this.entities.splice(i, 1);
         }
         this.entities = [];
-        this.camera.newGame();
-        console.log(this.mainCharacter);
+        if (this.camera.infMode){
+            this.camera.newGame_InfMode();
+        }
+        
     }
 
     update() {
