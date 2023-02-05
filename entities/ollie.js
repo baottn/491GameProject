@@ -1,6 +1,6 @@
 class Ollie {
     static RELOAD_SPEED = 105;
-    static GRAVITY = 250;
+    static GRAVITY = 350;
     static MOVING_SPEED = 300;
     static INVINC_TIME = 100; //Tick that does not take damage
 
@@ -27,8 +27,8 @@ class Ollie {
         this.forceY = 0;
 
         //Speed constraints
-        this.maxVerticalVelocity = 350;
-        this.thrusterPower = -5;
+        this.maxVerticalVelocity = 500;
+        this.thrusterPower = -15;
         this.maximumThrusterPower = -800;
 
         this.maximumThursterVolume = 100;
@@ -175,7 +175,7 @@ class Ollie {
             if (!this.unlimitedBoost)
                 this.thrusterVolume -= 0.5;
             else {
-                this.thrusterVolume += 0.5;
+                this.thrusterVolume += 0.8;
                 this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
             }
 
@@ -193,7 +193,7 @@ class Ollie {
         }
         else {
             this.forceY = Ollie.GRAVITY;
-            this.thrusterVolume += 0.5;
+            this.thrusterVolume += 0.8;
             this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
             this.index = 1;
         }
