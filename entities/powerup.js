@@ -1,4 +1,7 @@
 class Powerup{
+    static SPRITE_WIDTH = 125;
+    static SPRITE_HEIGHT = 102;
+    static OFFSET = 6.5;
     /**
      * Power up the player if touches
      * @param {*} game 
@@ -19,7 +22,13 @@ class Powerup{
         this.fillStyle = "yellow";
         this.strokeStyle = "black";
 
-     
+        this.powerupSprites = ASSET_MANAGER.getAsset("./img/power_ups.png");
+
+        this.loadAnimations();
+    }
+
+    loadAnimations() {
+        this.animation = new Animator(this.powerupSprites, 0, 0, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);      
     }
 
     updateBC(){
@@ -76,6 +85,8 @@ class Powerup{
 
         // End
         ctx.closePath();
+
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - P owerup.OFFSET , this.y - this.radius  , 0.65 );  
     }
 }
 
