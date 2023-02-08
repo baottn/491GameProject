@@ -1,4 +1,7 @@
 class SceneManager {
+    static BORDER_WIDTH = 24;
+    static BORDER_HEIGHT = 32;
+    static BORDER_SCALE = 5
     constructor(game) {
         this.game = game;
         this.highScore = 0;
@@ -6,7 +9,16 @@ class SceneManager {
 
         this.newGame_InfMode();
         // this.powerupsAnimation = new Animeation(ASSET_MANAGER.getAsset("./img/powerups.png"), 0, 160, 8, 8, 4, 0.2, 0, false, true);
+        this.border = ASSET_MANAGER.getAsset("./img/fire_border.png");
+        this.animations = []
+        this.loadAnimations(); 
     };
+
+    loadAnimations() {
+        this.animations[0] = new Animator(this.border, 0, 0, SceneManager.BORDER_WIDTH, SceneManager.BORDER_HEIGHT, 8, 1);
+        this.animations[1] = new Animator(this.border, 0, SceneManager.BORDER_HEIGHT + 1, SceneManager.BORDER_WIDTH, SceneManager.BORDER_HEIGHT, 8, 1);
+    }
+
     //Used in infinite mode, spawning track randomly
     infMode_SpawnTrack(){
         //Return if track spawning is still on cool down
@@ -133,6 +145,12 @@ class SceneManager {
 
         ctx.closePath();
 
+        for (let i = 0; i < params.CANVAS_SIZE; i += SceneManager.BORDER_WIDTH * 2.60) {
+            this.animations[0].drawFrame(this.game.clockTick, ctx, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_WIDTH) + 25 - i, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_HEIGHT), SceneManager.BORDER_SCALE);   
+        }
 
+        for (let i = 0; i < params.CANVAS_SIZE; i += SceneManager.BORDER_WIDTH * 2.60) {
+            this.animations[1].drawFrame(this.game.clockTick, ctx, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_WIDTH) + 25 - i,0, SceneManager.BORDER_SCALE);   
+        }
     }
 };
