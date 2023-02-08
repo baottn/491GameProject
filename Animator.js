@@ -8,7 +8,6 @@ class Animator {
 
     drawFrame(tick, ctx, x, y, scale = 1, customWidth, customHeight) {
         this.elapsedTime += tick;
-        console.log(this.width)
         if (scale != "custom") {
             customWidth = this.width * scale;
             customHeight = this.height * scale;
