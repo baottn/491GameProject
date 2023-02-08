@@ -86,7 +86,7 @@ class Powerup{
         // End
         ctx.closePath();
 
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - P owerup.OFFSET , this.y - this.radius  , 0.65 );  
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );  
     }
 }
 
