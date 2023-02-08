@@ -20,8 +20,7 @@ class Track{
         this.loadAnimations(); 
     }
     loadAnimations() {
-        // jumping animation
-        this.animation = new Animator(this.trackSprites, 0, 0, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 3, 0.2);
+        this.animation = new Animator(this.trackSprites, 0, 0, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 3, 0.2);      
     }
 
     updateBB(){

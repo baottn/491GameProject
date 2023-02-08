@@ -6,6 +6,8 @@ ASSET_MANAGER.queueDownload("./img/background.jpg");
 ASSET_MANAGER.queueDownload("./img/tank_body_fire.png");
 ASSET_MANAGER.queueDownload("./img/tank_turret.png");
 ASSET_MANAGER.queueDownload("./img/tracks.png");
+ASSET_MANAGER.queueDownload("./img/fire_border.png");  
+
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
