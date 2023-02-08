@@ -1,7 +1,7 @@
 class SceneManager {
     static BORDER_WIDTH = 24;
     static BORDER_HEIGHT = 32;
-    static BORDER_SCALE = 5
+    static BORDER_SCALE = 5;
     constructor(game) {
         this.game = game;
         this.highScore = 0;
@@ -65,6 +65,27 @@ class SceneManager {
         let tmp = new Powerup(this.game, randomX, randomY, radius, randomType);
         this.game.addEntity(tmp);
     }
+
+    //Used in infinite mode, spawning Fireball randomly
+    infMode_SpawnFireball(){
+        //Return if power up spawning is still on cool down
+        if (this.infMode.fireBallCooldown > 0){
+            this.infMode.fireBallCooldown = Math.max( this.infMode.fireBallCooldown - 1, 0);
+            return;
+        }
+    
+        this.infMode.fireBallCooldown = 100 + randomInt(100);//Won't spawn again in at least 400 ticks
+        
+        //Spawn two set of track, one upper, one lower
+        let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
+        let y = 0;
+        let radius = randomInt(25) + 35;
+        let randomAngle = (randomInt(45) + 90) / 180 * Math.PI;// 90 / 180 * Math.PI;
+        let tmp = new Fireball(this.game, randomX, y, randomAngle, radius);
+        console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
+        this.game.addEntity(tmp);
+    }
+
     //Launch a new game
     newGame_InfMode(){
         this.score = 0;
@@ -76,12 +97,15 @@ class SceneManager {
         this.game.mainCharacter = new Ollie(this.game, params.CANVAS_SIZE / 9, params.CANVAS_SIZE / 2);
         this.game.addEntity(this.game.mainCharacter);
 
-       
-
+    
         this.infMode = {
             trackSpawnCooldown: 0,
             powerUpSpawnCooldown: 0,
+            fireBallCooldown: 0,
         };
+
+        //Just for testing
+        //this.infMode_SpawnFireball();
     }
 
 
@@ -119,16 +143,19 @@ class SceneManager {
         if (this.infMode && !this.gameOver){
             this.infMode_SpawnTrack();
             this.infMode_SpawnPowerUp();
+            this.infMode_SpawnFireball();
         }
     };
 
-    draw(ctx){
+    displayScore(ctx){
         //Displaying the score
-        ctx.fillStyle = "red";
-        ctx.strokeStyle = "red";
-        ctx.font = "28px serif";
-        ctx.fillText("Score: " + this.score.toFixed(1), 10, 35);
+        ctx.fillStyle = `hsl(360, 100%, 20%)`;
+        ctx.strokeStyle = "blue";
+        ctx.font = "40px serif";
+        ctx.strokeText("Score: " + this.score.toFixed(1), 10, 35);
+    }
 
+    displayThruster(ctx){
         //Draw the thruster bar
         ctx.beginPath();
         ctx.fillStyle = "green";
@@ -138,13 +165,13 @@ class SceneManager {
         
         ctx.strokeRect( 50, params.CANVAS_SIZE / 2 - 200, thrusterBar.width, thrusterBar.height);
         ctx.fillRect( 50, params.CANVAS_SIZE / 2 - 200  + thrusterBar.height, thrusterBar.width, - thrusterBar.height * thrusterCurrentVolume);
-        //this.game.mainCharacter
-        
+
         ctx.stroke();
         ctx.fill();
-
         ctx.closePath();
+    }
 
+    displayBorder(ctx){
         for (let i = 0; i < params.CANVAS_SIZE; i += SceneManager.BORDER_WIDTH * 2.60) {
             this.animations[0].drawFrame(this.game.clockTick, ctx, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_WIDTH) + 25 - i, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_HEIGHT), SceneManager.BORDER_SCALE);   
         }
@@ -152,5 +179,11 @@ class SceneManager {
         for (let i = 0; i < params.CANVAS_SIZE; i += SceneManager.BORDER_WIDTH * 2.60) {
             this.animations[1].drawFrame(this.game.clockTick, ctx, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_WIDTH) + 25 - i,0, SceneManager.BORDER_SCALE);   
         }
+    }
+
+    draw(ctx){
+        this.displayBorder(ctx);
+        this.displayThruster(ctx);
+        this.displayScore(ctx);
     }
 };

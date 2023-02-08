@@ -29,25 +29,8 @@ class Bullet {
         this.y = this.y1;
     }
 
-    checkCollisionWithAsteroids() {
-        let tmp = new Line(this.game);
-        tmp.addEndPoints(this.x1, this.y1, this.x2, this.y2);
-
-        this.game.gameManager.entities.forEach(asteroid => {
-            if (asteroid instanceof Asteroid) {
-
-                if (asteroid.dyingTickAnimation <= 0 && asteroid.checkCollisionWithLineSegment(tmp)) {
-                    asteroid.dying();
-                    this.game.gameManager.totalAsteroids--;
-                    this.removeFromWorld = true;
-                }
-            }
-        });
-    }
-
     update() {
         this.updatePos();
-        //this.checkCollisionWithAsteroids();
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd) {
