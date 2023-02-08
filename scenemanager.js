@@ -32,16 +32,16 @@ class SceneManager {
         //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
-        let randomW = 200 + randomInt(params.CANVAS_SIZE / 2);
-        let randomH = 30 + randomInt(100);
+        let randomW = 120 + randomInt(params.CANVAS_SIZE / 4);
+        let randomH = randomW / (randomInt(2) + 2); //30 + randomInt(100);
 
         let tmp = new Track(this.game, randomX, randomY, randomW, randomH);
         this.game.addEntity(tmp);
 
         randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         randomY = randomInt(params.CANVAS_SIZE / 2) + params.CANVAS_SIZE / 2;
-        randomW = 200 + randomInt(params.CANVAS_SIZE / 2);
-        randomH = 30 + randomInt(100);
+        randomW = 120 + randomInt(params.CANVAS_SIZE / 4);
+        randomH = randomW / (randomInt(2) + 2);//30 + randomInt(100);
 
         tmp = new Track(this.game, randomX, randomY, randomW, randomH);
         this.game.addEntity(tmp);

@@ -14,6 +14,11 @@ class Fireball {
 
         this.fillStyle = "red";
         this.strokeStyle = "blue";
+
+        // this.offscreenCanvas =  document.createElement("canvas");
+        // offScreenCanvas.width = 100;
+        // offScreenCanvas.height = 200;
+        // var offScreenCtx = offScreenCanvas.getContext('2d');
     }
 
     updateBC(){

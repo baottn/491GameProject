@@ -17,12 +17,21 @@ class Bullet {
 
         this.x = x1;
         this.y = y1;
-
-        this.updateBL();
     }
 
     updateBL(){
         this.BL = new BoundingLine(this.x1, this.y1, this.x2, this.y2);
+    }
+
+    checkCollisionWithEntity() {
+        this.game.entities.forEach(entity => {
+            if (entity instanceof Fireball) {
+                let res = this.BL.collide(entity.BC);
+                console.log(res);
+
+            }
+
+        });
     }
 
     updatePos() {   

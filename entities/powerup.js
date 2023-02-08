@@ -68,24 +68,26 @@ class Powerup{
     }
 
     draw(ctx) {
-        // Begin a new path
-        ctx.beginPath();
+        // //Draw circle (for debug)
+        // // Begin a new path
+        // ctx.beginPath();
 
-        // Draw the circle
-        ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
+        // // Draw the circle
+        // ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
 
-        // Fill the circle with a color
-        ctx.fillStyle = this.fillStyle;
-        ctx.fill();
+        // // Fill the circle with a color
+        // ctx.fillStyle = this.fillStyle;
+        // ctx.fill();
 
-        // Stroke the circle with a color and width
-        ctx.strokeStyle = this.strokeStyle;
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        // // Stroke the circle with a color and width
+        // ctx.strokeStyle = this.strokeStyle;
+        // ctx.lineWidth = 3;
+        // ctx.stroke();
 
-        // End
-        ctx.closePath();
+        // // End
+        // ctx.closePath();
 
+        //Draw animation
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );  
     }
 }
