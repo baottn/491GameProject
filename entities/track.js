@@ -1,4 +1,6 @@
 class Track{
+    static SPRITE_WIDTH = 163;
+    static SPRITE_HEIGHT = 222;
     constructor(game, x = 0, y = 0, width = 0, height = 0) {
         Object.assign(this, {game, x, y, width, height});
         
@@ -12,8 +14,16 @@ class Track{
         this.fillStyle = "black";
         this.strokeStyle = "green";
 
+        this.trackSprites = ASSET_MANAGER.getAsset("./img/tracks.png");
+
         this.updateBB();
+        this.loadAnimations(); 
     }
+    loadAnimations() {
+        // jumping animation
+        this.animation = new Animator(this.trackSprites, 0, 0, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 3, 0.2);
+    }
+
     updateBB(){
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
     }
@@ -34,7 +44,7 @@ class Track{
             player.collidingHorizontally = false;
         }
     }
-    
+        
     draw(ctx) {
         ctx.beginPath();
         ctx.fillStyle =  this.fillStyle;
@@ -44,6 +54,8 @@ class Track{
         ctx.stroke();
         ctx.closePath();
         //this.BB.draw(ctx);
+
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);  
      }
 
 }

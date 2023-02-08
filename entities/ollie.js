@@ -86,7 +86,6 @@ class Ollie {
         if (mag == 0)
             return;
         return [x / mag, y / mag];
-
     }
 
     updatePos() {

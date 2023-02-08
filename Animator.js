@@ -6,8 +6,13 @@ class Animator {
         this.totalTime = frameCount * frameDuration;
     };
 
-    drawFrame(tick, ctx, x, y, scale) {
+    drawFrame(tick, ctx, x, y, scale = 1, customWidth, customHeight) {
         this.elapsedTime += tick;
+        console.log(this.width)
+        if (scale != "custom") {
+            customWidth = this.width * scale;
+            customHeight = this.height * scale;
+        }
 
         if (this.isDone()) {
             if (this.loop) {
@@ -24,8 +29,8 @@ class Animator {
             this.xStart + frame * (this.width + this.framePadding), this.yStart, //source from sheet
             this.width, this.height,
             x, y,
-            this.width * scale,
-            this.height * scale);
+            customWidth,
+            customHeight);
 
         if (params.DEBUG) {
             ctx.strokeStyle = 'Green';
