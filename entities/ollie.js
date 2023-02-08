@@ -53,6 +53,8 @@ class Ollie {
         this.invicibility = 0;
 
         this.index = 1;
+
+        this.health = 5;
     }
 
     loadAnimations() {
@@ -103,9 +105,9 @@ class Ollie {
 
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick;
-        
+
         //Cannot go over bound if invicibility is on
-        if (this.invicibility){
+        if (this.invicibility) {
             this.y = Math.max(this.y, 0);
             this.y = Math.min(params.CANVAS_SIZE, this.y);
         }
@@ -153,6 +155,10 @@ class Ollie {
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
+            } else if (entity instanceof Fireball) {
+
+                entity.checkCollisionWithPlayer(this);
+
             }
 
         });
@@ -267,8 +273,8 @@ class Ollie {
         ctx.closePath();
         //End testing and debugging zone
 
-        if (this.invicibility){//Not drawing to show invincibility
-            if (parseInt(this.game.timer.gameTime * 10) % 2 == 0){
+        if (this.invicibility) {//Not drawing to show invincibility
+            if (parseInt(this.game.timer.gameTime * 10) % 2 == 0) {
                 return;
             }
         }

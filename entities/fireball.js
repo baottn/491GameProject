@@ -28,11 +28,25 @@ class Fireball {
         this.yTail = (Fireball.TAIL_LENGTH + this.radius) * Math.sin(this.angle);
     }
 
+    checkCollisionWithPlayer(player){
+        let collisionRes = player.BB.collideCircle(this.BC);
+    
+        if (collisionRes.length > 0){
+            //Remove itself for now
+            this.removeFromWorld = true;
+            if (!player.invicibility)
+                player.health--;
+        }
+
+
+    }
+
     update() {
         this.updatePos();
         this.updateBC();
-
-        console.log(this.x, this.game.mainCharacter.x);
+        // if (!this.removeFromWorld){
+        //     this.checkCollisionWithPlayer(this.game.mainCharacter);
+        // }
     }
 
     draw(ctx) {

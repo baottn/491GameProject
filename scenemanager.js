@@ -79,7 +79,7 @@ class SceneManager {
         //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
-        let radius = randomInt(25) + 35;
+        let radius = randomInt(25) + 15;
         let randomAngle = (randomInt(45) + 90) / 180 * Math.PI;// 90 / 180 * Math.PI;
         let tmp = new Fireball(this.game, randomX, y, randomAngle, radius);
         console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
@@ -134,8 +134,9 @@ class SceneManager {
         }
 
         //Going over bounds
-        if (this.game.mainCharacter.y + this.game.mainCharacter.height < 0 || this.game.mainCharacter.y - this.game.mainCharacter.height > params.CANVAS_SIZE){
-           
+        if (this.game.mainCharacter.y + this.game.mainCharacter.height < 0 || this.game.mainCharacter.y - this.game.mainCharacter.height > params.CANVAS_SIZE ||
+            this.game.mainCharacter.health <= 0//Health is <= 0
+            ){
             this.gameOver = true;
         }
 
@@ -147,12 +148,13 @@ class SceneManager {
         }
     };
 
-    displayScore(ctx){
+    displayInfo(ctx){
         //Displaying the score
-        ctx.fillStyle = `hsl(360, 100%, 20%)`;
+        ctx.fillStyle = `hsl(360, 100%, 50%)`;
         ctx.strokeStyle = "blue";
         ctx.font = "40px serif";
         ctx.strokeText("Score: " + this.score.toFixed(1), 10, 35);
+        ctx.fillText("Health: " + this.game.mainCharacter.health, 10, 70);
     }
 
     displayThruster(ctx){
@@ -184,6 +186,6 @@ class SceneManager {
     draw(ctx){
         this.displayBorder(ctx);
         this.displayThruster(ctx);
-        this.displayScore(ctx);
+        this.displayInfo(ctx);
     }
 };

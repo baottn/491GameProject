@@ -1,4 +1,4 @@
-class Line {
+class BoundingLine {
     constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
         this.intRadius = 3;
 
@@ -147,9 +147,16 @@ class Line {
 
 
     collide(other) {
-        if (other instanceof Line) {
+        if (other instanceof BoundingLine) {
             return [this.collideLine(other)];
         }
+        
+        if (other instanceof BoundingCircle) {
+            return this.collideCircle(other);
+        }
+
+        //Invalid check
+        return null;
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd, fillStyle = "green", strokeStyle = "green") {
