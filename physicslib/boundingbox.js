@@ -11,10 +11,10 @@ class BoundingBox {
         let topRight = {x: x + width, y: y};
         let bottomRight = {x: x + width, y: y + height};
         let bottomLeft = {x: x, y: y +  height};
-        let top = new Line(topLeft.x, topLeft. y, topRight.x, topRight.y);
-        let right = new Line(topRight.x, topRight. y, bottomRight.x, bottomRight.y);
-        let bottom = new Line(bottomLeft.x, bottomLeft. y, bottomRight.x, bottomRight.y);
-        let left = new Line(topLeft.x, topLeft. y, bottomLeft.x, bottomLeft.y);
+        let top = new BoundingLine(topLeft.x, topLeft. y, topRight.x, topRight.y);
+        let right = new BoundingLine(topRight.x, topRight. y, bottomRight.x, bottomRight.y);
+        let bottom = new BoundingLine(bottomLeft.x, bottomLeft. y, bottomRight.x, bottomRight.y);
+        let left = new BoundingLine(topLeft.x, topLeft. y, bottomLeft.x, bottomLeft.y);
 
         this.lines = [top, right, bottom, left];
         

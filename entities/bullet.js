@@ -17,9 +17,15 @@ class Bullet {
 
         this.x = x1;
         this.y = y1;
+
+        this.updateBL();
     }
 
-    updatePos() {
+    updateBL(){
+        this.BL = new BoundingLine(this.x1, this.y1, this.x2, this.y2);
+    }
+
+    updatePos() {   
         this.x1 += this.dx * this.game.clockTick;
         this.y1 += this.dy * this.game.clockTick;
 
@@ -31,6 +37,7 @@ class Bullet {
 
     update() {
         this.updatePos();
+        this.updateBL();
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd) {

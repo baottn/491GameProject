@@ -10,8 +10,8 @@ class Powerup{
      * @param {*} radius 
      * @param {*} type 
      *          0: Invincible & Speed
-     *          1: Unlimited Vertical Booster
-     *          2: Faster shooting rate
+     *          1: Unlimited Vertical Booster + Health
+     *          2: Faster shooting rate 
      */
     constructor(game, x = 0, y = 0, radius = 35, type = 0) {
         Object.assign(this, { game, x, y, radius, type });
