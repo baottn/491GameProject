@@ -32,7 +32,7 @@ class SceneManager {
         //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
-        let randomW = 120 + randomInt(params.CANVAS_SIZE / 4);
+        let randomW = 120 + randomInt(params.CANVAS_SIZE / 5);
         let randomH = randomW / (randomInt(2) + 2); //30 + randomInt(100);
 
         let tmp = new Track(this.game, randomX, randomY, randomW, randomH);
@@ -40,7 +40,7 @@ class SceneManager {
 
         randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         randomY = randomInt(params.CANVAS_SIZE / 2) + params.CANVAS_SIZE / 2;
-        randomW = 120 + randomInt(params.CANVAS_SIZE / 4);
+        randomW = 120 + randomInt(params.CANVAS_SIZE / 5);
         randomH = randomW / (randomInt(2) + 2);//30 + randomInt(100);
 
         tmp = new Track(this.game, randomX, randomY, randomW, randomH);
@@ -82,7 +82,8 @@ class SceneManager {
         let radius = randomInt(25) + 15;
         let randomAngle = (randomInt(45) + 90) / 180 * Math.PI;// 90 / 180 * Math.PI;
         let tmp = new Fireball(this.game, randomX, y, randomAngle, radius);
-        console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
+        
+        //console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
         this.game.addEntity(tmp);
     }
 
