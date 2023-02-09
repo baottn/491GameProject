@@ -88,6 +88,7 @@ class Ollie {
             if (this.fasterShootRate.duration <= 0) {
                 Ollie.RELOAD_SPEED == this.fasterShootRate.oriReloadSpeed;//return to normal
             }
+            // powerup here
             this.reload = Ollie.RELOAD_SPEED;
             let turnetHead = {
                 x: this.head.x + this.turnetWidth * Math.cos(this.angle),
