@@ -2,18 +2,23 @@
  * Fireball is basically a straight line
  */
 class Fireball {
-    static MOVE_SPEED = 300;
     static TAIL_LENGTH = 80;
 
-    constructor(game, x, y, angle = Math.PI / 2, radius = 5) {
-        Object.assign(this, { game, x, y, angle, radius });
-        this.dx = Fireball.MOVE_SPEED * Math.cos(angle);
-        this.dy = Fireball.MOVE_SPEED * Math.sin(angle);
+    constructor(game, x, y, angle = Math.PI / 2, radius = 5, moveSpeed = 300, type = 0 ) {
+        Object.assign(this, { game, x, y, angle, radius, type, moveSpeed});
+        this.dx = moveSpeed * Math.cos(angle);
+        this.dy = moveSpeed * Math.sin(angle);
 
         this.updateBC();
 
         this.fillStyle = "red";
         this.strokeStyle = "blue";
+
+        //30% chance the fireball mutates to become more dangerous
+        if (randomInt(100) < 30 && this.radius >= 35){
+            this.type = 1;
+            this.fillStyle = "black";
+        }
 
         // this.offscreenCanvas =  document.createElement("canvas");
         // offScreenCanvas.width = 100;
@@ -39,11 +44,29 @@ class Fireball {
         if (collisionRes.length > 0){
             //Remove itself for now
             this.removeFromWorld = true;
-            if (!player.invicibility)
-                player.health--;
+            if (!player.invicibility){
+                if (this.type == 1){
+                    player.health -= 3;
+                }
+                player.health --;
+            }
         }
+    }
 
-
+    //On dead action
+    onDeath(){
+        this.removeFromWorld = true;
+        this.game.camera.score += 5;//Bonus the player for destroying the fireball
+   
+        //Spawn smaller fireball if destroyed
+        if (this.type == 1){
+            this.game.camera.score += 5;
+            for (let i = 0; i < 360; i += 45){
+                let angle = i / 180 * Math.PI;
+                let tmp = new Fireball(this.game, this.x, this.y, angle, this.radius / 2, this.moveSpeed / 10, 0);
+                this.game.addEntity(tmp);
+            }
+        }
     }
 
     update() {

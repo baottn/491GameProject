@@ -52,10 +52,10 @@ class BoundingLine {
     };
 
     collideLine(otherLine) {
-        //if (!otherLine.slope()) return { x: otherLine.points[1].x, y: this.slope() * otherLine.points[1].x + this.yInt() };
+        // if (!otherLine.slope()) return { x: otherLine.points[1].x, y: this.slope() * otherLine.points[1].x + this.yInt() };
         // //Both are vertical
-        // if (!this.slope() && !otherLine.slope()){
-        //     if (otherLine.onSegmentY(this.y) && otherLine.onSegmentX(this.x)){
+        // if (!this.slope() || !otherLine.slope()){
+        //     if (otherLine.collidePoint(this.x, this.y) ){
         //         return {x: this.x, y: this.y};
         //     }
         // }
@@ -95,7 +95,7 @@ class BoundingLine {
 
     collideCircle(circle) {
         //Vertical line situation (Line with formula as x = -yInt)
-        if (this.slope >= 999) {//There might be some calculation error causing a vertical line to have a big number for slope
+        if (!this.slope() || this.slope() >= 999) {//There might be some calculation error causing a vertical line to have a big number for slope
             let x = circle.center.x;
             if (this.points[1].x >= circle.center.x - circle.radius && this.points[1].x <= circle.center.x + circle.radius) {
                 let xRes = this.points[1].x;
@@ -145,6 +145,16 @@ class BoundingLine {
         return [];
     };
 
+    //Return true if the line collide with a box
+    collideBox(otherBox){
+        let res = otherBox.collideLine(this);
+        //console.log(res);
+        if (res && res.length > 0){
+            return true;
+        }
+        return false;
+    }
+
 
     collide(other) {
         if (other instanceof BoundingLine) {
@@ -153,6 +163,10 @@ class BoundingLine {
         
         if (other instanceof BoundingCircle) {
             return this.collideCircle(other);
+        }
+
+        if (other instanceof BoundingBox) {
+            return this.collideBox(other);
         }
 
         //Invalid check
@@ -173,7 +187,7 @@ class BoundingLine {
     }
 
     //Draw for debugging purposes
-    draw(ctx) {
-        this.drawLine(ctx, this.points[0].x, this.points[0].y, this.points[1].x, this.points[1].y);
+    draw(ctx, game) {
+        this.drawLine(ctx, this.points[0].x - game.camera.x, this.points[0].y, this.points[1].x - game.camera.x, this.points[1].y);
     }
 }

@@ -12,6 +12,9 @@ class SceneManager {
         this.border = ASSET_MANAGER.getAsset("./img/fire_border.png");
         this.animations = []
         this.loadAnimations(); 
+        this.backgroundX = 0;
+        this.backgroundStep = 1;
+        this.backgroundSprite = ASSET_MANAGER.getAsset("./img/background.png");
     };
 
     loadAnimations() {
@@ -66,6 +69,25 @@ class SceneManager {
         this.game.addEntity(tmp);
     }
 
+    //Used in infinite mode, spawning Power Up randomly
+    infMode_SpawnTrap(){
+        //Return if power up spawning is still on cool down
+        if (this.infMode.trapSpawnCooldown > 0){
+            this.infMode.trapSpawnCooldown = Math.max( this.infMode.trapSpawnCooldown - 1, 0);
+            return;
+        }
+    
+        this.infMode.trapSpawnCooldown = 500 + randomInt(100);//Won't spawn again in at least 800 ticks
+        
+        //Spawn two set of track, one upper, one lower
+        let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
+        let randomY = randomInt(params.CANVAS_SIZE / 2);
+        let radius = 35;
+        let randomType = 0;
+        let tmp = new Trap(this.game, randomX, randomY, radius, randomType);
+        this.game.addEntity(tmp);
+    }
+
     //Used in infinite mode, spawning Fireball randomly
     infMode_SpawnFireball(){
         //Return if power up spawning is still on cool down
@@ -79,9 +101,10 @@ class SceneManager {
         //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
-        let radius = randomInt(25) + 15;
+        let radius = randomInt(10) + 30;
         let randomAngle = (randomInt(45) + 90) / 180 * Math.PI;// 90 / 180 * Math.PI;
-        let tmp = new Fireball(this.game, randomX, y, randomAngle, radius);
+        let randomSpeed = 100 + randomInt(200);
+        let tmp = new Fireball(this.game, randomX, y, randomAngle, radius, randomSpeed);
         
         //console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
         this.game.addEntity(tmp);
@@ -95,6 +118,9 @@ class SceneManager {
         this.gameOver = false;
         this.x = 0;
 
+        this.backgroundX = 0;
+        this.backgroundStep = 1;
+
         this.game.mainCharacter = new Ollie(this.game, params.CANVAS_SIZE / 9, params.CANVAS_SIZE / 2);
         this.game.addEntity(this.game.mainCharacter);
 
@@ -103,10 +129,10 @@ class SceneManager {
             trackSpawnCooldown: 0,
             powerUpSpawnCooldown: 0,
             fireBallCooldown: 0,
+            trapSpawnCooldown: 0,
         };
 
         //Just for testing
-        //this.infMode_SpawnFireball();
     }
 
 
@@ -145,6 +171,7 @@ class SceneManager {
         if (this.infMode && !this.gameOver){
             this.infMode_SpawnTrack();
             this.infMode_SpawnPowerUp();
+            this.infMode_SpawnTrap();
             this.infMode_SpawnFireball();
         }
     };
@@ -184,7 +211,25 @@ class SceneManager {
         }
     }
 
+    drawBackGround(ctx){
+         //Draw the background
+        if (!this.game.mainCharacter.trapped.activated)
+            this.backgroundX += this.backgroundStep;//(this.x) % (2560 - params.CANVAS_SIZE);
+
+        if (this.backgroundX <= 0){
+            this.backgroundX = 0;
+            this.backgroundStep = 1;
+        }
+
+        if (this.backgroundX >= 2000){
+            this.backgroundX = 2000;
+            this.backgroundStep = -1;
+        }
+        ctx.drawImage(this.backgroundSprite, this.backgroundX, 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+    }
+
     draw(ctx){
+        this.drawBackGround(ctx);
         this.displayBorder(ctx);
         this.displayThruster(ctx);
         this.displayInfo(ctx);

@@ -19,22 +19,32 @@ class Bullet {
         this.y = y1;
     }
 
-    updateBL(){
+    updateBL() {
         this.BL = new BoundingLine(this.x1, this.y1, this.x2, this.y2);
     }
 
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
-            if (entity instanceof Fireball) {
+            if (entity instanceof Fireball || entity instanceof Trap || entity instanceof Powerup) {
                 let res = this.BL.collide(entity.BC);
-                console.log(res);
-
+                if (res && res.length != 0) {
+                    this.removeFromWorld = true;
+                    entity.onDeath();
+                }
+            }
+            else if (entity instanceof Track) {
+                let res = this.BL.collide(entity.BB);
+               
+                if (res) {
+                    this.removeFromWorld = true;
+                    entity.onDeath();
+                }
             }
 
         });
     }
 
-    updatePos() {   
+    updatePos() {
         this.x1 += this.dx * this.game.clockTick;
         this.y1 += this.dy * this.game.clockTick;
 
@@ -47,6 +57,7 @@ class Bullet {
     update() {
         this.updatePos();
         this.updateBL();
+        this.checkCollisionWithEntity();
     }
 
     drawLine(ctx, xStart, yStart, xEnd, yEnd) {

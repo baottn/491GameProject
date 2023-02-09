@@ -15,10 +15,13 @@ class Track{
         this.strokeStyle = "green";
 
         this.trackSprites = ASSET_MANAGER.getAsset("./img/tracks.png");
+        
+        this.health = 2;
 
         this.updateBB();
         this.loadAnimations(); 
     }
+
     loadAnimations() {
         this.animation = new Animator(this.trackSprites, 0, 0, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 3, 0.2);      
     }
@@ -26,6 +29,12 @@ class Track{
     updateBB(){
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
     }
+
+    onDeath(){
+        this.removeFromWorld = true;
+        console.log("Hit a track");
+    }
+
     update(){
         this.x += this.dx * this.game.clockTick ;
         this.y += this.dy * this.game.clockTick; 
@@ -45,16 +54,17 @@ class Track{
     }
         
     draw(ctx) {
-        ctx.beginPath();
-        ctx.fillStyle =  this.fillStyle;
-        ctx.strokeStyle = this.strokeStyle;
-        ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
-        //this.BB.draw(ctx);
-
+        //For debug purposes
+        // ctx.beginPath();
+        // ctx.fillStyle =  this.fillStyle;
+        // ctx.strokeStyle = this.strokeStyle;
+        // ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
+        // ctx.fill();
+        // ctx.stroke();
+        // ctx.closePath();
+        
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);  
+        //this.BB.draw(ctx, this.game);
      }
 
 }

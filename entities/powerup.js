@@ -31,6 +31,10 @@ class Powerup{
         this.animation = new Animator(this.powerupSprites, 0, 0, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);      
     }
 
+    onDeath(){
+        this.removeFromWorld = true;
+    }
+
     updateBC(){
         this.BC = new BoundingCircle(this.x, this.y, this.radius);
     }
@@ -39,7 +43,7 @@ class Powerup{
         let collisionRes = player.BB.collideCircle(this.BC);
     
         if (collisionRes.length > 0){
-            this.removeFromWorld = true;
+            this.onDeath();
             switch (this.type) {
                 //Invincible & Speed
                 case 0:
@@ -51,6 +55,7 @@ class Powerup{
                     break;
                 //
                 case 2:
+                    
                     break;
             }
             
@@ -60,10 +65,7 @@ class Powerup{
         }
     }
 
-    update(){
-        this.x += this.dx * this.game.clockTick;
-        this.y += this.dy * this.game.clockTick; 
-        
+    update(){       
         this.updateBC();
     }
 
@@ -94,7 +96,6 @@ class Powerup{
 
 //Type 0
 const invincibleSpeedBuff = (player, powerup, game) => {
-    powerup.fillStyle = "grey";
     //Only replenish the duration speed buff and not stack the effect
     if (!player.invicibility){
         player.dx *= 3;
@@ -103,3 +104,10 @@ const invincibleSpeedBuff = (player, powerup, game) => {
     player.invicibility = true;
     game.camera.score += 25;
 }; 
+
+//Type 2
+const fastShootingRate  = (player, powerup, game) => {
+    //Only replenish the duration of buff and not stack the effect
+   player.fasterShootRate.duration = 100;
+   Ollie.RELOAD_SPEED = player.fasterShootRate.oriReloadSpeed;
+}

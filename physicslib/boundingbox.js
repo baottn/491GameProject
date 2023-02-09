@@ -48,18 +48,18 @@ class BoundingBox {
     collideLine(line){
         let res = [];
         for (let i = 0 ; i < this.lines.length;i++){
-            let tmp = this.lines[i].collideLine(line);
-            if (tmp.length > 0){
-                
+            let tmp = line.collideLine(this.lines[i]);
+            console.log(tmp);
+            if (tmp){    
                 res.push(i);
             }
         }
         return res;
     }
 
-    draw(ctx){
+    draw(ctx, game){
         this.lines.forEach(line => {
-            line.draw(ctx);
+            line.draw(ctx, game);
         });
     }
 };

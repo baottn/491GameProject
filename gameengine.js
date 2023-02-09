@@ -136,8 +136,7 @@ class GameEngine {
             this.camera.drawGameOver(this.ctx);
             return;
         }
-        //Draw the background
-        this.ctx.drawImage(ASSET_MANAGER.getAsset("./img/background.png"), (this.camera.x) % (2560 - params.CANVAS_SIZE), 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+       
 
         //Draw the HUD
         this.camera.draw(this.ctx);

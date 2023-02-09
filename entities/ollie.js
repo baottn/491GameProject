@@ -1,5 +1,5 @@
 class Ollie {
-    static RELOAD_SPEED = 105;
+    static RELOAD_SPEED = 55;
     static GRAVITY = 350;
     static MOVING_SPEED = 300;
     static INVINC_TIME = 100; //Tick that does not take damage
@@ -47,16 +47,32 @@ class Ollie {
         this.turnetSpritesheet = ASSET_MANAGER.getAsset("./img/tank_turret.png");
 
         // tank's body animations
+        this.index = 1;
         this.animations = [];
         this.loadAnimations();
-        this.unlimitedBoost = false;
-        this.invicibility = 0;
 
-        this.index = 1;
+        //Statuses
+        this.invicibility = false;
 
-        this.health = 5;
+        this.unlimitedBoost = {
+            duration: 0,
+            status: false,
+        };
 
-        this.fasterShootRate = 0;
+        this.fasterShootRate = {
+            duration: 0,
+            oriReloadSpeed: Ollie.RELOAD_SPEED,
+        };
+
+        this.trapped = {
+            duration: 0,
+            oriDX: this.dx,
+            oriDY: this.dy,
+            activated: false,
+        };
+
+        this.health = 25;
+
     }
 
     loadAnimations() {
@@ -67,12 +83,10 @@ class Ollie {
         this.animations[1] = new Animator(this.spritesheet, 0, 0, 45, 30, 2, 0.2);
     }
     shoot() {
-
-
         //See if we are ready to shoot (reload = 0)
         if (this.reload <= 0 && this.game.shooting) {
-            if (this.fasterShootRate <= 0) {
-                Ollie.RELOAD_SPEED == 105;//return to normal
+            if (this.fasterShootRate.duration <= 0) {
+                Ollie.RELOAD_SPEED == this.fasterShootRate.oriReloadSpeed;//return to normal
             }
             this.reload = Ollie.RELOAD_SPEED;
             let turnetHead = {
@@ -87,9 +101,9 @@ class Ollie {
         }
 
         this.reload--;
-        this.fasterShootRate--;
+        this.fasterShootRate.duration--;
         this.reload = Math.max(this.reload, 0);
-        this.fasterShootRate = Math.max(this.fasterShootRate, 0);
+        this.fasterShootRate.duration = Math.max(this.fasterShootRate.duration, 0);
     }
 
     vectorNormalize(x, y) {
@@ -112,8 +126,10 @@ class Ollie {
             this.oldDy = this.dy;
         }
 
-        this.x += this.dx * this.game.clockTick;
-        this.y += this.dy * this.game.clockTick;
+        if (!this.trapped.activated) {
+            this.x += this.dx * this.game.clockTick;
+            this.y += this.dy * this.game.clockTick;
+        }
 
         //Cannot go over bound if invicibility is on
         if (this.invicibility) {
@@ -159,13 +175,12 @@ class Ollie {
                     player.dy = player.maxVerticalVelocity * going;
                 });
             }
-            else if (entity instanceof Powerup) {
+            else if (entity instanceof Powerup || entity instanceof Trap) {
                 //Boost speed and Invicibility
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
             } else if (entity instanceof Fireball) {
-
                 entity.checkCollisionWithPlayer(this);
 
             }
@@ -186,7 +201,7 @@ class Ollie {
 
         //Update boosting
         if (this.game.spacePressed && this.thrusterVolume >= 0) {
-            if (!this.unlimitedBoost)
+            if (!this.unlimitedBoost.status)
                 this.thrusterVolume -= 0.5;
             else {
                 this.thrusterVolume += 0.8;
@@ -212,7 +227,19 @@ class Ollie {
             this.index = 1;
         }
 
+        if (this.unlimitedBoost.duration > 0)
+            this.unlimitedBoost.duration--;
+        else
+            this.unlimitedBoost.duration = 0;
 
+        if (this.trapped.duration > 0) {
+            this.trapped.duration--;
+        }
+        else if (this.trapped.activated) {
+            this.dx = this.trapped.oriDX;
+            this.dy = this.trapped.oriDY;
+            this.trapped.activated = false;
+        }
     }
 
     update() {
