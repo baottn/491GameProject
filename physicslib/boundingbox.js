@@ -49,7 +49,7 @@ class BoundingBox {
         let res = [];
         for (let i = 0 ; i < this.lines.length;i++){
             let tmp = line.collideLine(this.lines[i]);
-            console.log(tmp);
+            
             if (tmp){    
                 res.push(i);
             }
@@ -61,5 +61,7 @@ class BoundingBox {
         this.lines.forEach(line => {
             line.draw(ctx, game);
         });
+
+        ctx.closePath();
     }
 };

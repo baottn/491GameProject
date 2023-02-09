@@ -2,8 +2,7 @@ class Ollie {
     static RELOAD_SPEED = 55;
     static GRAVITY = 350;
     static MOVING_SPEED = 300;
-    static INVINC_TIME = 100; //Tick that does not take damage
-
+    static MAX_HEALTH = 25;
 
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
@@ -39,7 +38,7 @@ class Ollie {
         //Collision Check
 
         this.BB = new BoundingBox(x, y, this.width, this.height);
-        this.turnetWidth = this.width / 4 * 3;
+        this.turnetWidth = this.width / 5 * 3;
 
         //Animate Olliee
         // Get the spriteshhett
@@ -71,7 +70,7 @@ class Ollie {
             activated: false,
         };
 
-        this.health = 25;
+        this.health = Ollie.MAX_HEALTH;
 
     }
 
@@ -307,7 +306,7 @@ class Ollie {
         // ctx.fill();
         // ctx.stroke();
 
-        ctx.closePath();
+       
         //End testing and debugging zone
 
         if (this.invicibility) {//Not drawing to show invincibility
@@ -320,5 +319,7 @@ class Ollie {
         this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
 
         this.drawTurnet(ctx);
+
+        ctx.closePath();
     };
 }

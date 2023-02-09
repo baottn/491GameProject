@@ -31,8 +31,10 @@ class Track{
     }
 
     onDeath(){
-        this.removeFromWorld = true;
-        console.log("Hit a track");
+        this.health--;
+        if (this.health <= 0){
+            this.removeFromWorld = true;
+        }
     }
 
     update(){
@@ -64,7 +66,17 @@ class Track{
         // ctx.closePath();
         
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);  
+        //Draw bounding box for debugging
         //this.BB.draw(ctx, this.game);
+        
+        //Temporary Drawing health for tracks
+        ctx.fillStyle = `hsl(360, 100%, 50%)`;
+        ctx.strokeStyle = `hsl(360, 100%, 50%)`;
+        ctx.font = (this.width / 10) + "px serif";
+        ctx.fillText("Health: " + this.health.toFixed(1), this.x - this.game.camera.x, this.y + this.height / 4);
+
+        ctx.closePath();
+        
      }
 
 }

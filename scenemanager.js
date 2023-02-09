@@ -182,10 +182,10 @@ class SceneManager {
         ctx.strokeStyle = `hsl(360, 100%, 50%)`;
         ctx.font = "40px serif";
         ctx.fillText("Score: " + this.score.toFixed(1), 10, 35);
-        ctx.fillText("Health: " + this.game.mainCharacter.health, 10, 70);
+        //ctx.fillText("Health: " + this.game.mainCharacter.health, 10, 70);
     }
 
-    displayThruster(ctx){
+    displayPlayerStat(ctx){
         //Draw the thruster bar
         ctx.beginPath();
         ctx.fillStyle = "green";
@@ -193,11 +193,29 @@ class SceneManager {
         let thrusterBar = {width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3};
         let thrusterCurrentVolume = this.game.mainCharacter.thrusterVolume / this.game.mainCharacter.maximumThursterVolume;
         
+        ctx.font = "25px serif";
+        ctx.fillText("Thruster", 10, params.CANVAS_SIZE / 2 - 170 + thrusterBar.height);
+
         ctx.strokeRect( 50, params.CANVAS_SIZE / 2 - 200, thrusterBar.width, thrusterBar.height);
         ctx.fillRect( 50, params.CANVAS_SIZE / 2 - 200  + thrusterBar.height, thrusterBar.width, - thrusterBar.height * thrusterCurrentVolume);
 
         ctx.stroke();
         ctx.fill();
+        
+
+        //Draw health Bars
+        let healthBar = {width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3};
+
+        let healthBarVolume = this.game.mainCharacter.health / Ollie.MAX_HEALTH;
+
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "red";
+        ctx.font = "25px serif";
+        ctx.fillText("Health", 10, params.CANVAS_SIZE / 2 - 210);
+
+        ctx.strokeRect( 20, params.CANVAS_SIZE / 2 - 200, healthBar.width, healthBar.height);
+        ctx.fillRect( 20, params.CANVAS_SIZE / 2 - 200  + healthBar.height, healthBar.width, - healthBar.height * healthBarVolume);
+
         ctx.closePath();
     }
 
@@ -231,7 +249,7 @@ class SceneManager {
     draw(ctx){
         this.drawBackGround(ctx);
         this.displayBorder(ctx);
-        this.displayThruster(ctx);
+        this.displayPlayerStat(ctx);
         this.displayInfo(ctx);
     }
 };

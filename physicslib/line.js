@@ -30,8 +30,6 @@ class BoundingLine {
     yInt() {
         if (this.points[0].x === this.points[1].x) return this.points[0].x === 0 ? 0 : false;
         if (this.points[0].y === this.points[1].y) return this.points[0].y;
-
-
         return this.points[0].y - this.slope() * this.points[0].x;
     };
 
@@ -59,11 +57,61 @@ class BoundingLine {
         //         return {x: this.x, y: this.y};
         //     }
         // }
-        if (this.slope() === otherLine.slope()) return false;
+        let slope = this.slope();
+        let otherSlope = otherLine.slope();
 
-        var intersect = {};
-        intersect.x = (otherLine.yInt() - this.yInt()) / (this.slope() - otherLine.slope());
-        intersect.y = this.slope() * intersect.x + this.yInt();
+        //One of the line we have is vertical
+        if ((slope === false || otherSlope === false)){// && (slope !== 0 && otherSlope !== 0)){
+            //Both lines are vertical
+            if (!slope && !otherSlope){
+                if (this.points[0].x == otherLine.points[0].x){
+                    //Comparing their y coordinates
+                    if (this.onSegmentY(otherLine.points[1].y)){
+                        return {x: this.points[0].x, y: otherLine.points[1].y};
+                    }
+                    else if (this.onSegmentY(otherLine.points[0].y)){
+                        return {x: this.points[0].x, y: otherLine.points[0].y};
+                    }
+                }
+                //did not overlap
+                return false;
+            }    
+            //Only one of the line is vertical
+            let vertical = this;
+            let nonVertical = otherLine;
+            if (!otherSlope){
+                vertical = otherLine;
+                nonVertical = this;
+            }
+
+            if (!nonVertical.onSegmentX(vertical.points[0].x)){
+                return false;
+            }
+
+            let nonVSlope = nonVertical.slope();
+            let nonVYInt = nonVertical.yInt();
+            
+            let yCross = nonVSlope * vertical.points[0].x + nonVYInt;
+
+            if (nonVertical.onSegmentY(yCross) && vertical.onSegmentY(yCross)){
+                return{x: vertical.points[0].x , y: yCross};
+            }
+            return false;
+        }
+
+        // //Horizontal case
+        // if (slope === 0 || otherSlope === 0){
+        //     //Both are horizontal
+        //     if (slope === 0 && otherSlope === 0){
+
+        //     }
+        // }
+
+        if (slope === otherSlope) return false;
+
+        var intersect = {x: 0, y: 0};
+        intersect.x = (otherLine.yInt() - this.yInt()) / (slope - otherSlope);
+        intersect.y = slope * intersect.x + this.yInt();
         if (this.collidePoint(intersect.x, intersect.y)
             && otherLine.collidePoint(intersect.x, intersect.y))
             return intersect;
@@ -95,7 +143,7 @@ class BoundingLine {
 
     collideCircle(circle) {
         //Vertical line situation (Line with formula as x = -yInt)
-        if (!this.slope() || this.slope() >= 999) {//There might be some calculation error causing a vertical line to have a big number for slope
+        if (this.slope() === false || this.slope() >= 999) {//There might be some calculation error causing a vertical line to have a big number for slope
             let x = circle.center.x;
             if (this.points[1].x >= circle.center.x - circle.radius && this.points[1].x <= circle.center.x + circle.radius) {
                 let xRes = this.points[1].x;
@@ -176,6 +224,14 @@ class BoundingLine {
     drawLine(ctx, xStart, yStart, xEnd, yEnd, fillStyle = "green", strokeStyle = "green") {
         ctx.fillStyle = fillStyle;
         ctx.strokeStyle = strokeStyle;
+
+        if (this.slope() == false){
+            console.log(this.slope());
+        }
+        if (this.slope() === 0 ){
+            ctx.fillStyle = "red";
+            ctx.strokeStyle = "red";
+        }
 
         ctx.beginPath();
         ctx.moveTo(xStart, yStart);
