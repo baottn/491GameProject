@@ -49,6 +49,8 @@ class Ollie {
         // tank's body animations
         this.animations = [];
         this.loadAnimations();
+
+        // power up
         this.unlimitedBoost = false;
         this.invicibility = 0;
 
@@ -66,6 +68,7 @@ class Ollie {
     }
     shoot() {
         if (this.reload <= 0 && this.game.shooting) {
+            // powerup here
             this.reload = Ollie.RELOAD_SPEED;
 
             let turnetHead = {
