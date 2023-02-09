@@ -2,7 +2,7 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload("./img/background.jpg");
+ASSET_MANAGER.queueDownload("./img/background.png");
 ASSET_MANAGER.queueDownload("./img/tank_body_fire.png");
 ASSET_MANAGER.queueDownload("./img/tank_turret.png");
 ASSET_MANAGER.queueDownload("./img/tracks.png");

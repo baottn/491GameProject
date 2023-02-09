@@ -1,7 +1,7 @@
 class SceneManager {
     static BORDER_WIDTH = 24;
     static BORDER_HEIGHT = 32;
-    static BORDER_SCALE = 5;
+    static BORDER_SCALE = 3;
     constructor(game) {
         this.game = game;
         this.highScore = 0;
@@ -152,9 +152,9 @@ class SceneManager {
     displayInfo(ctx){
         //Displaying the score
         ctx.fillStyle = `hsl(360, 100%, 50%)`;
-        ctx.strokeStyle = "blue";
+        ctx.strokeStyle = `hsl(360, 100%, 50%)`;
         ctx.font = "40px serif";
-        ctx.strokeText("Score: " + this.score.toFixed(1), 10, 35);
+        ctx.fillText("Score: " + this.score.toFixed(1), 10, 35);
         ctx.fillText("Health: " + this.game.mainCharacter.health, 10, 70);
     }
 
@@ -180,7 +180,7 @@ class SceneManager {
         }
 
         for (let i = 0; i < params.CANVAS_SIZE; i += SceneManager.BORDER_WIDTH * 2.60) {
-            this.animations[1].drawFrame(this.game.clockTick, ctx, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_WIDTH) + 25 - i,0, SceneManager.BORDER_SCALE);   
+            this.animations[1].drawFrame(this.game.clockTick, ctx, params.CANVAS_SIZE - (SceneManager.BORDER_SCALE * SceneManager.BORDER_WIDTH) + 25 - i, 0, SceneManager.BORDER_SCALE);   
         }
     }
 
