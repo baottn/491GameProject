@@ -9,7 +9,7 @@ ASSET_MANAGER.queueDownload("./img/tracks.png");
 ASSET_MANAGER.queueDownload("./img/fire_border.png");  
 ASSET_MANAGER.queueDownload("./img/bullet.png"); 
 ASSET_MANAGER.queueDownload("./img/power_ups.png"); 
-
+ASSET_MANAGER.queueDownload("./img/fireball.png"); 
 
 
 ASSET_MANAGER.downloadAll(() => {
