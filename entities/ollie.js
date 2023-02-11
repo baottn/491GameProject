@@ -82,11 +82,14 @@ class Ollie {
         this.animations[1] = new Animator(this.spritesheet, 0, 0, 45, 30, 2, 0.2);
     }
     shoot() {
+        if (this.fasterShootRate.duration <= 0) {
+            this.fasterShootRate.duration = 0;
+            Ollie.RELOAD_SPEED = this.fasterShootRate.oriReloadSpeed;//return to normal
+        }
+       
         //See if we are ready to shoot (reload = 0)
         if (this.reload <= 0 && this.game.shooting) {
-            if (this.fasterShootRate.duration <= 0) {
-                Ollie.RELOAD_SPEED == this.fasterShootRate.oriReloadSpeed;//return to normal
-            }
+
             // powerup here
             this.reload = Ollie.RELOAD_SPEED;
             let turnetHead = {
@@ -103,7 +106,6 @@ class Ollie {
         this.reload--;
         this.fasterShootRate.duration--;
         this.reload = Math.max(this.reload, 0);
-        this.fasterShootRate.duration = Math.max(this.fasterShootRate.duration, 0);
     }
 
     vectorNormalize(x, y) {
@@ -229,8 +231,12 @@ class Ollie {
 
         if (this.unlimitedBoost.duration > 0)
             this.unlimitedBoost.duration--;
-        else
-            this.unlimitedBoost.duration = 0;
+        else{
+            this.unlimitedBoost = {
+                duration: 0,
+                status: false,
+            };
+        }
 
         if (this.trapped.duration > 0) {
             this.trapped.duration--;
@@ -247,9 +253,6 @@ class Ollie {
         this.updatePos();
         this.updateBB();
         this.shoot();
-        if (this.game.click) {
-
-        }
 
         this.checkCollisionWithEntity();
     };

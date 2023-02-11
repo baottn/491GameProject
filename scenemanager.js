@@ -59,13 +59,13 @@ class SceneManager {
             return;
         }
     
-        this.infMode.powerUpSpawnCooldown = 800 + randomInt(100);//Won't spawn again in at least 800 ticks
+        this.infMode.powerUpSpawnCooldown = 100 + randomInt(100);//Won't spawn again in at least 800 ticks
         
         //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
         let radius = 35;
-        let randomType = 0;
+        let randomType = randomInt(100) % 3;
         let tmp = new Powerup(this.game, randomX, randomY, radius, randomType);
         this.game.addEntity(tmp);
     }
