@@ -15,6 +15,7 @@ class SceneManager {
         this.backgroundX = 0;
         this.backgroundStep = 1;
         this.backgroundSprite = ASSET_MANAGER.getAsset("./img/background.png");
+        this.connectingBackgroundSprite = ASSET_MANAGER.getAsset("./img/background2.png");
     };
 
     loadAnimations() {
@@ -231,19 +232,28 @@ class SceneManager {
 
     drawBackGround(ctx){
          //Draw the background
-        if (!this.game.mainCharacter.trapped.activated)
+        let connectionX = 3000 - this.backgroundX;
+        if (!this.game.mainCharacter.trapped.activated){
             this.backgroundX += this.backgroundStep;//(this.x) % (2560 - params.CANVAS_SIZE);
+            
+        }
 
         if (this.backgroundX <= 0){
             this.backgroundX = 0;
             this.backgroundStep = 1;
         }
+        // if (this.backgroundX >= 3000){
+        //     this.backgroundX = 0;
+        // }
 
         if (this.backgroundX >= 2000){
             this.backgroundX = 2000;
             this.backgroundStep = -1;
+            
+            //ctx.drawImage(this.connectingBackgroundSprite,params.CANVAS_SIZE - connectionX , 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
         }
         ctx.drawImage(this.backgroundSprite, this.backgroundX, 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+        
     }
 
     draw(ctx){
