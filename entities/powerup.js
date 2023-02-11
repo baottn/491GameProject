@@ -7,7 +7,7 @@ class Powerup{
      * @param {*} game 
      * @param {*} x 
      * @param {*} y 
-     * @param {*} radius 
+     * @param {*} radius
      * @param {*} type 
      *          0: Invincible & Speed
      *          1: Unlimited Vertical Booster + Health
@@ -24,11 +24,14 @@ class Powerup{
 
         this.powerupSprites = ASSET_MANAGER.getAsset("./img/power_ups.png");
 
-        this.loadAnimations();
+        this.animations = [];
+        this.loadAnimations();  
     }
 
     loadAnimations() {
-        this.animation = new Animator(this.powerupSprites, 0, 0, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);      
+        this.animations[1] = new Animator(this.powerupSprites, 0, 0, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);  
+        this.animations[2] = new Animator(this.powerupSprites, 0, 126, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);   
+        this.animations[0] = new Animator(this.powerupSprites, 0, 252, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 2); 
     }
 
     onDeath(){
@@ -51,11 +54,9 @@ class Powerup{
                     break;
                 //Unlimited Booster + Score
                 case 1:
-                   
                     break;
                 //
                 case 2:
-                    
                     break;
             }
             
@@ -90,7 +91,17 @@ class Powerup{
         // ctx.closePath();
 
         //Draw animation
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );  
+        switch (this.type) {
+            case 0:
+                this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+                break;
+            case 1:
+                this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+                break;
+            case 2:
+                this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+                break;
+        }
     }
 }
 
