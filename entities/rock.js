@@ -102,24 +102,24 @@ class Rock {
     }
 
     draw(ctx) {
-        // Begin a new path
-        ctx.beginPath();
-        //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
-        // Draw the circle
-        ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
+        // // Begin a new path
+        // ctx.beginPath();
+        // //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
+        // // Draw the circle
+        // ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
 
 
-        // Fill the circle with a color
-        ctx.fillStyle = this.fillStyle;
-        ctx.fill();
+        // // Fill the circle with a color
+        // ctx.fillStyle = this.fillStyle;
+        // ctx.fill();
 
-        // Stroke the circle with a color and width
-        ctx.strokeStyle = this.strokeStyle;
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        // // Stroke the circle with a color and width
+        // ctx.strokeStyle = this.strokeStyle;
+        // ctx.lineWidth = 3;
+        // ctx.stroke();
 
-        // End
-        ctx.closePath();
+        // // End
+        // ctx.closePath();
 
         //this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius, this.y - this.radius * 4, 2 * this.radius / Rock.SPRITE_WIDTH)
         if (this.type == 0) {
