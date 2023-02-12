@@ -93,17 +93,18 @@ class Powerup{
         // ctx.closePath();
 
         //Draw animation
-        switch (this.type) {
-            case 0:
-                this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
-                break;
-            case 1:
-                this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
-                break;
-            case 2:
-                this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
-                break;
-        }
+        this.animations[this.type].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        // switch (this.type) {
+        //     case 0:
+        //         this.animations[this.type].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        //         break;
+        //     case 1:
+        //         this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        //         break;
+        //     case 2:
+        //         this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        //         break;
+        // }
     }
 }
 

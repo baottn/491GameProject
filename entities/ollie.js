@@ -145,7 +145,8 @@ class Ollie {
         if (this.game.mouse) {
             //Check vertical line and update angle
             if (this.game.mouse.x <= this.head.x - this.game.camera.x) {
-                this.angle = Math.PI / 3;
+                //this.angle = Math.PI / 2.5;
+                this.angle = Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x + this.game.camera.x));
                 if (this.game.mouse.y < this.head.y) {
                     this.angle *= -1;
                 }
@@ -177,12 +178,12 @@ class Ollie {
                     player.dy = player.maxVerticalVelocity * going;
                 });
             }
-            else if (entity instanceof Powerup || entity instanceof Trap) {
+            else if (entity instanceof Powerup || entity instanceof Trap ) {
                 //Boost speed and Invicibility
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
-            } else if (entity instanceof Rock) {
+            } else if (entity instanceof Rock  || entity instanceof Ghost) {
                 entity.checkCollisionWithPlayer(this);
 
             }

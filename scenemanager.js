@@ -59,13 +59,21 @@ class SceneManager {
             return;
         }
     
-        this.infMode.powerUpSpawnCooldown = 100 + randomInt(100);//Won't spawn again in at least 800 ticks
+        this.infMode.powerUpSpawnCooldown = 200 + randomInt(100);//Won't spawn again in at least 200 ticks
         
-        //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
         let radius = 35;
-        let randomType = randomInt(100) % 3;
+        let randomType = randomInt(100);
+        if (randomType < 30){
+            randomType = 0;
+        }
+        else if (randomType <= 70){
+            randomType = 1;
+        }
+        else randomType = 2;
+
+
         let tmp = new Powerup(this.game, randomX, randomY, radius, randomType);
         this.game.addEntity(tmp);
     }
@@ -80,7 +88,6 @@ class SceneManager {
     
         this.infMode.trapSpawnCooldown = 500 + randomInt(100);//Won't spawn again in at least 800 ticks
         
-        //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
         let radius = 35;
@@ -90,16 +97,15 @@ class SceneManager {
     }
 
     //Used in infinite mode, spawning Fireball randomly
-    infMode_SpawnFireball(){
+    infMode_SpawnRock(){
         //Return if power up spawning is still on cool down
-        if (this.infMode.fireBallCooldown > 0){
-            this.infMode.fireBallCooldown = Math.max( this.infMode.fireBallCooldown - 1, 0);
+        if (this.infMode.rockCooldown > 0){
+            this.infMode.rockCooldown = Math.max( this.infMode.rockCooldown - 1, 0);
             return;
         }
     
-        this.infMode.fireBallCooldown = 100 + randomInt(100);//Won't spawn again in at least 400 ticks
-        
-        //Spawn two set of track, one upper, one lower
+        this.infMode.rockCooldown = 400 + randomInt(100);//Won't spawn again in at least 400 ticks
+
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
         let radius = randomInt(10) + 30;
@@ -108,6 +114,27 @@ class SceneManager {
         let tmp = new Rock(this.game, randomX, y, randomAngle, radius, randomSpeed);
         
         //console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
+        this.game.addEntity(tmp);
+    }
+
+     //Used in infinite mode, spawning a ghost randomly
+     infMode_SpawnGhost(){
+        //Return if power up spawning is still on cool down
+        if (this.infMode.ghostCooldown > 0){
+            this.infMode.ghostCooldown = Math.max( this.infMode.ghostCooldown - 1, 0);
+            return;
+        }
+    
+        this.infMode.ghostCooldown = 2000 + randomInt(100);//Won't spawn again in at least 2000 ticks
+
+        let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
+        let y = 0;
+        let radius = randomInt(10) + 30;
+        let randomAngle = (randomInt(45) + 90) / 180 * Math.PI;// 90 / 180 * Math.PI;
+        let randomSpeed = 200 + randomInt(100);
+        let tmp = new Ghost(this.game, randomX, y, randomAngle, radius, randomSpeed);
+        
+      
         this.game.addEntity(tmp);
     }
 
@@ -129,8 +156,9 @@ class SceneManager {
         this.infMode = {
             trackSpawnCooldown: 0,
             powerUpSpawnCooldown: 0,
-            fireBallCooldown: 0,
+            rockCooldown: 0,
             trapSpawnCooldown: 0,
+            ghostCooldown: 0,
         };
 
         //Just for testing
@@ -173,7 +201,8 @@ class SceneManager {
             this.infMode_SpawnTrack();
             this.infMode_SpawnPowerUp();
             this.infMode_SpawnTrap();
-            this.infMode_SpawnFireball();
+            this.infMode_SpawnRock();
+            this.infMode_SpawnGhost();
         }
     };
 

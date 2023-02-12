@@ -11,6 +11,7 @@ ASSET_MANAGER.queueDownload("./img/fire_border.png");
 ASSET_MANAGER.queueDownload("./img/bullet.png"); 
 ASSET_MANAGER.queueDownload("./img/power_ups.png"); 
 ASSET_MANAGER.queueDownload("./img/rock.png"); 
+ASSET_MANAGER.queueDownload("./img/ghost.png"); 
 
 
 ASSET_MANAGER.downloadAll(() => {

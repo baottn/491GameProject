@@ -35,7 +35,7 @@ class GameEngine {
                 entity.removeFromWorld = true;
             }
             
-            if ( entity.x < this.camera.x - params.CANVAS_SIZE) {
+            if ( entity.x < this.camera.x - params.CANVAS_SIZE || (entity.x >= this.camera.x + params.CANVAS_SIZE * 3 )) {
                 entity.removeFromWorld = true;
             }
 
