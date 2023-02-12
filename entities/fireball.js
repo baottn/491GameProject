@@ -3,8 +3,8 @@
  */
 class Fireball {
     static TAIL_LENGTH = 80;
-    static SPRITE_HEIGHT = 9;
-    static SPRITE_WIDTH = 25;
+    static SPRITE_HEIGHT = 28;
+    static SPRITE_WIDTH = 9;
 
     constructor(game, x, y, angle = Math.PI / 2, radius = 5, moveSpeed = 300, type = 0 ) {
         Object.assign(this, { game, x, y, angle, radius, type, moveSpeed});
@@ -32,8 +32,10 @@ class Fireball {
         this.offscreenCtx.translate(this.offscreenCanvas.width / 2, this.offscreenCanvas.height / 2);
         this.offscreenCtx.rotate(this.angle);
         this.offscreenCtx.translate(-this.offscreenCanvas.width / 2, -this.offscreenCanvas.height / 2);
-        this.offscreenCtx.scale(100, 100)
-        this.offscreenCtx.drawImage(this.fireballSprites, 0, 0, Fireball.SPRITE_WIDTH, Fireball.SPRITE_HEIGHT, 0 ,0, this.radius, Fireball.TAIL_LENGTH + this.radius);
+
+        this.animations = new Animator(this.fireballSprites, 1, 0, Fireball.SPRITE_WIDTH, Fireball.SPRITE_HEIGHT, 2, 0.4);
+
+        //this.offscreenCtx.drawImage(this.fireballSprites, 1, 4, Fireball.SPRITE_WIDTH, Fireball.SPRITE_HEIGHT, 0, 0, this.radius * 2, (Fireball.TAIL_LENGTH + this.radius) * 2);
         this.offscreenCtx.restore();
         
     }
@@ -96,7 +98,7 @@ class Fireball {
         // Draw the circle
         ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
 
-        ctx.drawImage(this.offscreenCanvas, this.x - this.game.camera.x, this.y);
+        
         // Fill the circle with a color
         ctx.fillStyle = this.fillStyle;
         ctx.fill();
@@ -109,6 +111,8 @@ class Fireball {
         // End
         ctx.closePath();
 
-        
+        this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius, this.y - this.radius * 4, 2 * this.radius / Fireball.SPRITE_WIDTH);
+
+        //ctx.drawImage(this.offscreenCanvas, 0, 0, this.radius, this.x - this.game.camera.x - this.radius, this.y - this.radius - this.radius / 2);
     }
 }
