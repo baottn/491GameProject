@@ -1,2 +1,103 @@
 .DS_Store
 .vscode/settings.json
+img/resource/Enemies/AngryPig/Hit 1 (36x30).png
+img/resource/Enemies/AngryPig/Hit 2 (36x30).png
+img/resource/Enemies/AngryPig/Idle (36x30).png
+img/resource/Enemies/AngryPig/Run (36x30).png
+img/resource/Enemies/AngryPig/Walk (36x30).png
+img/resource/Enemies/Bat/Ceiling In (46x30).png
+img/resource/Enemies/Bat/Ceiling Out (46x30).png
+img/resource/Enemies/Bat/Flying (46x30).png
+img/resource/Enemies/Bat/Hit (46x30).png
+img/resource/Enemies/Bat/Idle (46x30).png
+img/resource/Enemies/Bee/Attack (36x34).png
+img/resource/Enemies/Bee/Bullet Pieces.png
+img/resource/Enemies/Bee/Bullet.png
+img/resource/Enemies/Bee/Hit (36x34).png
+img/resource/Enemies/Bee/Idle (36x34).png
+img/resource/Enemies/BlueBird/Flying (32x32).png
+img/resource/Enemies/BlueBird/Hit (32x32).png
+img/resource/Enemies/Bunny/Fall.png
+img/resource/Enemies/Bunny/Hit (34x44).png
+img/resource/Enemies/Bunny/Idle (34x44).png
+img/resource/Enemies/Bunny/Jump.png
+img/resource/Enemies/Bunny/Run (34x44).png
+img/resource/Enemies/Chameleon/Attack (84x38).png
+img/resource/Enemies/Chameleon/Hit (84x38).png
+img/resource/Enemies/Chameleon/Idle (84x38).png
+img/resource/Enemies/Chameleon/Run (84x38).png
+img/resource/Enemies/Chicken/Hit (32x34).png
+img/resource/Enemies/Chicken/Idle (32x34).png
+img/resource/Enemies/Chicken/Run (32x34).png
+img/resource/Enemies/Duck/Fall (36x36).png
+img/resource/Enemies/Duck/Hit (36x36).png
+img/resource/Enemies/Duck/Idle (36x36).png
+img/resource/Enemies/Duck/Jump (36x36).png
+img/resource/Enemies/Duck/Jump Anticipation (36x36).png
+img/resource/Enemies/FatBird/Fall (40x48).png
+img/resource/Enemies/FatBird/Ground (40x48).png
+img/resource/Enemies/FatBird/Hit (40x48).png
+img/resource/Enemies/FatBird/Idle (40x48).png
+img/resource/Enemies/Ghost/Appear (44x30).png
+img/resource/Enemies/Ghost/Desappear (44x30).png
+img/resource/Enemies/Ghost/Gost Particles (48x16).png
+img/resource/Enemies/Ghost/Hit (44x30).png
+img/resource/Enemies/Ghost/Idle (44x30).png
+img/resource/Enemies/Mushroom/Hit.png
+img/resource/Enemies/Mushroom/Idle (32x32).png
+img/resource/Enemies/Mushroom/Run (32x32).png
+img/resource/Enemies/Plant/Attack (44x42).png
+img/resource/Enemies/Plant/Bullet Pieces.png
+img/resource/Enemies/Plant/Bullet.png
+img/resource/Enemies/Plant/Hit (44x42).png
+img/resource/Enemies/Plant/Idle (44x42).png
+img/resource/Enemies/Radish/Hit (30x38).png
+img/resource/Enemies/Radish/Idle 1 (30x38).png
+img/resource/Enemies/Radish/Idle 2 (30x38).png
+img/resource/Enemies/Radish/Leafs.png
+img/resource/Enemies/Radish/Run (30x38).png
+img/resource/Enemies/Rino/Hit (52x34).png
+img/resource/Enemies/Rino/Hit Wall (52x34).png
+img/resource/Enemies/Rino/Idle (52x34).png
+img/resource/Enemies/Rino/Run (52x34).png
+img/resource/Enemies/Rocks/rock.png
+img/resource/Enemies/Rocks/Rock1_Hit.png
+img/resource/Enemies/Rocks/Rock1_Idle (38x34).png
+img/resource/Enemies/Rocks/Rock1_Run (38x34).png
+img/resource/Enemies/Rocks/Rock2_Hit (32x28).png
+img/resource/Enemies/Rocks/Rock2_Idle (32x28).png
+img/resource/Enemies/Rocks/Rock2_Run (32x28).png
+img/resource/Enemies/Rocks/Rock3_Hit (22x18).png
+img/resource/Enemies/Rocks/Rock3_Idle (22x18).png
+img/resource/Enemies/Rocks/Rock3_Run (22x18).png
+img/resource/Enemies/Skull/Hit (52x54).png
+img/resource/Enemies/Skull/Hit Wall 1 (52x54).png
+img/resource/Enemies/Skull/Hit Wall 2 (52x54).png
+img/resource/Enemies/Skull/Idle 1 (52x54).png
+img/resource/Enemies/Skull/Idle 2 (52x54).png
+img/resource/Enemies/Skull/Orange Particle.png
+img/resource/Enemies/Skull/Red Particle.png
+img/resource/Enemies/Slime/Hit (44x30).png
+img/resource/Enemies/Slime/Idle-Run (44x30).png
+img/resource/Enemies/Slime/Particles (62x16).png
+img/resource/Enemies/Snail/Hit (38x24).png
+img/resource/Enemies/Snail/Idle (38x24).png
+img/resource/Enemies/Snail/Shell Idle (38x24).png
+img/resource/Enemies/Snail/Shell Top Hit (38x24).png
+img/resource/Enemies/Snail/Shell Wall Hit (38x24).png
+img/resource/Enemies/Snail/Snail without shell.png
+img/resource/Enemies/Snail/Walk (38x24).png
+img/resource/Enemies/Trunk/Attack (64x32).png
+img/resource/Enemies/Trunk/Bullet Pieces.png
+img/resource/Enemies/Trunk/Bullet.png
+img/resource/Enemies/Trunk/Hit (64x32).png
+img/resource/Enemies/Trunk/Idle (64x32).png
+img/resource/Enemies/Trunk/Run (64x32).png
+img/resource/Enemies/Turtle/Hit (44x26).png
+img/resource/Enemies/Turtle/Idle 1 (44x26).png
+img/resource/Enemies/Turtle/Idle 2 (44x26).png
+img/resource/Enemies/Turtle/Spikes in (44x26).png
+img/resource/Enemies/Turtle/Spikes out (44x26).png
+img/resource/Hello.png
+img/resource/Track.xcf
+img/tracks - Copy.png

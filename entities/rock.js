@@ -1,10 +1,8 @@
 /**
  * Fireball is basically a straight line
  */
-class Fireball {
+class Rock {
     static TAIL_LENGTH = 80;
-    static SPRITE_HEIGHT = 28;
-    static SPRITE_WIDTH = 9;
 
     constructor(game, x, y, angle = Math.PI / 2, radius = 5, moveSpeed = 300, type = 0 ) {
         Object.assign(this, { game, x, y, angle, radius, type, moveSpeed});
@@ -13,7 +11,7 @@ class Fireball {
 
         this.updateBC();
 
-        this.fireballSprites = ASSET_MANAGER.getAsset("./img/fireball.png");
+        this.rockSprites = ASSET_MANAGER.getAsset("./img/rock.png");
 
         this.fillStyle = "red";
         this.strokeStyle = "blue";
@@ -33,7 +31,14 @@ class Fireball {
         this.offscreenCtx.rotate(this.angle);
         this.offscreenCtx.translate(-this.offscreenCanvas.width / 2, -this.offscreenCanvas.height / 2);
 
-        this.animations = new Animator(this.fireballSprites, 1, 0, Fireball.SPRITE_WIDTH, Fireball.SPRITE_HEIGHT, 2, 0.4);
+        this.sprite_width = 29;
+        this.sprite_height = 25;
+        this.animation = new Animator(this.rockSprites, 1, 1,  this.sprite_width, this.sprite_height, 9, 0.2, 3);
+        if (this.type == 1){
+            this.sprite_width = 35;
+            this.sprite_height = 33;
+            this.animation = new Animator(this.rockSprites, 1, 30,  this.sprite_width, this.sprite_height, 12, 0.1, 3);
+        }
 
         //this.offscreenCtx.drawImage(this.fireballSprites, 1, 4, Fireball.SPRITE_WIDTH, Fireball.SPRITE_HEIGHT, 0, 0, this.radius * 2, (Fireball.TAIL_LENGTH + this.radius) * 2);
         this.offscreenCtx.restore();
@@ -48,8 +53,8 @@ class Fireball {
         this.x += this.dx * this.game.clockTick;
         this.y += this.dy * this.game.clockTick;
 
-        this.xTail = (Fireball.TAIL_LENGTH + this.radius) * Math.cos(this.angle);
-        this.yTail = (Fireball.TAIL_LENGTH + this.radius) * Math.sin(this.angle);
+        this.xTail = (Rock.TAIL_LENGTH + this.radius) * Math.cos(this.angle);
+        this.yTail = (Rock.TAIL_LENGTH + this.radius) * Math.sin(this.angle);
     }
 
     checkCollisionWithPlayer(player){
@@ -77,7 +82,7 @@ class Fireball {
             this.game.camera.score += 5;
             for (let i = 0; i < 360; i += 45){
                 let angle = i / 180 * Math.PI;
-                let tmp = new Fireball(this.game, this.x, this.y, angle, this.radius / 2, this.moveSpeed / 10, 0);
+                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius / 2, this.moveSpeed / 10, 0);
                 this.game.addEntity(tmp);
             }
         }
@@ -92,27 +97,31 @@ class Fireball {
     }
 
     draw(ctx) {
-        // Begin a new path
-        ctx.beginPath();
-        //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
-        // Draw the circle
-        ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
+        // // Begin a new path
+        // ctx.beginPath();
+        // //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
+        // // Draw the circle
+        // ctx.arc(this.x - this.game.camera.x, this.y, this.radius, 0, 2 * Math.PI);
 
         
-        // Fill the circle with a color
-        ctx.fillStyle = this.fillStyle;
-        ctx.fill();
+        // // Fill the circle with a color
+        // ctx.fillStyle = this.fillStyle;
+        // ctx.fill();
 
-        // Stroke the circle with a color and width
-        ctx.strokeStyle = this.strokeStyle;
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        // // Stroke the circle with a color and width
+        // ctx.strokeStyle = this.strokeStyle;
+        // ctx.lineWidth = 3;
+        // ctx.stroke();
 
-        // End
-        ctx.closePath();
+        // // End
+        // ctx.closePath();
 
-        this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius, this.y - this.radius * 4, 2 * this.radius / Fireball.SPRITE_WIDTH);
-
+        //this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius, this.y - this.radius * 4, 2 * this.radius / Rock.SPRITE_WIDTH)
+        if (this.type == 0){
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2 , this.y - this.radius, 3 );
+        }else {
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2 , this.y - this.radius, 2.5 );
+        }
         //ctx.drawImage(this.offscreenCanvas, 0, 0, this.radius, this.x - this.game.camera.x - this.radius, this.y - this.radius - this.radius / 2);
     }
 }

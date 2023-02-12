@@ -32,6 +32,9 @@ class Track{
 
     onDeath(){
         this.health--;
+        if (this.health == 1){
+            this.animation = new Animator(this.trackSprites, 1, 222, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 2, 0.8);      
+        }
         if (this.health <= 0){
             this.removeFromWorld = true;
         }
@@ -70,10 +73,10 @@ class Track{
         //this.BB.draw(ctx, this.game);
         
         //Temporary Drawing health for tracks
-        ctx.fillStyle = `hsl(360, 100%, 50%)`;
-        ctx.strokeStyle = `hsl(360, 100%, 50%)`;
-        ctx.font = (this.width / 10) + "px serif";
-        ctx.fillText("Health: " + this.health.toFixed(1), this.x - this.game.camera.x, this.y + this.height / 4);
+        // ctx.fillStyle = `hsl(360, 100%, 50%)`;
+        // ctx.strokeStyle = `hsl(360, 100%, 50%)`;
+        // ctx.font = (this.width / 10) + "px serif";
+        // ctx.fillText("Health: " + this.health.toFixed(1), this.x - this.game.camera.x, this.y + this.height / 4);
 
         ctx.closePath();
         

@@ -182,7 +182,7 @@ class Ollie {
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
-            } else if (entity instanceof Fireball) {
+            } else if (entity instanceof Rock) {
                 entity.checkCollisionWithPlayer(this);
 
             }

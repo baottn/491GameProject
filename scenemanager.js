@@ -105,7 +105,7 @@ class SceneManager {
         let radius = randomInt(10) + 30;
         let randomAngle = (randomInt(45) + 90) / 180 * Math.PI;// 90 / 180 * Math.PI;
         let randomSpeed = 100 + randomInt(200);
-        let tmp = new Fireball(this.game, randomX, y, randomAngle, radius, randomSpeed);
+        let tmp = new Rock(this.game, randomX, y, randomAngle, radius, randomSpeed);
         
         //console.log("Spawn a fire ball at ", randomX, y, randomAngle, radius);
         this.game.addEntity(tmp);
