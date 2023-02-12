@@ -31,7 +31,7 @@ class SceneManager {
             return;
         }
     
-        this.infMode.trackSpawnCooldown = 300 + randomInt(100);//Won't spawn again in at least 300 ticks
+        this.infMode.trackSpawnCooldown = 400 + randomInt(200);//Won't spawn again in at least 400 ticks
         
         //Spawn two set of track, one upper, one lower
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
@@ -59,7 +59,7 @@ class SceneManager {
             return;
         }
     
-        this.infMode.powerUpSpawnCooldown = 200 + randomInt(100);//Won't spawn again in at least 200 ticks
+        this.infMode.powerUpSpawnCooldown = 200 + randomInt(200);//Won't spawn again in at least 200 ticks
         
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
@@ -86,7 +86,7 @@ class SceneManager {
             return;
         }
     
-        this.infMode.trapSpawnCooldown = 500 + randomInt(100);//Won't spawn again in at least 800 ticks
+        this.infMode.trapSpawnCooldown = 500 + randomInt(100);//Won't spawn again in at least 500 ticks
         
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
@@ -104,7 +104,7 @@ class SceneManager {
             return;
         }
     
-        this.infMode.rockCooldown = 400 + randomInt(100);//Won't spawn again in at least 400 ticks
+        this.infMode.rockCooldown = 400 + randomInt(200);//Won't spawn again in at least 400 ticks
 
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
@@ -125,7 +125,7 @@ class SceneManager {
             return;
         }
     
-        this.infMode.ghostCooldown = 2000 + randomInt(100);//Won't spawn again in at least 2000 ticks
+        this.infMode.ghostCooldown = 2000 + randomInt(200);//Won't spawn again in at least 2000 ticks
 
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
@@ -158,7 +158,8 @@ class SceneManager {
             powerUpSpawnCooldown: 0,
             rockCooldown: 0,
             trapSpawnCooldown: 0,
-            ghostCooldown: 0,
+            ghostCooldown: 2000,
+            difficulty: 1,
         };
 
         //Just for testing

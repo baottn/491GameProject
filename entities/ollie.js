@@ -290,16 +290,18 @@ class Ollie {
         // ctx.fill();
         // ctx.stroke();
 
-        ctx.fillStyle = "red";
-        ctx.strokeStyle = "red";
+       
 
         //Temporary drawing this, begin testing zone
-        // if (this.game.mouse) {
-        //     ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
-        //     ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
-        // }
-        // ctx.fill();
-        // ctx.stroke();
+        if (this.game.mouse && this.fasterShootRate.duration > 0) {
+            ctx.fillStyle = "green";
+            ctx.strokeStyle = "green";
+            ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
+            ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
+            ctx.fill();
+            ctx.stroke();
+        }
+      
 
         // ctx.fillStyle = "blue";
         // ctx.strokeStyle = "blue";

@@ -134,6 +134,6 @@ const unlimitedBooster_Health  = (player, powerup, game) => {
 //Type 2
 const fastShootingRate  = (player, powerup, game) => {
     //Only replenish the duration of buff and not stack the effect
-   player.fasterShootRate.duration = 300;
+   player.fasterShootRate.duration = 500;
    Ollie.RELOAD_SPEED /= 5;
 }
