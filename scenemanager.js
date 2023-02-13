@@ -87,7 +87,8 @@ class SceneManager {
         }
     
         this.infMode.trapSpawnCooldown = 500 + randomInt(100);//Won't spawn again in at least 500 ticks
-        
+        this.infMode.trapSpawnCooldown /= this.infMode.difficulty;
+
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let randomY = randomInt(params.CANVAS_SIZE / 2);
         let radius = 35;
@@ -105,6 +106,7 @@ class SceneManager {
         }
     
         this.infMode.rockCooldown = 400 + randomInt(200);//Won't spawn again in at least 400 ticks
+        this.infMode.rockCooldown /= this.infMode.difficulty;
 
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
@@ -126,6 +128,7 @@ class SceneManager {
         }
     
         this.infMode.ghostCooldown = 2000 + randomInt(200);//Won't spawn again in at least 2000 ticks
+        this.infMode.ghostCooldown /= this.infMode.difficulty;
 
         let randomX = this.x + randomInt(params.CANVAS_SIZE) + params.CANVAS_SIZE;// Spawn in the middle or more
         let y = 0;
@@ -136,6 +139,13 @@ class SceneManager {
         
       
         this.game.addEntity(tmp);
+    }
+
+    infMode_updateDifficulty(){
+        if (this.score > this.infMode.difficulty_threshold){
+            this.infMode.difficulty++;
+            this.infMode.difficulty_threshold += 200;
+        }
     }
 
     //Launch a new game
@@ -160,6 +170,7 @@ class SceneManager {
             trapSpawnCooldown: 0,
             ghostCooldown: 2000,
             difficulty: 1,
+            difficulty_threshold: 200,
         };
 
         //Just for testing
@@ -199,6 +210,7 @@ class SceneManager {
 
         //Spawn track if in inf mode
         if (this.infMode && !this.gameOver){
+            this.infMode_updateDifficulty();
             this.infMode_SpawnTrack();
             this.infMode_SpawnPowerUp();
             this.infMode_SpawnTrap();
@@ -221,11 +233,20 @@ class SceneManager {
         ctx.beginPath();
         ctx.fillStyle = "green";
         ctx.strokeStyle = "green";
+        let thrusterText = "Thruster";
+        let player = this.game.mainCharacter;
+
+        if (player.unlimitedBoost.status){
+            ctx.fillStyle = "yellow";
+            ctx.strokeStyle = "yellow"; 
+            thrusterText += " unlimited"; 
+        }
         let thrusterBar = {width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3};
-        let thrusterCurrentVolume = this.game.mainCharacter.thrusterVolume / this.game.mainCharacter.maximumThursterVolume;
+        let thrusterCurrentVolume = player.thrusterVolume / player.maximumThursterVolume;
         
         ctx.font = "25px serif";
-        ctx.fillText("Thruster", 10, params.CANVAS_SIZE / 2 - 170 + thrusterBar.height);
+        let lowerY =  params.CANVAS_SIZE / 2 - 170 + thrusterBar.height;
+        ctx.fillText(thrusterText, 10, lowerY);
 
         ctx.strokeRect( 50, params.CANVAS_SIZE / 2 - 200, thrusterBar.width, thrusterBar.height);
         ctx.fillRect( 50, params.CANVAS_SIZE / 2 - 200  + thrusterBar.height, thrusterBar.width, - thrusterBar.height * thrusterCurrentVolume);
@@ -237,7 +258,7 @@ class SceneManager {
         //Draw health Bars
         let healthBar = {width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3};
 
-        let healthBarVolume = this.game.mainCharacter.health / Ollie.MAX_HEALTH;
+        let healthBarVolume = player.health / Ollie.MAX_HEALTH;
 
         ctx.fillStyle = "red";
         ctx.strokeStyle = "red";
@@ -246,6 +267,29 @@ class SceneManager {
 
         ctx.strokeRect( 20, params.CANVAS_SIZE / 2 - 200, healthBar.width, healthBar.height);
         ctx.fillRect( 20, params.CANVAS_SIZE / 2 - 200  + healthBar.height, healthBar.width, - healthBar.height * healthBarVolume);
+
+        //Displaying invicible 
+        if (player.invincibility){
+            lowerY += 20;    
+            ctx.fillStyle = "yellow";
+            ctx.strokeStyle = "yellow"; 
+            ctx.fillText("Invincible", 10, lowerY);
+        }
+
+        if (player.fasterShootRate.duration > 0){
+            lowerY += 20;    
+            ctx.fillStyle = "yellow";
+            ctx.strokeStyle = "yellow"; 
+            ctx.fillText("Fast Shooting", 10, lowerY);
+        }
+
+        if (player.trapped.activated){
+            lowerY += 20;    
+            ctx.fillStyle = "red";
+            ctx.strokeStyle = "red"; 
+            ctx.fillText("Trapped", 10, lowerY);
+        }
+    
 
         ctx.closePath();
     }

@@ -51,7 +51,7 @@ class Ollie {
         this.loadAnimations();
 
         //Statuses
-        this.invicibility = false;
+        this.invincibility = false;
 
         this.unlimitedBoost = {
             duration: 0,
@@ -134,7 +134,7 @@ class Ollie {
         }
 
         //Cannot go over bound if invicibility is on
-        if (this.invicibility) {
+        if (this.invincibility) {
             this.y = Math.max(this.y, 0);
             this.y = Math.min(params.CANVAS_SIZE, this.y);
         }
@@ -199,7 +199,7 @@ class Ollie {
         else {
             this.booster = 0;
             this.dx = Ollie.MOVING_SPEED;
-            this.invicibility = false;
+            this.invincibility = false;
         }
 
         //Update boosting
@@ -315,7 +315,7 @@ class Ollie {
        
         //End testing and debugging zone
 
-        if (this.invicibility) {//Not drawing to show invincibility
+        if (this.invincibility) {//Not drawing to show invincibility
             if (parseInt(this.game.timer.gameTime * 10) % 2 == 0) {
                 return;
             }
