@@ -96,5 +96,5 @@ const trappingPlayer = (player, powerup, game) => {
     player.dx = 0;
     player.dy = 0;
 
-    console.log("trapped player");
+    player.health -= 5;
 }; 

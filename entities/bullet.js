@@ -25,7 +25,7 @@ class Bullet {
 
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
-            if (entity instanceof Fireball || entity instanceof Trap || entity instanceof Powerup) {
+            if (entity instanceof Rock || entity instanceof Trap || entity instanceof Ghost) {//entity instanceof Powerup || 
                 let res = this.BL.collide(entity.BC);
                 if (res && res.length != 0) {
                     this.removeFromWorld = true;

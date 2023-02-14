@@ -51,7 +51,7 @@ class Ollie {
         this.loadAnimations();
 
         //Statuses
-        this.invicibility = false;
+        this.invincibility = false;
 
         this.unlimitedBoost = {
             duration: 0,
@@ -82,11 +82,14 @@ class Ollie {
         this.animations[1] = new Animator(this.spritesheet, 0, 0, 45, 30, 2, 0.2);
     }
     shoot() {
+        if (this.fasterShootRate.duration <= 0) {
+            this.fasterShootRate.duration = 0;
+            Ollie.RELOAD_SPEED = this.fasterShootRate.oriReloadSpeed;//return to normal
+        }
+       
         //See if we are ready to shoot (reload = 0)
         if (this.reload <= 0 && this.game.shooting) {
-            if (this.fasterShootRate.duration <= 0) {
-                Ollie.RELOAD_SPEED == this.fasterShootRate.oriReloadSpeed;//return to normal
-            }
+
             // powerup here
             this.reload = Ollie.RELOAD_SPEED;
             let turnetHead = {
@@ -103,7 +106,6 @@ class Ollie {
         this.reload--;
         this.fasterShootRate.duration--;
         this.reload = Math.max(this.reload, 0);
-        this.fasterShootRate.duration = Math.max(this.fasterShootRate.duration, 0);
     }
 
     vectorNormalize(x, y) {
@@ -132,7 +134,7 @@ class Ollie {
         }
 
         //Cannot go over bound if invicibility is on
-        if (this.invicibility) {
+        if (this.invincibility) {
             this.y = Math.max(this.y, 0);
             this.y = Math.min(params.CANVAS_SIZE, this.y);
         }
@@ -143,7 +145,8 @@ class Ollie {
         if (this.game.mouse) {
             //Check vertical line and update angle
             if (this.game.mouse.x <= this.head.x - this.game.camera.x) {
-                this.angle = Math.PI / 3;
+                //this.angle = Math.PI / 2.5;
+                this.angle = Math.tanh((this.game.mouse.y - this.y) / (this.game.mouse.x - this.head.x + this.game.camera.x));
                 if (this.game.mouse.y < this.head.y) {
                     this.angle *= -1;
                 }
@@ -175,12 +178,12 @@ class Ollie {
                     player.dy = player.maxVerticalVelocity * going;
                 });
             }
-            else if (entity instanceof Powerup || entity instanceof Trap) {
+            else if (entity instanceof Powerup || entity instanceof Trap ) {
                 //Boost speed and Invicibility
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
-            } else if (entity instanceof Fireball) {
+            } else if (entity instanceof Rock  || entity instanceof Ghost) {
                 entity.checkCollisionWithPlayer(this);
 
             }
@@ -196,7 +199,7 @@ class Ollie {
         else {
             this.booster = 0;
             this.dx = Ollie.MOVING_SPEED;
-            this.invicibility = false;
+            this.invincibility = false;
         }
 
         //Update boosting
@@ -229,8 +232,12 @@ class Ollie {
 
         if (this.unlimitedBoost.duration > 0)
             this.unlimitedBoost.duration--;
-        else
-            this.unlimitedBoost.duration = 0;
+        else{
+            this.unlimitedBoost = {
+                duration: 0,
+                status: false,
+            };
+        }
 
         if (this.trapped.duration > 0) {
             this.trapped.duration--;
@@ -247,9 +254,6 @@ class Ollie {
         this.updatePos();
         this.updateBB();
         this.shoot();
-        if (this.game.click) {
-
-        }
 
         this.checkCollisionWithEntity();
     };
@@ -286,16 +290,18 @@ class Ollie {
         // ctx.fill();
         // ctx.stroke();
 
-        ctx.fillStyle = "red";
-        ctx.strokeStyle = "red";
+       
 
         //Temporary drawing this, begin testing zone
-        // if (this.game.mouse) {
-        //     ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
-        //     ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
-        // }
-        // ctx.fill();
-        // ctx.stroke();
+        if (this.game.mouse && this.fasterShootRate.duration > 0) {
+            ctx.fillStyle = "green";
+            ctx.strokeStyle = "green";
+            ctx.moveTo(this.head.x - this.game.camera.x, this.head.y);
+            ctx.lineTo(this.game.mouse.x, this.game.mouse.y);
+            ctx.fill();
+            ctx.stroke();
+        }
+      
 
         // ctx.fillStyle = "blue";
         // ctx.strokeStyle = "blue";
@@ -309,7 +315,7 @@ class Ollie {
        
         //End testing and debugging zone
 
-        if (this.invicibility) {//Not drawing to show invincibility
+        if (this.invincibility) {//Not drawing to show invincibility
             if (parseInt(this.game.timer.gameTime * 10) % 2 == 0) {
                 return;
             }

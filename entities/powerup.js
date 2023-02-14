@@ -30,8 +30,8 @@ class Powerup{
 
     loadAnimations() {
         this.animations[1] = new Animator(this.powerupSprites, 0, 0, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);  
-        this.animations[2] = new Animator(this.powerupSprites, 0, 126, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);   
-        this.animations[0] = new Animator(this.powerupSprites, 0, 252, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 2); 
+        this.animations[0] = new Animator(this.powerupSprites, 0, 126, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);   
+        this.animations[2] = new Animator(this.powerupSprites, 0, 252, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 2); 
     }
 
     onDeath(){
@@ -52,11 +52,13 @@ class Powerup{
                 case 0:
                     invincibleSpeedBuff(player, this, this.game);
                     break;
-                //Unlimited Booster + Score
+                //Unlimited Booster + Health
                 case 1:
+                    unlimitedBooster_Health(player, this, this.game);
                     break;
                 //
                 case 2:
+                    fastShootingRate(player, this, this.game);
                     break;
             }
             
@@ -91,34 +93,47 @@ class Powerup{
         // ctx.closePath();
 
         //Draw animation
-        switch (this.type) {
-            case 0:
-                this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
-                break;
-            case 1:
-                this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
-                break;
-            case 2:
-                this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
-                break;
-        }
+        this.animations[this.type].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        // switch (this.type) {
+        //     case 0:
+        //         this.animations[this.type].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        //         break;
+        //     case 1:
+        //         this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        //         break;
+        //     case 2:
+        //         this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Powerup.OFFSET , this.y - this.radius  , 0.65 );
+        //         break;
+        // }
     }
 }
 
 //Type 0
 const invincibleSpeedBuff = (player, powerup, game) => {
     //Only replenish the duration speed buff and not stack the effect
-    if (!player.invicibility){
+    if (!player.invincibility){
         player.dx *= 3;
     }
     player.booster = 500;
-    player.invicibility = true;
+    player.invincibility = true;
     game.camera.score += 25;
 }; 
 
 //Type 2
+const unlimitedBooster_Health  = (player, powerup, game) => {
+    //Only replenish the duration of buff and not stack the effect
+   player.unlimitedBoost.status = true;
+   player.unlimitedBoost.duration = 400;
+   //Restore a quarter of health
+   
+   player.health += (Ollie.MAX_HEALTH / 4);
+   player.health = Math.min(Ollie.MAX_HEALTH, player.health);
+   player.health = Math.max(0, player.health);
+}
+
+//Type 2
 const fastShootingRate  = (player, powerup, game) => {
     //Only replenish the duration of buff and not stack the effect
-   player.fasterShootRate.duration = 100;
-   Ollie.RELOAD_SPEED = player.fasterShootRate.oriReloadSpeed;
+   player.fasterShootRate.duration = 500;
+   Ollie.RELOAD_SPEED /= 5;
 }
