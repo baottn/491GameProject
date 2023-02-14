@@ -1,5 +1,6 @@
 class Powerup{
     static SPRITE_WIDTH = 125;
+    static COIN_SPRITE_WIDTH = 102;
     static SPRITE_HEIGHT = 102;
     static OFFSET = 6.5;
     /**
@@ -31,7 +32,7 @@ class Powerup{
     loadAnimations() {
         this.animations[1] = new Animator(this.powerupSprites, 0, 0, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);  
         this.animations[0] = new Animator(this.powerupSprites, 0, 126, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.2);   
-        this.animations[2] = new Animator(this.powerupSprites, 0, 252, Powerup.SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 2); 
+        this.animations[2] = new Animator(this.powerupSprites, 0, 252, Powerup.COIN_SPRITE_WIDTH, Powerup.SPRITE_HEIGHT, 4, 0.15); 
     }
 
     onDeath(){
@@ -41,7 +42,7 @@ class Powerup{
     updateBC(){
         this.BC = new BoundingCircle(this.x, this.y, this.radius);
     }
-
+ 
     checkCollisionWithPlayer(player){
         let collisionRes = player.BB.collideCircle(this.BC);
     
