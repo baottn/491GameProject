@@ -13,6 +13,7 @@ ASSET_MANAGER.queueDownload("./img/rock.png");
 ASSET_MANAGER.queueDownload("./img/ghost.png"); 
 ASSET_MANAGER.queueDownload("./img/titleScreen.png"); 
 ASSET_MANAGER.queueDownload("./img/homebase.png"); 
+ASSET_MANAGER.queueDownload("./img/gameOver.png"); 
 
 
 ASSET_MANAGER.downloadAll(() => {

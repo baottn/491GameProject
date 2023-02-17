@@ -1,15 +1,9 @@
-class MainMenu{
-    constructor(game, title) {
-        Object.assign(this, {game, title});
-
-        this.titleSprite = ASSET_MANAGER.getAsset("./img/titleScreen.png");
+class TransitioningScreen{
+    constructor(game, title, isTitle = true, options = ["Play", "Inf Mode", "Exit",], backgroundSprite = ASSET_MANAGER.getAsset("./img/titleScreen.png")) {
+        Object.assign(this, {game, title, isTitle, options});
+        if (isTitle)
+            this.titleSprite = backgroundSprite;
         this.animation = new Animator(this.homeSprite, 0, 0, 100, 100, 25, 0.09);
-        
-        this.options = [
-            "Play",
-            "Inf Mode",
-            "Exit",
-        ];
 
         this.selected = 0;
     }
@@ -82,7 +76,6 @@ class MainMenu{
         }
         ctx.textAlign = "left";
         ctx.closePath();
-        
      }
 
 }

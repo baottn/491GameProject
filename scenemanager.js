@@ -16,7 +16,7 @@ class SceneManager {
         this.backgroundSprite = ASSET_MANAGER.getAsset("./img/background.png");
 
         this.isInTitle = true;
-        this.mainMenu = new MainMenu(game, "TCSS 491 Red 3");
+        this.mainMenu = new TransitioningScreen(game, "TCSS 491 Red 3");
 
     };
 
@@ -197,22 +197,28 @@ class SceneManager {
 
     drawGameOver(ctx) {
         this.highScore = Math.max(this.score, this.highScore);
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/gameOver.png"), 
+           0, 0);
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "yellow";
         ctx.textAlign = "center";
         let fontSize = 58;
         ctx.font = fontSize + "px serif";
         let displayGameOverText = "You died!";
+        ctx.fillText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100);
         ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100);
 
         let displayScore = "Score: " + this.score.toFixed(1);
         displayScore += " Highscore: " + this.highScore.toFixed(1);
+        ctx.fillText(displayScore, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 + fontSize - 100);
         ctx.strokeText(displayScore, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 + fontSize - 100);
 
         displayGameOverText = "Press S to start again!";
+        ctx.fillText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100 + fontSize * 2);
         ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100 + fontSize * 2);
 
         displayGameOverText = "Press W to go back to the main menu!";
+        ctx.fillText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100 + fontSize * 3);
         ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100 + fontSize * 3);
 
         ctx.textAlign = "left";
@@ -223,7 +229,7 @@ class SceneManager {
             let choice = this.mainMenu.update();
             switch (choice) {
                 case -1:
-                    
+
                     break;
                 case 0:
                     break;
@@ -351,7 +357,6 @@ class SceneManager {
         //Draw the background
         if (!this.game.mainCharacter.trapped.activated) {
             this.backgroundX += this.backgroundStep;
-
         }
 
         if (this.backgroundX <= 0) {
