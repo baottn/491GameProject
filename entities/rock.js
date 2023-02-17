@@ -27,15 +27,6 @@ class Rock {
             this.type = 0;
         }
 
-        this.offscreenCanvas = document.createElement("canvas");
-        this.offscreenCanvas.width = 100;
-        this.offscreenCanvas.height = 100;
-        this.offscreenCtx = this.offscreenCanvas.getContext('2d');
-        this.offscreenCtx.save();
-        this.offscreenCtx.translate(this.offscreenCanvas.width / 2, this.offscreenCanvas.height / 2);
-        this.offscreenCtx.rotate(this.angle);
-        this.offscreenCtx.translate(-this.offscreenCanvas.width / 2, -this.offscreenCanvas.height / 2);
-
         this.sprite_width = 29;
         this.sprite_height = 25;
         this.animation = new Animator(this.rockSprites, 1, 1, this.sprite_width, this.sprite_height, 9, 0.2, 3);
@@ -45,9 +36,7 @@ class Rock {
             this.animation = new Animator(this.rockSprites, 1, 30, this.sprite_width, this.sprite_height, 12, 0.1, 3);
         }
 
-        //this.offscreenCtx.drawImage(this.fireballSprites, 1, 4, Fireball.SPRITE_WIDTH, Fireball.SPRITE_HEIGHT, 0, 0, this.radius * 2, (Fireball.TAIL_LENGTH + this.radius) * 2);
-        this.offscreenCtx.restore();
-
+       
     }
 
     updateBC() {
