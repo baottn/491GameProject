@@ -20,6 +20,7 @@ class GameEngine {
         this.camera = null;
         this.mainCharacter = null;
         this.down = false;
+        this.up = false;
 
         // Options and the Details
         this.options = options || {
@@ -34,8 +35,8 @@ class GameEngine {
             if (entity.y > params.CANVAS_SIZE || entity.y < 0) {
                 entity.removeFromWorld = true;
             }
-            
-            if ( entity.x < this.camera.x - params.CANVAS_SIZE || (entity.x >= this.camera.x + params.CANVAS_SIZE * 3 )) {
+
+            if (entity.x < this.camera.x - params.CANVAS_SIZE) {
                 entity.removeFromWorld = true;
             }
 
@@ -47,7 +48,7 @@ class GameEngine {
         this.startInput();
         this.timer = new Timer();
         this.camera = new SceneManager(this);
-        
+
     };
 
     start() {
@@ -91,6 +92,9 @@ class GameEngine {
                 case "KeyS":
                     that.down = true;
                     break;
+                case "KeyW":
+                    that.up = true;
+                    break;
             }
         }
 
@@ -103,6 +107,9 @@ class GameEngine {
                     break;
                 case "KeyS":
                     that.down = false;
+                    break;
+                case "KeyW":
+                    that.up = false;
                     break;
             }
         }
@@ -136,7 +143,7 @@ class GameEngine {
             this.camera.drawGameOver(this.ctx);
             return;
         }
-       
+
 
         //Draw the HUD
         this.camera.draw(this.ctx);
@@ -153,28 +160,10 @@ class GameEngine {
             //this.entities.splice(i, 1);
         }
         this.entities = [];
-        if (this.camera.infMode){
-            this.camera.newGame_InfMode();
-        }
-        
     }
 
     update() {
         let entitiesCount = this.entities.length;
-
-        this.camera.update();
-
-        //Won't update If game is over.
-        if (this.camera.gameOver) {
-            //Resetting
-            if (this.down) {
-                this.reset();
-            }
-            return;
-        }
-
-        if (!this.mainCharacter.isDying)
-            this.camera.score += 0.005;
 
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
@@ -182,6 +171,26 @@ class GameEngine {
             if (!entity.removeFromWorld) {
                 entity.update();
             }
+        }
+        this.camera.update();
+
+        //Won't update If game is over.
+        if (this.camera.gameOver) {
+            //Resetting
+            if (this.down) {
+                this.reset();
+                if (this.camera.infMode) {
+                    this.camera.newGame_InfMode();
+                }
+                else if (this.camera.level){
+                    this.camera.loadLevel(this.camera.levelList[this.camera.currentLevel]);
+                }
+            } else if (this.up){
+                this.reset();
+                this.camera.gameOver = false;
+                this.camera.isInTitle = true;
+            }
+            return;
         }
 
         this.cleanUpOffScreenEntity();

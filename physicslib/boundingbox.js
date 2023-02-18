@@ -7,14 +7,14 @@ class BoundingBox {
         this.bottom = this.top + this.height;
 
         //List of points by the order Top Left, Top Right, Bottom Right, Bottom Left
-        let topLeft = {x: x, y: y};
-        let topRight = {x: x + width, y: y};
-        let bottomRight = {x: x + width, y: y + height};
-        let bottomLeft = {x: x, y: y +  height};
-        let top = new BoundingLine(topLeft.x, topLeft. y, topRight.x, topRight.y);
-        let right = new BoundingLine(topRight.x, topRight. y, bottomRight.x, bottomRight.y);
-        let bottom = new BoundingLine(bottomLeft.x, bottomLeft. y, bottomRight.x, bottomRight.y);
-        let left = new BoundingLine(topLeft.x, topLeft. y, bottomLeft.x, bottomLeft.y);
+        this.topLeft = {x: x, y: y};
+        this.topRight = {x: x + width, y: y};
+        this.bottomRight = {x: x + width, y: y + height};
+        this.bottomLeft = {x: x, y: y +  height};
+        let top = new BoundingLine(this.topLeft.x, this.topLeft. y, this.topRight.x, this.topRight.y);
+        let right = new BoundingLine(this.topRight.x, this.topRight. y, this.bottomRight.x, this.bottomRight.y);
+        let bottom = new BoundingLine(this.bottomLeft.x, this.bottomLeft. y, this.bottomRight.x, this.bottomRight.y);
+        let left = new BoundingLine(this.topLeft.x, this.topLeft. y, this.bottomLeft.x, this.bottomLeft.y);
 
         this.lines = [top, right, bottom, left];
         
@@ -55,6 +55,15 @@ class BoundingBox {
             }
         }
         return res;
+    }
+    /**
+     * Checking whether a point is within the box
+     * @param {*} x x coordinate of the point
+     * @param {*} y y coordinate of the point
+     */
+    isWithin(x ,y){
+        return (this.left <= x && this.right >= x)
+            && (this.top <= y && this.bottom >= y);
     }
 
     draw(ctx, game){
