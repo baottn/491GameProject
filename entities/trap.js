@@ -95,7 +95,7 @@ class Trap{
 
 //Type 0
 const trappingPlayer = (player, powerup, game) => {
-    if (player.invicibility){
+    if (player.invincibility){
         return;
     }
     player.trapped.duration = 500;//Trap for 500 ticks

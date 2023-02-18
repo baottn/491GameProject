@@ -139,7 +139,7 @@ class Ollie {
         //Cannot go over bound if invicibility is on
         if (this.invincibility) {
             this.y = Math.max(this.y, 0);
-            this.y = Math.min(params.CANVAS_SIZE, this.y);
+            this.y = Math.min(params.CANVAS_SIZE - this.height, this.y);
         }
 
         this.head = { x: this.x + this.width / 2, y: this.y + 10 };

@@ -138,20 +138,19 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
+        
         if (this.camera.gameOver) {
             this.camera.drawGameOver(this.ctx);
             return;
         }
-
-
-        //Draw the HUD
-        this.camera.draw(this.ctx);
-
+        this.camera.drawBackGround(this.ctx);
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx);
         }
+         //Draw the HUD
+         this.camera.draw(this.ctx);
+
     };
 
     reset() {

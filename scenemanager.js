@@ -81,9 +81,9 @@ class SceneManager {
             if (level.powerup_type0) {
                 for (let i = 0; i < level.powerup_type0.length; i++) {
                     let powerup = level.powerup_type0[i];
-                    
+
                     this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 0));
-                    
+
                 }
             }
 
@@ -471,8 +471,10 @@ class SceneManager {
 
     drawBackGround(ctx) {
         //Draw the background
-        if (!this.game.mainCharacter.trapped.activated) {
-            this.backgroundX += this.backgroundStep;
+        if (this.game.mainCharacter) {
+            if (!this.game.mainCharacter.trapped.activated) {
+                this.backgroundX += this.backgroundStep;
+            }
         }
 
         if (this.backgroundX <= 0) {
@@ -497,7 +499,7 @@ class SceneManager {
             return;
         }
 
-        this.drawBackGround(ctx);
+
         this.displayBorder(ctx);
         this.displayHUD(ctx);
     }
