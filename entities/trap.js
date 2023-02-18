@@ -25,7 +25,7 @@ class Trap{
     }
 
     loadAnimations() {
-        this.animation = new Animator(this.trapSprites, 0, 0, Trap.SPRITE_WIDTH, Trap.SPRITE_HEIGHT, 8, 0.02s);  
+        this.animation = new Animator(this.trapSprites, 0, 0, Trap.SPRITE_WIDTH, Trap.SPRITE_HEIGHT, 8, 0.02);  
     }
 
     updateBC(){
@@ -107,4 +107,4 @@ const trappingPlayer = (player, powerup, game) => {
     player.dy = 0;
 
     player.health -= 5;
-}; 
+};

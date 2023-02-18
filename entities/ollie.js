@@ -234,7 +234,7 @@ class Ollie {
                 this.index = 1;
             }
         } else {
-            this.index = 2;
+            this.index = 2
         }
 
         if (this.unlimitedBoost.duration > 0)
@@ -276,8 +276,8 @@ class Ollie {
         ctx.translate(-this.head.x + this.game.camera.x, -this.head.y);
         if (!this.trapped.activated) {
             ctx.drawImage(this.turnetSpritesheet, 0, 0, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
-        } else{
-            ctx.drawImage(this.turnetSpritesheet, 0, 7, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+        } else {
+            ctx.drawImage(this.turnetSpritesheet, 0, 6, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
         }
         ctx.restore();
     }
