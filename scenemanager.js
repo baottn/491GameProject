@@ -16,24 +16,93 @@ class SceneManager {
         this.backgroundSprite = ASSET_MANAGER.getAsset("./img/background.png");
 
         this.isInTitle = true;
+        this.isVictory = false;
         this.mainMenu = new TransitioningScreen(game, "TCSS 491 Red 3");
+        this.victoryScene = new TransitioningScreen(game, "Victory!", false, ["Next level", "Replay", "Main Menu", "Exit",], ASSET_MANAGER.getAsset("./img/victoryBackground.png"));
+
+        console.log(ASSET_MANAGER.getAsset("./img/titleScreen.png"));
+        this.level = null;
+        this.currentLevel = 0;
+        this.levelList = [levelOne, levelTwo];
 
     };
 
-    loadLevel(level, x = 0, y = 0, transition = false, title = "") {
+    loadLevel(level, x = params.CANVAS_SIZE / 9, y = params.CANVAS_SIZE / 2, transition = false, title = "") {
+        this.isInTitle = false;
+        this.gameOver = false;
         this.title = title;
         this.level = level;
         this.game.reset();
         this.x = 0;
+        this.score = 0;
+        this.isVictory = false;
+
+        this.game.mainCharacter = new Ollie(this.game, x, y);
+        this.game.addEntity(this.game.mainCharacter);
+        this.infMode = null;
 
         if (transition) {
 
         } else {
             if (level.tracks) {
                 for (let i = 0; i < level.tracks.length; i++) {
-                    let track = level.track[i];
+                    let track = level.tracks[i];
                     this.game.addEntity(new Track(this.game, track.x, track.y, track.w, track.h));
                 }
+            }
+
+            if (level.ghosts) {
+                for (let i = 0; i < level.ghosts.length; i++) {
+                    let ghost = level.ghosts[i];
+                    this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y, ghost.angle, ghost.radius, ghost.moveSpeed));
+                }
+            }
+            if (level.traps) {
+                for (let i = 0; i < level.traps.length; i++) {
+                    let trap = level.traps[i];
+                    this.game.addEntity(new Trap(this.game, trap.x, trap.y, trap.radius, 0));
+                }
+            }
+
+            if (level.rocks_type0) {
+                for (let i = 0; i < level.rocks_type0.length; i++) {
+                    let rock = level.rocks_type0[i];
+                    this.game.addEntity(new Rock(this.game, rock.x, rock.y, rock.angle, rock.radius, rock.moveSpeed, 0));
+                }
+            }
+
+            if (level.rocks_type1) {
+                for (let i = 0; i < level.rocks_type1.length; i++) {
+                    let rock = level.rocks_type1[i];
+                    this.game.addEntity(new Rock(this.game, rock.x, rock.y, rock.angle, rock.radius, rock.moveSpeed, 1));
+                }
+            }
+
+            if (level.powerup_type0) {
+                for (let i = 0; i < level.powerup_type0.length; i++) {
+                    let powerup = level.powerup_type0[i];
+                    
+                    this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 0));
+                    
+                }
+            }
+
+            if (level.powerup_type1) {
+                for (let i = 0; i < level.powerup_type1.length; i++) {
+                    let powerup = level.powerup_type1[i];
+                    this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 1));
+                }
+            }
+
+            if (level.powerup_type2) {
+                for (let i = 0; i < level.powerup_type2.length; i++) {
+                    let powerup = level.powerup_type2[i];
+                    this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 2));
+                }
+            }
+
+            if (level.homebase) {
+                this.game.addEntity(new Homebase(this.game, level.homebase.x, level.homebase.y));
             }
         }
     };
@@ -171,12 +240,14 @@ class SceneManager {
 
     //Launch a new game
     newGame_InfMode() {
+        this.isInTitle = false;
         this.score = 0;
         this.difficulty = 1;
         this.difficultyThreshold = 15;
         this.gameOver = false;
         this.x = 0;
-
+        this.level = null;
+        this.isVictory = false;
         this.backgroundX = 0;
         this.backgroundStep = 1;
 
@@ -197,8 +268,8 @@ class SceneManager {
 
     drawGameOver(ctx) {
         this.highScore = Math.max(this.score, this.highScore);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/gameOver.png"), 
-           0, 0);
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/gameOver.png"),
+            0, 0);
         ctx.fillStyle = "white";
         ctx.strokeStyle = "yellow";
         ctx.textAlign = "center";
@@ -229,12 +300,11 @@ class SceneManager {
             let choice = this.mainMenu.update();
             switch (choice) {
                 case -1:
-
                     break;
                 case 0:
+                    this.loadLevel(this.levelList[this.currentLevel]);
                     break;
                 case 1:
-                    this.isInTitle = false;
                     this.newGame_InfMode();
                     break;
                 case 2:
@@ -242,6 +312,41 @@ class SceneManager {
                     break;
             }
             return;
+        }
+
+        if (this.level) {
+            let mainChar = this.game.mainCharacter;
+            if (mainChar.x >= this.level.finish) {
+                this.isVictory = true;
+                this.game.reset();
+                this.isInTitle = false;
+                let choice = this.victoryScene.update();
+                // ["Next level", "Replay", "Main Menu", "Exit",]
+                switch (choice) {
+                    case -1:
+                        break;
+                    case 0:
+                        if (this.currentLevel + 1 >= this.levelList.length) {
+                            this.newGame_InfMode();
+                        }
+                        else {
+                            this.currentLevel++;
+                            this.loadLevel(this.levelList[this.currentLevel]);
+                        }
+                        break;
+                    case 1:
+                        this.loadLevel(this.levelList[this.currentLevel]);
+                        break;
+                    case 2:
+                        this.game.reset();
+                        this.isInTitle = true;
+                        break;
+                    case 3:
+                        window.close();
+                        break;
+                }
+                return;
+            }
         }
         let limitPoint = params.CANVAS_SIZE / 9;
 
@@ -269,8 +374,7 @@ class SceneManager {
                 this.score += 0.005;
         }
     };
-    displayPlayerStat(ctx) {
-
+    displayHUD(ctx) {
         ctx.beginPath();
         //Displaying the score
         ctx.fillStyle = `hsl(360, 100%, 50%)`;
@@ -338,6 +442,18 @@ class SceneManager {
             ctx.fillText("Trapped", 10, lowerY);
         }
 
+        ctx.font = "30px sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillStyle = "red";
+        ctx.lineWidth = 2;
+        let levelText = "Level: " + this.currentLevel;
+
+        if (this.infMode) {
+            levelText = "Infinite Mode";
+        }
+        ctx.fillText(levelText, params.CANVAS_SIZE, 50);
+        ctx.textAlign = "left";
+
         ctx.closePath();
     }
 
@@ -369,7 +485,6 @@ class SceneManager {
             this.backgroundStep = -1;
         }
         ctx.drawImage(this.backgroundSprite, this.backgroundX, 1600 - params.CANVAS_SIZE, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
-
     }
 
     draw(ctx) {
@@ -377,8 +492,13 @@ class SceneManager {
             this.mainMenu.draw(ctx);
             return;
         }
+        if (this.isVictory) {
+            this.victoryScene.draw(ctx);
+            return;
+        }
+
         this.drawBackGround(ctx);
         this.displayBorder(ctx);
-        this.displayPlayerStat(ctx);
+        this.displayHUD(ctx);
     }
 };

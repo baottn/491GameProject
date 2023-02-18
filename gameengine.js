@@ -182,6 +182,9 @@ class GameEngine {
                 if (this.camera.infMode) {
                     this.camera.newGame_InfMode();
                 }
+                else if (this.camera.level){
+                    this.camera.loadLevel(this.camera.levelList[this.camera.currentLevel]);
+                }
             } else if (this.up){
                 this.reset();
                 this.camera.gameOver = false;

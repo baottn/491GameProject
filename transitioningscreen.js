@@ -1,10 +1,9 @@
 class TransitioningScreen{
     constructor(game, title, isTitle = true, options = ["Play", "Inf Mode", "Exit",], backgroundSprite = ASSET_MANAGER.getAsset("./img/titleScreen.png")) {
         Object.assign(this, {game, title, isTitle, options});
-        if (isTitle)
-            this.titleSprite = backgroundSprite;
+        this.backgroundSprite = backgroundSprite;
         this.animation = new Animator(this.homeSprite, 0, 0, 100, 100, 25, 0.09);
-
+        console.log(this.backgroundSprite);
         this.selected = 0;
     }
 
@@ -36,7 +35,13 @@ class TransitioningScreen{
         
     draw(ctx) {
         ctx.beginPath();
-        ctx.drawImage(this.titleSprite, 450, 100, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+       
+        if (this.isTitle){
+            ctx.drawImage(this.backgroundSprite, 450, 100, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+        }
+        else{
+            ctx.drawImage(this.backgroundSprite, 600, 0, params.CANVAS_SIZE, params.CANVAS_SIZE, 0, 0, params.CANVAS_SIZE, params.CANVAS_SIZE);
+        }
         
         //Draw title screen out
         ctx.font = "120px sans-serif";
