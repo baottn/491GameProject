@@ -1,7 +1,7 @@
 class Trap{
-    static SPRITE_WIDTH = 125;
-    static SPRITE_HEIGHT = 102;
-    static OFFSET = 6.5;
+    static SPRITE_WIDTH = 32;
+    static SPRITE_HEIGHT = 32;
+    static OFFSET = 13;
     /**
      * Power up the player if touches
      * @param {*} game 
@@ -19,8 +19,14 @@ class Trap{
         this.dy = 0;
         this.fillStyle = "white";
         this.strokeStyle = "red";
+
+        this.trapSprites = ASSET_MANAGER.getAsset("./img/suriken.png");
+        this.loadAnimations();
     }
 
+    loadAnimations() {
+        this.animation = new Animator(this.trapSprites, 0, 0, Trap.SPRITE_WIDTH, Trap.SPRITE_HEIGHT, 8, 0.02s);  
+    }
 
     updateBC(){
         this.BC = new BoundingCircle(this.x, this.y, this.radius);
@@ -62,6 +68,7 @@ class Trap{
 
 
     draw(ctx) {
+        /* Debug
         //Draw circle (for debug)
         // Begin a new path
         ctx.beginPath();
@@ -80,6 +87,9 @@ class Trap{
 
         // End
         ctx.closePath();
+        */
+
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Trap.OFFSET , this.y - this.radius - Trap.OFFSET, 3);
     }
 }
 

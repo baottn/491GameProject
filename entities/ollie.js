@@ -274,8 +274,11 @@ class Ollie {
         ctx.translate(this.head.x - this.game.camera.x, this.head.y);
         ctx.rotate(this.angle);
         ctx.translate(-this.head.x + this.game.camera.x, -this.head.y);
-
-        ctx.drawImage(this.turnetSpritesheet, 0, 1, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+        if (!this.trapped.activated) {
+            ctx.drawImage(this.turnetSpritesheet, 0, 0, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+        } else{
+            ctx.drawImage(this.turnetSpritesheet, 0, 7, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+        }
         ctx.restore();
     }
 
