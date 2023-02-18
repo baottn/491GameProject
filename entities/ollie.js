@@ -75,11 +75,14 @@ class Ollie {
     }
 
     loadAnimations() {
-        // jumping animation
+        // Jumping animation
         this.animations[0] = new Animator(this.spritesheet, 0, 0, 45, 41, 2, 0.2);
 
         // Idle animation
         this.animations[1] = new Animator(this.spritesheet, 0, 0, 45, 30, 2, 0.2);
+
+        // Trapped animation
+        this.animations[2] = new Animator(this.spritesheet, 0, 43, 45, 30, 2, 0.2);
     }
     shoot() {
         if (this.fasterShootRate.duration <= 0) {
@@ -202,32 +205,36 @@ class Ollie {
             this.invincibility = false;
         }
 
-        //Update boosting
-        if (this.game.spacePressed && this.thrusterVolume >= 0) {
-            if (!this.unlimitedBoost.status)
-                this.thrusterVolume -= 0.5;
+        if (!this.trapped.activated) {
+            //Update boosting
+            if (this.game.spacePressed && this.thrusterVolume >= 0) {
+                if (!this.unlimitedBoost.status)
+                    this.thrusterVolume -= 0.5;
+                else {
+                    this.thrusterVolume += 0.8;
+                    this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
+                }
+
+                if (this.forceY != Ollie.GRAVITY) {
+                    this.forceY += this.thrusterPower;
+                }
+                else {
+                    this.forceY = this.thrusterPower;
+                }
+
+                if (Math.abs(this.forceY) > Math.abs(this.maximumThrusterPower)) {
+                    this.forceY = this.maximumThrusterPower;
+                }
+                this.index = 0;
+            }
             else {
+                this.forceY = Ollie.GRAVITY;
                 this.thrusterVolume += 0.8;
                 this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
+                this.index = 1;
             }
-
-            if (this.forceY != Ollie.GRAVITY) {
-                this.forceY += this.thrusterPower;
-            }
-            else {
-                this.forceY = this.thrusterPower;
-            }
-
-            if (Math.abs(this.forceY) > Math.abs(this.maximumThrusterPower)) {
-                this.forceY = this.maximumThrusterPower;
-            }
-            this.index = 0;
-        }
-        else {
-            this.forceY = Ollie.GRAVITY;
-            this.thrusterVolume += 0.8;
-            this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
-            this.index = 1;
+        } else {
+            this.index = 2;
         }
 
         if (this.unlimitedBoost.duration > 0)
