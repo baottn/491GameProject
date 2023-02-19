@@ -1,6 +1,6 @@
 var levelOne = {
     label: "1-1",
-    finish: 1000,
+    finish: 30000,
     homebase: { x: 1100, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
     underground: false,
     tracks: [
