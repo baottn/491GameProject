@@ -3,7 +3,7 @@ var levelOne = {
     finish: 10000,
     homebase: { x: 11000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
     underground: false,
-    //Fixed, X, W,H Fixed; Y random
+    //Fixed, X, Y, W,H Fixed; Tunnel
     tracks: [
         { x: randomX(1000), y: randomY(), w: randomWidth(), h: randomHeight() },
         { x: randomX(3000), y: randomY(), w: randomWidth(), h: randomHeight() },
