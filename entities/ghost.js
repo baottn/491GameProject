@@ -2,7 +2,7 @@
  * Ghost, follow player
  */
 class Ghost {
-    constructor(game, x, y, angle = Math.PI / 2, radius = 5, moveSpeed = 300, ) {
+    constructor(game, x, y, angle = Math.PI / 2, radius = 35, moveSpeed = 300, ) {
         Object.assign(this, { game, x, y, angle, radius, moveSpeed});
         this.dx = moveSpeed * Math.cos(angle);
         this.dy = moveSpeed * Math.sin(angle);
@@ -59,7 +59,7 @@ class Ghost {
         if (collisionRes.length > 0){
             //Remove itself for now
             this.removeFromWorld = true;
-            if (!player.invicibility){
+            if (!player.invincibility){
                 player.health -= 5;
             }
         }
@@ -92,7 +92,7 @@ class Ghost {
     }
 
     draw(ctx) {
-        // //Begin a new path
+        // // //Begin a new path
         // ctx.beginPath();
         // //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
         // // Draw the circle
@@ -109,7 +109,7 @@ class Ghost {
         // ctx.stroke();
 
         // // End
-        ctx.closePath();
+        //ctx.closePath();
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2 , this.y - this.radius, 3 );
     }
 }

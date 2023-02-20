@@ -1,7 +1,7 @@
 class Ollie {
     static RELOAD_SPEED = 55;
     static GRAVITY = 350;
-    static MOVING_SPEED = 300;
+    static MOVING_SPEED = 150;
     static MAX_HEALTH = 25;
 
     constructor(game, x, y) {
@@ -136,7 +136,7 @@ class Ollie {
             this.y += this.dy * this.game.clockTick;
         }
 
-        //Cannot go over bound if invicibility is on
+        //Cannot go over bound if invincibility is on
         if (this.invincibility) {
             this.y = Math.max(this.y, 0);
             this.y = Math.min(params.CANVAS_SIZE - this.height, this.y);
@@ -168,7 +168,7 @@ class Ollie {
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
                 entity.checkCollisionWithPlayer(this, (player, track) => {
-                    if (player.invicibility)
+                    if (player.invincibility)
                         return;
                     track.fillStyle = "blue";
                     let going = 1;
@@ -182,7 +182,7 @@ class Ollie {
                 });
             }
             else if (entity instanceof Powerup || entity instanceof Trap ) {
-                //Boost speed and Invicibility
+                //Boost speed and invincibility
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 

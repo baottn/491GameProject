@@ -4,7 +4,7 @@
 class Rock {
     static TAIL_LENGTH = 80;
 
-    constructor(game, x, y, angle = Math.PI / 2, radius = 5, moveSpeed = 300, type = 0) {
+    constructor(game, x, y, angle = Math.PI / 2, radius = 45, moveSpeed = 300, type = 0) {
         Object.assign(this, { game, x, y, angle, radius, type, moveSpeed });
         this.dx = moveSpeed * Math.cos(angle);
         this.dy = moveSpeed * Math.sin(angle);
@@ -57,7 +57,7 @@ class Rock {
         if (collisionRes.length > 0) {
             //Remove itself for now
             this.removeFromWorld = true;
-            if (!player.invicibility) {
+            if (!player.invincibility) {
                 if (this.type == 1) {
                     player.health -= 3;
                 }
@@ -91,7 +91,7 @@ class Rock {
     }
 
     draw(ctx) {
-        // // Begin a new path
+        //Begin a new path
         // ctx.beginPath();
         // //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
         // // Draw the circle

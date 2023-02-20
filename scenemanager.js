@@ -82,7 +82,7 @@ class SceneManager {
                 for (let i = 0; i < level.powerup_type0.length; i++) {
                     let powerup = level.powerup_type0[i];
 
-                    this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 0));
+                    this.game.addEntity(new Powerup(this.game, powerup.x, powerup.y, powerup.radius, 0));
 
                 }
             }
@@ -90,14 +90,14 @@ class SceneManager {
             if (level.powerup_type1) {
                 for (let i = 0; i < level.powerup_type1.length; i++) {
                     let powerup = level.powerup_type1[i];
-                    this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 1));
+                    this.game.addEntity(new Powerup(this.game, powerup.x, powerup.y, powerup.radius, 1));
                 }
             }
 
             if (level.powerup_type2) {
                 for (let i = 0; i < level.powerup_type2.length; i++) {
                     let powerup = level.powerup_type2[i];
-                    this.game.addEntity(new Rock(this.game, powerup.x, powerup.y, powerup.radius, 2));
+                    this.game.addEntity(new Powerup(this.game, powerup.x, powerup.y, powerup.radius, 2));
                 }
             }
 

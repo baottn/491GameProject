@@ -175,9 +175,9 @@ class GameEngine {
 
         //Won't update If game is over.
         if (this.camera.gameOver) {
+            this.reset();
             //Resetting
             if (this.down) {
-                this.reset();
                 if (this.camera.infMode) {
                     this.camera.newGame_InfMode();
                 }
