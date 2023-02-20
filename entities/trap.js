@@ -20,7 +20,7 @@ class Trap{
         this.fillStyle = "white";
         this.strokeStyle = "red";
 
-        this.trapSprites = ASSET_MANAGER.getAsset("./img/suriken.png");
+        this.trapSprites = ASSET_MANAGER.getAsset("./img/Suriken.png");
         this.loadAnimations();
     }
 
