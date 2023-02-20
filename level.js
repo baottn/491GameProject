@@ -137,7 +137,7 @@ this.k = randomY()
 var levelTwo = {
     label: "1-2",
     finish: 10000,
-    homebase: { x: 11000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
+    homebase: { x: 10000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
     underground: false,
     //Fixed, X, W,H Fixed; Y random
     tracks: [

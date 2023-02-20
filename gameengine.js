@@ -21,7 +21,8 @@ class GameEngine {
         this.mainCharacter = null;
         this.down = false;
         this.up = false;
-
+        this.enter = false;
+        
         // Options and the Details
         this.options = options || {
             debugging: false,
@@ -95,12 +96,16 @@ class GameEngine {
                 case "KeyW":
                     that.up = true;
                     break;
+                case "Enter":
+                    that.enter = true;
+                    break;
             }
         }
 
         function keyUpListener(e) {
             that.keyboardActive = false;
             e.preventDefault();
+
             switch (e.code) {
                 case "Space":
                     that.spacePressed = false;
@@ -110,6 +115,9 @@ class GameEngine {
                     break;
                 case "KeyW":
                     that.up = false;
+                    break;
+                case "Enter":
+                    that.enter = false;
                     break;
             }
         }
@@ -138,7 +146,7 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        
+
         if (this.camera.gameOver) {
             this.camera.drawGameOver(this.ctx);
             return;
@@ -148,8 +156,8 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx);
         }
-         //Draw the HUD
-         this.camera.draw(this.ctx);
+        //Draw the HUD
+        this.camera.draw(this.ctx);
 
     };
 
@@ -181,10 +189,10 @@ class GameEngine {
                 if (this.camera.infMode) {
                     this.camera.newGame_InfMode();
                 }
-                else if (this.camera.level){
+                else if (this.camera.level) {
                     this.camera.loadLevel(this.camera.levelList[this.camera.currentLevel]);
                 }
-            } else if (this.up){
+            } else if (this.up) {
                 this.reset();
                 this.camera.gameOver = false;
                 this.camera.isInTitle = true;

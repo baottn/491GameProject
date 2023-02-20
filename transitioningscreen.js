@@ -25,8 +25,8 @@ class TransitioningScreen{
         if (this.selected < 0){
             this.selected =  this.options.length - 1;
         }
-        if (this.game.spacePressed){
-            this.game.spacePressed = false;
+        if (this.game.enter){
+            this.game.enter = false;
             return this.selected;
         }
         return -1;
