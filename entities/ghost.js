@@ -76,7 +76,7 @@ class Ghost {
             this.game.camera.score += 15;
             for (let i = 90; i < 360; i += 180){
                 let angle = i / 180 * Math.PI;
-                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius , this.moveSpeed / 3, 1);
+                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 1.4 , this.moveSpeed / 3, 1);
                 this.game.addEntity(tmp);
             }
         }

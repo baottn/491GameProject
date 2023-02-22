@@ -76,7 +76,7 @@ class Rock {
             this.game.camera.score += 5;
             for (let i = 45; i < 360; i += 90) {
                 let angle = i / 180 * Math.PI;
-                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius, this.moveSpeed * 3, -1);
+                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 0.8, this.moveSpeed * 3, -1);
                 this.game.addEntity(tmp);
             }
         }
@@ -91,7 +91,7 @@ class Rock {
     }
 
     draw(ctx) {
-        //Begin a new path
+        // //Begin a new path
         // ctx.beginPath();
         // //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
         // // Draw the circle
