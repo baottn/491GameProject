@@ -1,5 +1,6 @@
 this.k = randomY()
 var levelOne = {
+    music: "./music/background_music.mp3",
     label: "1-1",
     finish: 10000,
     homebase: { x: 11000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
@@ -135,6 +136,7 @@ var levelOne = {
 
 this.k = randomY()
 var levelTwo = {
+    music: "./music/background_music_2.mp3",
     label: "1-2",
     finish: 10000,
     homebase: { x: 10000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line

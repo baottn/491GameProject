@@ -24,7 +24,8 @@ class SceneManager {
         this.level = null;
         this.currentLevel = 0;
         this.levelList = [levelOne, levelTwo];
-
+        
+        this.statusMusicPlaying = false;
     };
 
     loadLevel(level, x = params.CANVAS_SIZE / 9, y = params.CANVAS_SIZE / 2, transition = false, title = "") {
@@ -36,6 +37,7 @@ class SceneManager {
         this.x = 0;
         this.score = 0;
         this.isVictory = false;
+        this.statusMusicPlaying = false;
 
         this.game.mainCharacter = new Ollie(this.game, x, y);
         this.game.addEntity(this.game.mainCharacter);
@@ -44,6 +46,10 @@ class SceneManager {
         if (transition) {
 
         } else {
+            if (level.music) {
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset(level.music);
+            }
             if (level.tracks) {
                 for (let i = 0; i < level.tracks.length; i++) {
                     let track = level.tracks[i];
@@ -250,12 +256,14 @@ class SceneManager {
         this.isVictory = false;
         this.backgroundX = 0;
         this.backgroundStep = 1;
+        this.statusMusicPlaying = false;
 
         this.game.mainCharacter = new Ollie(this.game, params.CANVAS_SIZE / 9, params.CANVAS_SIZE / 2);
         this.game.addEntity(this.game.mainCharacter);
 
 
         this.infMode = {
+            music: "./music/background_infmode_music.mp3",
             trackSpawnCooldown: 0,
             powerUpSpawnCooldown: 0,
             rockCooldown: 0,
@@ -264,6 +272,10 @@ class SceneManager {
             difficulty: 1,
             difficulty_threshold: 200,
         };
+
+        //Play music
+        ASSET_MANAGER.pauseBackgroundMusic();
+        ASSET_MANAGER.playAsset(this.infMode.music);
     }
 
     drawGameOver(ctx) {
@@ -295,7 +307,16 @@ class SceneManager {
         ctx.textAlign = "left";
     }
 
+    updateAudio() {
+        var mute = document.getElementById("mute_audio").checked;
+        var volume = document.getElementById("volume").value;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    };
+
     update() {
+        this.updateAudio();
         if (this.isInTitle) {
             let choice = this.mainMenu.update();
             switch (choice) {
@@ -320,6 +341,14 @@ class SceneManager {
                 this.isVictory = true;
                 this.game.reset();
                 this.isInTitle = false;
+
+                if (!this.statusMusicPlaying){
+                    this.statusMusicPlaying = true;
+                     
+                    ASSET_MANAGER.pauseBackgroundMusic();
+                    ASSET_MANAGER.playAsset("./music/victory_music.mp3");
+                }
+
                 let choice = this.victoryScene.update();
                 // ["Next level", "Replay", "Main Menu", "Exit",]
                 switch (choice) {
@@ -359,6 +388,12 @@ class SceneManager {
             this.game.mainCharacter.health <= 0//Health is <= 0
         ) {
             this.gameOver = true;
+            if (!this.statusMusicPlaying){
+                this.statusMusicPlaying = true;
+                 
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset("./music/gameover_music.mp3");
+            }
         }
 
         //Spawn track if in inf mode
