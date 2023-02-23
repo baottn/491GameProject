@@ -72,6 +72,13 @@ class Ollie {
 
         this.health = Ollie.MAX_HEALTH;
 
+        this.hitSound = [
+            "./audio/player_hit_0.wav",
+            "./audio/player_hit_1.wav",
+            "./audio/player_hit_2.wav",
+        ];
+
+
     }
 
     loadAnimations() {
@@ -179,6 +186,7 @@ class Ollie {
                     }
                     //Going down
                     player.dy = player.maxVerticalVelocity * going;
+                    ASSET_MANAGER.playAsset(track.bumpSound);
                 });
             }
             else if (entity instanceof Powerup || entity instanceof Trap ) {

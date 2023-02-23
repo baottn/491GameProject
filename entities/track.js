@@ -20,6 +20,10 @@ class Track{
 
         this.updateBB();
         this.loadAnimations(); 
+
+        this.deathSound = "./audio/track_death.wav";
+        this.bumpSound = "./audio/track_bump.wav";
+        this.hitSound = "./audio/track_hit.wav";
     }
 
     loadAnimations() {
@@ -37,6 +41,10 @@ class Track{
         }
         if (this.health <= 0){
             this.removeFromWorld = true;
+            ASSET_MANAGER.playAsset(this.deathSound);
+        }
+        else{
+            ASSET_MANAGER.playAsset(this.hitSound);
         }
     }
 
@@ -50,6 +58,7 @@ class Track{
     checkCollisionWithPlayer(player, behavior) {
         if (player.BB.collideBox(this.BB)) {
             behavior(player, this);
+            
         }
         else {
             this.fillStyle = "black";

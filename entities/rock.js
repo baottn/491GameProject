@@ -23,7 +23,7 @@ class Rock {
                 this.fillStyle = "black";
             }
         }
-        else{
+        else {
             this.type = 0;
         }
 
@@ -36,7 +36,7 @@ class Rock {
             this.animation = new Animator(this.rockSprites, 1, 30, this.sprite_width, this.sprite_height, 12, 0.1, 3);
         }
 
-       
+        this.deathSound = "./audio/rock_death.wav";
     }
 
     updateBC() {
@@ -57,11 +57,17 @@ class Rock {
         if (collisionRes.length > 0) {
             //Remove itself for now
             this.removeFromWorld = true;
+
             if (!player.invincibility) {
                 if (this.type == 1) {
                     player.health -= 3;
                 }
                 player.health--;
+                let randomHit = randomInt(player.hitSound.length);
+                ASSET_MANAGER.playAsset(player.hitSound[randomHit]);
+            }
+            else{
+                ASSET_MANAGER.playAsset(this.deathSound);
             }
         }
     }
@@ -70,7 +76,7 @@ class Rock {
     onDeath() {
         this.removeFromWorld = true;
         this.game.camera.score += 5;//Bonus the player for destroying the fireball
-
+        ASSET_MANAGER.playAsset(this.deathSound);
         //Spawn smaller fireball if destroyed
         if (this.type == 1) {
             this.game.camera.score += 5;

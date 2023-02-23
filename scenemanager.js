@@ -24,7 +24,7 @@ class SceneManager {
         this.level = null;
         this.currentLevel = 0;
         this.levelList = [levelOne, levelTwo];
-        
+
         this.statusMusicPlaying = false;
     };
 
@@ -279,17 +279,27 @@ class SceneManager {
     }
 
     drawGameOver(ctx) {
+        ctx.beginPath();
         this.highScore = Math.max(this.score, this.highScore);
+        ctx.fillStyle = "black";
         ctx.drawImage(ASSET_MANAGER.getAsset("./img/gameOver.png"),
             0, 0);
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "yellow";
+
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "red";
         ctx.textAlign = "center";
-        let fontSize = 58;
+        let fontSize = 98;
         ctx.font = fontSize + "px serif";
         let displayGameOverText = "You died!";
+
         ctx.fillText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100);
         ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100);
+        
+        fontSize = 58;
+        ctx.font = fontSize + "px serif";
+
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "red";
 
         let displayScore = "Score: " + this.score.toFixed(1);
         displayScore += " Highscore: " + this.highScore.toFixed(1);
@@ -305,6 +315,7 @@ class SceneManager {
         ctx.strokeText(displayGameOverText, params.CANVAS_SIZE / 2, params.CANVAS_SIZE / 2 - 100 + fontSize * 3);
 
         ctx.textAlign = "left";
+        
     }
 
     updateAudio() {
@@ -318,6 +329,18 @@ class SceneManager {
     update() {
         this.updateAudio();
         if (this.isInTitle) {
+            //Chrome counts click as interaction
+            if (this.game.click) {
+                if (!this.statusMusicPlaying) {
+                    this.statusMusicPlaying = true;
+                    ASSET_MANAGER.pauseBackgroundMusic();
+                    ASSET_MANAGER.playAsset("./music/title_music.mp3");
+                }
+            }
+            else {
+                ASSET_MANAGER.pauseBackgroundMusic();
+            }
+
             let choice = this.mainMenu.update();
             switch (choice) {
                 case -1:
@@ -342,9 +365,9 @@ class SceneManager {
                 this.game.reset();
                 this.isInTitle = false;
 
-                if (!this.statusMusicPlaying){
+                if (!this.statusMusicPlaying) {
                     this.statusMusicPlaying = true;
-                     
+
                     ASSET_MANAGER.pauseBackgroundMusic();
                     ASSET_MANAGER.playAsset("./music/victory_music.mp3");
                 }
@@ -388,9 +411,9 @@ class SceneManager {
             this.game.mainCharacter.health <= 0//Health is <= 0
         ) {
             this.gameOver = true;
-            if (!this.statusMusicPlaying){
+            if (!this.statusMusicPlaying) {
                 this.statusMusicPlaying = true;
-                 
+
                 ASSET_MANAGER.pauseBackgroundMusic();
                 ASSET_MANAGER.playAsset("./music/gameover_music.mp3");
             }

@@ -27,6 +27,12 @@ class Powerup{
 
         this.animations = [];
         this.loadAnimations();  
+
+        this.deathSound = [
+            "./audio/powerup_0_death.wav",
+            "./audio/powerup_1_death.wav",
+            "./audio/powerup_2_death.wav"
+    ];
     }
 
     loadAnimations() {
@@ -37,6 +43,7 @@ class Powerup{
 
     onDeath(){
         this.removeFromWorld = true;
+        ASSET_MANAGER.playAsset(this.deathSound[this.type]);
     }
 
     updateBC(){
