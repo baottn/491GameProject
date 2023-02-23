@@ -5,7 +5,7 @@ var levelOne = {
     finish: 10000,
     homebase: { x: 11000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
     underground: false,
-    speed: 300,
+    speed: 200,
     //Fixed, X, W,H Fixed; Y random
     tracks: [
         { x: 400, y: this.k, w: 200, h: 100 },
