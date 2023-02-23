@@ -46,6 +46,9 @@ class SceneManager {
         if (transition) {
 
         } else {
+            if (level.speed){
+                Ollie.MOVING_SPEED = level.speed;
+            }
             if (level.music) {
                 ASSET_MANAGER.pauseBackgroundMusic();
                 ASSET_MANAGER.playAsset(level.music);
@@ -257,6 +260,7 @@ class SceneManager {
         this.backgroundX = 0;
         this.backgroundStep = 1;
         this.statusMusicPlaying = false;
+        Ollie.MOVING_SPEED = 150;
 
         this.game.mainCharacter = new Ollie(this.game, params.CANVAS_SIZE / 9, params.CANVAS_SIZE / 2);
         this.game.addEntity(this.game.mainCharacter);

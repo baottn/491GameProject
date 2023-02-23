@@ -5,6 +5,7 @@ var levelOne = {
     finish: 10000,
     homebase: { x: 11000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
     underground: false,
+    speed: 300,
     //Fixed, X, W,H Fixed; Y random
     tracks: [
         { x: 400, y: this.k, w: 200, h: 100 },
@@ -51,7 +52,7 @@ var levelOne = {
     ],
     //Fixed
     traps: [
-        { x: 500, y: randomY() },
+        { x: 900, y: randomY() },
         { x: 1000, y: randomY() },
         { x: 1900, y: randomY() },
         { x: 2800, y: randomY() },
@@ -141,6 +142,7 @@ var levelTwo = {
     finish: 10000,
     homebase: { x: 10000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
     underground: false,
+    speed: 300,
     //Fixed, X, W,H Fixed; Y random
     tracks: [
         { x: 100, y: this.k, w: 200, h: 100 },
