@@ -12,6 +12,7 @@ ASSET_MANAGER.queueDownload("./img/power_ups.png");
 ASSET_MANAGER.queueDownload("./img/rock.png"); 
 ASSET_MANAGER.queueDownload("./img/ghost.png");
 ASSET_MANAGER.queueDownload("./img/suriken.png"); 
+ASSET_MANAGER.queueDownload("./img/tank_explosion.png"); 
 ASSET_MANAGER.queueDownload("./img/titleScreen.png"); 
 ASSET_MANAGER.queueDownload("./img/homebase.png"); 
 ASSET_MANAGER.queueDownload("./img/victoryBackground.png"); 
