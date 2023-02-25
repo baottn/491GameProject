@@ -4,7 +4,7 @@
 class Rock {
     static TAIL_LENGTH = 80;
 
-    constructor(game, x, y, angle = Math.PI / 2, radius = 5, moveSpeed = 300, type = 0) {
+    constructor(game, x, y, angle = Math.PI / 2, radius = 45, moveSpeed = 300, type = 0) {
         Object.assign(this, { game, x, y, angle, radius, type, moveSpeed });
         this.dx = moveSpeed * Math.cos(angle);
         this.dy = moveSpeed * Math.sin(angle);
@@ -23,7 +23,7 @@ class Rock {
                 this.fillStyle = "black";
             }
         }
-        else{
+        else {
             this.type = 0;
         }
 
@@ -36,7 +36,7 @@ class Rock {
             this.animation = new Animator(this.rockSprites, 1, 30, this.sprite_width, this.sprite_height, 12, 0.1, 3);
         }
 
-       
+        this.deathSound = "./audio/rock_death.wav";
     }
 
     updateBC() {
@@ -57,11 +57,17 @@ class Rock {
         if (collisionRes.length > 0) {
             //Remove itself for now
             this.removeFromWorld = true;
-            if (!player.invicibility) {
+
+            if (!player.invincibility) {
                 if (this.type == 1) {
                     player.health -= 3;
                 }
                 player.health--;
+                let randomHit = randomInt(player.hitSound.length);
+                ASSET_MANAGER.playAsset(player.hitSound[randomHit]);
+            }
+            else{
+                ASSET_MANAGER.playAsset(this.deathSound);
             }
         }
     }
@@ -70,13 +76,13 @@ class Rock {
     onDeath() {
         this.removeFromWorld = true;
         this.game.camera.score += 5;//Bonus the player for destroying the fireball
-
+        ASSET_MANAGER.playAsset(this.deathSound);
         //Spawn smaller fireball if destroyed
         if (this.type == 1) {
             this.game.camera.score += 5;
             for (let i = 45; i < 360; i += 90) {
                 let angle = i / 180 * Math.PI;
-                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius, this.moveSpeed * 3, -1);
+                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 0.8, this.moveSpeed * 3, -1);
                 this.game.addEntity(tmp);
             }
         }
@@ -91,7 +97,7 @@ class Rock {
     }
 
     draw(ctx) {
-        // // Begin a new path
+        // //Begin a new path
         // ctx.beginPath();
         // //console.log(this.x - this.game.camera.x, this.y, this.dx, this.dy, this.angle / (2*Math.PI) * 180);
         // // Draw the circle

@@ -20,8 +20,12 @@ class Trap{
         this.fillStyle = "white";
         this.strokeStyle = "red";
 
-        this.trapSprites = ASSET_MANAGER.getAsset("./img/suriken.png");
+        this.trapSprites = ASSET_MANAGER.getAsset("./img/Suriken.png");
         this.loadAnimations();
+
+        this.deathSound = ["./audio/trap_death.wav"];
+        this.activateSound = ["./audio/trap_death.wav"];
+        
     }
 
     loadAnimations() {
@@ -60,6 +64,7 @@ class Trap{
     onDeath(){
         this.removeFromWorld = true;
         this.game.camera.score += 5;//Bonus the player for destroying trap  
+        ASSET_MANAGER.playAsset(this.deathSound[this.type]);
     }
 
     update(){
@@ -94,17 +99,19 @@ class Trap{
 }
 
 //Type 0
-const trappingPlayer = (player, powerup, game) => {
+const trappingPlayer = (player, trap, game) => {
     if (player.invincibility){
+        ASSET_MANAGER.playAsset(trap.deathSound[trap.type]);
         return;
     }
     player.trapped.duration = 500;//Trap for 500 ticks
     // player.trapped.oriDX = player.dx;
     // player.trapped.oriDX = player.dy;
     player.trapped.activated = true;
+    
+    ASSET_MANAGER.playAsset(trap.activateSound[trap.type]);
 
     player.dx = 0;
     player.dy = 0;
-
     player.health -= 5;
 };
