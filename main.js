@@ -28,6 +28,9 @@ ASSET_MANAGER.queueDownload("./music/title_music.mp3");
 ASSET_MANAGER.queueDownload("./music/background_infmode_music.mp3");
 
 //Sound effect (Play once)
+ASSET_MANAGER.queueDownload("./audio/select.mp3");
+ASSET_MANAGER.queueDownload("./audio/enter.mp3");
+
 ASSET_MANAGER.queueDownload("./audio/ghost_death.wav");
 ASSET_MANAGER.queueDownload("./audio/ghost_hit.wav");
 
