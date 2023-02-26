@@ -120,9 +120,9 @@ class Powerup{
 const invincibleSpeedBuff = (player, powerup, game) => {
     //Only replenish the duration speed buff and not stack the effect
     if (!player.invincibility){
-        player.dx *= 5;
+        player.dx *= 3;
     }
-    player.booster = 500;
+    player.booster = 300;
     player.invincibility = true;
     game.camera.score += 25;
 }; 
