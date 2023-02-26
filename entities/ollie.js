@@ -7,8 +7,8 @@ class Ollie {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
-        this.height = 100;
-        this.width = 215;
+        this.height = 60;
+        this.width = 135;
 
         this.head = { x: this.x + this.width / 2, y: this.y + 10 };
 
@@ -287,9 +287,9 @@ class Ollie {
         ctx.rotate(this.angle);
         ctx.translate(-this.head.x + this.game.camera.x, -this.head.y);
         if (!this.trapped.activated) {
-            ctx.drawImage(this.turnetSpritesheet, 0, 0, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+            ctx.drawImage(this.turnetSpritesheet, 0, 0, 20, 4, this.head.x - this.game.camera.x, this.head.y - 10, this.turnetWidth, 10);
         } else {
-            ctx.drawImage(this.turnetSpritesheet, 0, 6, 20, 4, this.head.x - this.game.camera.x, this.head.y, this.turnetWidth, 10);
+            ctx.drawImage(this.turnetSpritesheet, 0, 6, 20, 4, this.head.x - this.game.camera.x, this.head.y -10, this.turnetWidth, 10);
         }
         ctx.restore();
     }
@@ -308,6 +308,7 @@ class Ollie {
             ctx.strokeStyle = "green";
         }
 
+        //Collision Box debug
         // ctx.fillRect(this.x - this.game.camera.x, this.y, this.width, this.height);
         // ctx.fill();
         // ctx.stroke();
@@ -344,7 +345,9 @@ class Ollie {
         }
 
         // Draw the animations
-        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
+        //this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 50, 5);
+        this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 30, 3);
+        //this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);
 
         this.drawTurnet(ctx);
 
