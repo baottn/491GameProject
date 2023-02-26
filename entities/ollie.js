@@ -43,6 +43,7 @@ class Ollie {
         //Animate Olliee
         // Get the spriteshhett
         this.spritesheet = ASSET_MANAGER.getAsset("./img/tank_body_fire.png");
+        this.explosionSpritsheet = ASSET_MANAGER.getAsset("./img/tank_explosion.png");
         this.turnetSpritesheet = ASSET_MANAGER.getAsset("./img/tank_turret.png");
 
         // tank's body animations
@@ -90,6 +91,9 @@ class Ollie {
 
         // Trapped animation
         this.animations[2] = new Animator(this.spritesheet, 0, 43, 45, 30, 2, 0.2);
+
+        // Dying animation
+        this.animations[3] = new Animator(this.explosionSpritsheet, 0, 0, 77, 38, 7, 0.2);
     }
     shoot() {
         if (this.fasterShootRate.duration <= 0) {

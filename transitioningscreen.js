@@ -16,10 +16,12 @@ class TransitioningScreen {
 
     update() {
         if (this.game.up) {
+            ASSET_MANAGER.playAsset("./audio/select.mp3");
             this.selected--;
             this.game.up = false;
         }
         if (this.game.down) {
+            ASSET_MANAGER.playAsset("./audio/select.mp3");
             this.selected++;
             this.game.down = false;
         }
@@ -29,6 +31,7 @@ class TransitioningScreen {
             this.selected = this.options.length - 1;
         }
         if (this.game.enter) {
+            ASSET_MANAGER.playAsset("./audio/enter.mp3");
             this.game.enter = false;
             return this.selected;
         }

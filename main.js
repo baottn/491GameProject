@@ -12,11 +12,12 @@ ASSET_MANAGER.queueDownload("./img/bullet.png");
 ASSET_MANAGER.queueDownload("./img/power_ups.png");
 ASSET_MANAGER.queueDownload("./img/rock.png");
 ASSET_MANAGER.queueDownload("./img/ghost.png");
-ASSET_MANAGER.queueDownload("./img/Suriken.png");
-ASSET_MANAGER.queueDownload("./img/titleScreen.png");
-ASSET_MANAGER.queueDownload("./img/homebase.png");
-ASSET_MANAGER.queueDownload("./img/victoryBackground.png");
-ASSET_MANAGER.queueDownload("./img/gameOver.png");
+ASSET_MANAGER.queueDownload("./img/Suriken.png"); 
+ASSET_MANAGER.queueDownload("./img/tank_explosion.png"); 
+ASSET_MANAGER.queueDownload("./img/titleScreen.png"); 
+ASSET_MANAGER.queueDownload("./img/homebase.png"); 
+ASSET_MANAGER.queueDownload("./img/victoryBackground.png"); 
+ASSET_MANAGER.queueDownload("./img/gameOver.png"); 
 
 //Music
 ASSET_MANAGER.queueDownload("./music/background_music.mp3");
@@ -27,6 +28,9 @@ ASSET_MANAGER.queueDownload("./music/title_music.mp3");
 ASSET_MANAGER.queueDownload("./music/background_infmode_music.mp3");
 
 //Sound effect (Play once)
+ASSET_MANAGER.queueDownload("./audio/select.mp3");
+ASSET_MANAGER.queueDownload("./audio/enter.mp3");
+
 ASSET_MANAGER.queueDownload("./audio/ghost_death.wav");
 ASSET_MANAGER.queueDownload("./audio/ghost_hit.wav");
 
@@ -46,7 +50,6 @@ ASSET_MANAGER.queueDownload("./audio/track_hit.wav");
 ASSET_MANAGER.queueDownload("./audio/player_hit_0.wav");
 ASSET_MANAGER.queueDownload("./audio/player_hit_1.wav");
 ASSET_MANAGER.queueDownload("./audio/player_hit_2.wav");
-
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
