@@ -1,10 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
+<style>
+    div.instruction {
+        position: absolute;
+        left: 1020px;
+    }
+</style>
 
 <head>
     <meta charset="utf-8">
     <title>Titan Skate</title>
-    
+
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./timer.js"></script>
     <script type="text/javascript" src="./scenemanager.js"></script>
@@ -28,31 +34,25 @@
 </head>
 
 <body>
-    <div>
-        <canvas id="gameWorld" width="1000" height="1000" style="background: white; border: 1px solid black"
-            tabindex="0" autofocus></canvas>
-
-
-    </div>
-    <div>
+    <div class="instruction">
+        <h1>Instruction</h1>
+        <p>
+        <h2>Menu</h2> Use Enter to select, W/S to move up and down the choices</p>
+        <p>
+        <h2>Control</h2> Use space to use booster and mouse to shoot</p>
+        <p>
+        <h2>Objective</h2> Survive and back to your home planet</p>
         <div>
             <h1>Music</h1>
             <label for="mute_audio">Mute Audio</label> <input type="checkbox" id="mute_audio">
             &emsp;
-            <label for="volume">Volume</label> <input type="range" id="volume" min="0" max="1" value="0.1"
-                step="0.05">
+            <label for="volume">Volume</label> <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05">
 
         </div>
-
-        <div>
-            <h1>Instruction</h1>
-            <p>
-            <h2>Menu</h2> Use Enter to select, W/S to move up and down the choices</p>
-            <p>
-            <h2>Control</h2> Use space to use booster and mouse to shoot</p>
-            <p>
-            <h2>Objective</h2> Survive and back to your home planet</p>
-        </div>
+    </div>
+    <div>
+        <canvas id="gameWorld" width="1000" height="1000" style="background: white; border: 1px solid black"
+            tabindex="0" autofocus></canvas>
     </div>
 </body>
 
