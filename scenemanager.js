@@ -351,9 +351,11 @@ class SceneManager {
                     break;
                 case 0:
                     this.loadLevel(this.levelList[this.currentLevel]);
+                    ASSET_MANAGER.playAsset("./audio/enter.mp3");
                     break;
                 case 1:
                     this.newGame_InfMode();
+                    ASSET_MANAGER.playAsset("./audio/enter.mp3");
                     break;
                 case 2:
                     window.close();

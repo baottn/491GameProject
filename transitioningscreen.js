@@ -31,7 +31,6 @@ class TransitioningScreen {
             this.selected = this.options.length - 1;
         }
         if (this.game.enter) {
-            ASSET_MANAGER.playAsset("./audio/enter.mp3");
             this.game.enter = false;
             return this.selected;
         }
