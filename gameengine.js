@@ -22,7 +22,7 @@ class GameEngine {
         this.down = false;
         this.up = false;
         this.enter = false;
-        
+
         // Options and the Details
         this.options = options || {
             debugging: false,
@@ -86,6 +86,7 @@ class GameEngine {
         function keydownListener(e) {
             that.keyboardActive = true;
             e.preventDefault();
+            
             switch (e.code) {
                 case "Space":
                     that.spacePressed = true;
@@ -96,6 +97,7 @@ class GameEngine {
                 case "KeyW":
                     that.up = true;
                     break;
+                case "ShiftLeft":
                 case "Enter":
                     that.enter = true;
                     break;
@@ -116,6 +118,7 @@ class GameEngine {
                 case "KeyW":
                     that.up = false;
                     break;
+                case "ShiftLeft":
                 case "Enter":
                     that.enter = false;
                     break;
