@@ -27,7 +27,7 @@ class Powerup{
 
         this.animations = [];
         this.loadAnimations();  
-
+        this.isDying = false;
         this.deathSound = [
             "./audio/powerup_0_death.wav",
             "./audio/powerup_1_death.wav",

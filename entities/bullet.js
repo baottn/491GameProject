@@ -25,22 +25,25 @@ class Bullet {
 
     checkCollisionWithEntity() {
         this.game.entities.forEach(entity => {
-            if (entity instanceof Rock || entity instanceof Trap || entity instanceof Ghost) {//entity instanceof Powerup || 
-                let res = this.BL.collide(entity.BC);
-                if (res && res.length != 0) {
-                    this.removeFromWorld = true;
-                    entity.onDeath();
-                }
-            }
-            else if (entity instanceof Track) {
-                let res = this.BL.collide(entity.BB);
-               
-                if (res) {
-                    this.removeFromWorld = true;
-                    entity.onDeath();
-                }
-            }
+            if (entity.isDying === false) {
+                if (entity instanceof Rock || entity instanceof Trap || entity instanceof Ghost) {//entity instanceof Powerup || 
 
+
+                    let res = this.BL.collide(entity.BC);
+                    if (res && res.length != 0) {
+                        this.removeFromWorld = true;
+                        entity.onDeath();
+                    }
+                }
+                else if (entity instanceof Track) {
+                    let res = this.BL.collide(entity.BB);
+
+                    if (res) {
+                        this.removeFromWorld = true;
+                        entity.onDeath();
+                    }
+                }
+            }
         });
     }
 

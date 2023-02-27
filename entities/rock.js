@@ -12,6 +12,7 @@ class Rock {
         this.updateBC();
 
         this.rockSprites = ASSET_MANAGER.getAsset("./img/rock.png");
+        this.deadSprite = ASSET_MANAGER.getAsset("./img/rock_death_0.png");
 
         this.fillStyle = "red";
         this.strokeStyle = "blue";
@@ -30,6 +31,7 @@ class Rock {
         this.sprite_width = 29;
         this.sprite_height = 25;
         this.animation = new Animator(this.rockSprites, 1, 1, this.sprite_width, this.sprite_height, 9, 0.2, 3);
+        
         if (this.type == 1) {
             this.sprite_width = 35;
             this.sprite_height = 33;
@@ -37,6 +39,7 @@ class Rock {
         }
 
         this.deathSound = "./audio/rock_death.wav";
+        this.isDying = false;
     }
 
     updateBC() {
@@ -52,6 +55,9 @@ class Rock {
     }
 
     checkCollisionWithPlayer(player) {
+        if (this.isDying > 0){
+            return;
+        }
         let collisionRes = player.BB.collideCircle(this.BC);
 
         if (collisionRes.length > 0) {
@@ -66,7 +72,7 @@ class Rock {
                 let randomHit = randomInt(player.hitSound.length);
                 ASSET_MANAGER.playAsset(player.hitSound[randomHit]);
             }
-            else{
+            else {
                 ASSET_MANAGER.playAsset(this.deathSound);
             }
         }
@@ -74,21 +80,37 @@ class Rock {
 
     //On dead action
     onDeath() {
-        this.removeFromWorld = true;
-        this.game.camera.score += 5;//Bonus the player for destroying the fireball
-        ASSET_MANAGER.playAsset(this.deathSound);
-        //Spawn smaller fireball if destroyed
-        if (this.type == 1) {
-            this.game.camera.score += 5;
-            for (let i = 45; i < 360; i += 90) {
-                let angle = i / 180 * Math.PI;
-                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 0.8, this.moveSpeed * 3, -1);
-                this.game.addEntity(tmp);
+        if (this.isDying === false) {
+            this.isDying = 100;//100 tick explosion
+            this.animation = new Animator(this.deadSprite, 0, 1, 27, 27, 7, 0.1, 5);
+            this.game.camera.score += 5;//Bonus the player for destroying the enemy
+            if (this.type == 1){
+                this.game.camera.score += 5;
             }
+            ASSET_MANAGER.playAsset(this.deathSound);
+            if (this.type == 1) {
+                for (let i = 45; i < 360; i += 90) {
+                    let angle = i / 180 * Math.PI;
+                    let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 0.8, this.moveSpeed * 3, -1);
+                    this.game.addEntity(tmp);
+                }
+            }
+            return;
         }
+        this.isDying--;
+        if (this.isDying === 0) {
+            this.removeFromWorld = true;
+        }
+
+        //Spawn smaller fireball if destroyed
+
     }
 
     update() {
+        if (this.isDying > 0) {
+            this.onDeath();
+            return;
+        }
         this.updatePos();
         this.updateBC();
         // if (!this.removeFromWorld){
@@ -117,11 +139,11 @@ class Rock {
         // ctx.closePath();
 
         //this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius, this.y - this.radius * 4, 2 * this.radius / Rock.SPRITE_WIDTH)
-        if (this.type == 0) {
+        if (this.isDying > 0) {
             this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2, this.y - this.radius, 2.9);
-        } else {
-            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2, this.y - this.radius, 2.9);
+            return;
         }
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2, this.y - this.radius, 2.9);
         //ctx.drawImage(this.offscreenCanvas, 0, 0, this.radius, this.x - this.game.camera.x - this.radius, this.y - this.radius - this.radius / 2);
     }
 }

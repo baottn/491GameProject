@@ -10,6 +10,7 @@ class Ghost {
         this.updateBC();
 
         this.ghostSprites = ASSET_MANAGER.getAsset("./img/ghost.png");
+        this.deadSprite = ASSET_MANAGER.getAsset("./img/ghost_death.png");
 
         this.fillStyle = "grey";
         this.strokeStyle = "red";
@@ -18,6 +19,7 @@ class Ghost {
 
         this.deathSound = "./audio/ghost_death.wav";
         this.hitSound = "./audio/ghost_hit.wav";
+        this.isDying = false;
     }
 
     loadAnimation() {
@@ -57,6 +59,9 @@ class Ghost {
     }
 
     checkCollisionWithPlayer(player) {
+        if (this.isDying > 0){
+            return;
+        }
         let collisionRes = player.BB.collideCircle(this.BC);
 
         if (collisionRes.length > 0) {
@@ -76,18 +81,25 @@ class Ghost {
 
     //On dead action
     onDeath() {
-        this.game.camera.score += 5;//Bonus the player for destroying the rock
         this.health--;
         this.loadAnimation();
         //Spawn smaller rock if destroyed
         if (this.health <= 0) {
-            this.removeFromWorld = true;
-            ASSET_MANAGER.playAsset(this.deathSound);
-            this.game.camera.score += 15;
-            for (let i = 90; i < 360; i += 180) {
-                let angle = i / 180 * Math.PI;
-                let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 1.4, this.moveSpeed / 3, 1);
-                this.game.addEntity(tmp);
+            if (this.isDying === false) {
+                this.isDying = 200;
+                this.animation = new Animator(this.deadSprite, 1, 8, 121, 123, 8, 0.1, 4);
+                this.game.camera.score += 15;//Bonus the player for destroying the enemy
+                ASSET_MANAGER.playAsset(this.deathSound);
+                for (let i = 90; i < 360; i += 180) {
+                    let angle = i / 180 * Math.PI;
+                    let tmp = new Rock(this.game, this.x, this.y, angle, this.radius * 1.4, this.moveSpeed / 3, 1);
+                    this.game.addEntity(tmp);
+                }
+                return;
+            }
+            this.isDying--;
+            if (this.isDying <= 0){
+                this.removeFromWorld = true;
             }
         }
         else {
@@ -96,6 +108,10 @@ class Ghost {
     }
 
     update() {
+        if (this.isDying > 0) {
+            this.onDeath();
+            return;
+        }
         this.updatePos();
         this.updateBC();
 
@@ -123,6 +139,10 @@ class Ghost {
 
         // // End
         //ctx.closePath();
+        if (this.isDying > 0) {
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2, this.y - this.radius * 2, 1);
+            return;
+        }
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 1.2, this.y - this.radius, 3);
     }
 }

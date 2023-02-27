@@ -15,6 +15,7 @@ class Track{
         this.strokeStyle = "green";
 
         this.trackSprites = ASSET_MANAGER.getAsset("./img/tracks.png");
+        this.deadSprite = ASSET_MANAGER.getAsset("./img/track_death.png");
         
         this.health = 2;
 
@@ -24,6 +25,7 @@ class Track{
         this.deathSound = "./audio/track_death.wav";
         this.bumpSound = "./audio/track_bump.wav";
         this.hitSound = "./audio/track_hit.wav";
+        this.isDying = false;
     }
 
     loadAnimations() {
@@ -37,11 +39,21 @@ class Track{
     onDeath(){
         this.health--;
         if (this.health == 1){
-            this.animation = new Animator(this.trackSprites, 1, 222, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 2, 0.8);      
+            this.animation = new Animator(this.trackSprites, 1, 222, Track.SPRITE_WIDTH, Track.SPRITE_HEIGHT, 2, 0.8);   
+            this.dy = 50;   
         }
         if (this.health <= 0){
-            this.removeFromWorld = true;
-            ASSET_MANAGER.playAsset(this.deathSound);
+            if (this.isDying === false) {
+                this.isDying = 300;
+                this.animation = new Animator(this.deadSprite, 0, 0, 120, 80, 5, 0.1, 5);
+                this.game.camera.score += 5;//Bonus the player for destroying the enemy
+                ASSET_MANAGER.playAsset(this.deathSound);
+                return;
+            }
+            this.isDying--;
+            if (this.isDying <= 0){
+                this.removeFromWorld = true;
+            }
         }
         else{
             ASSET_MANAGER.playAsset(this.hitSound);
@@ -49,6 +61,10 @@ class Track{
     }
 
     update(){
+        if (this.isDying > 0) {
+            this.onDeath();
+            return;
+        }
         this.x += this.dx * this.game.clockTick ;
         this.y += this.dy * this.game.clockTick; 
 
@@ -56,6 +72,9 @@ class Track{
     }
 
     checkCollisionWithPlayer(player, behavior) {
+        if (this.isDying > 0){
+            return;
+        }
         if (player.BB.collideBox(this.BB)) {
             behavior(player, this);
             
@@ -76,6 +95,10 @@ class Track{
         // ctx.fill();
         // ctx.stroke();
         // ctx.closePath();
+        if (this.isDying > 0) {
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);  
+            return;
+        }
         
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);  
         //Draw bounding box for debugging

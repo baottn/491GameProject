@@ -21,10 +21,12 @@ class Trap{
         this.strokeStyle = "red";
 
         this.trapSprites = ASSET_MANAGER.getAsset("./img/Suriken.png");
+        this.deadSprite = ASSET_MANAGER.getAsset("./img/trap_death.png");
         this.loadAnimations();
 
         this.deathSound = ["./audio/trap_death.wav"];
         this.activateSound = ["./audio/trap_death.wav"];
+        this.isDying = false;
         
     }
 
@@ -37,6 +39,9 @@ class Trap{
     }
 
     checkCollisionWithPlayer(player){
+        if (this.isDying > 0){
+            return;
+        }
         let collisionRes = player.BB.collideCircle(this.BC);
     
         if (collisionRes.length > 0){
@@ -62,12 +67,25 @@ class Trap{
     }
 
     onDeath(){
-        this.removeFromWorld = true;
-        this.game.camera.score += 5;//Bonus the player for destroying trap  
-        ASSET_MANAGER.playAsset(this.deathSound[this.type]);
+        if (this.isDying === false) {
+            this.isDying = 100;//100 tick explosion
+            this.animation = new Animator(this.deadSprite, 0, 8, 61, 52, 7, 0.1, 4);
+            this.game.camera.score += 5;//Bonus the player for destroying the trap
+
+            ASSET_MANAGER.playAsset(this.deathSound[this.type]);
+            return;
+        }
+        this.isDying--;
+        if (this.isDying === 0) {
+            this.removeFromWorld = true;
+        }
     }
 
     update(){
+        if (this.isDying > 0) {
+            this.onDeath();
+            return;
+        }
         this.updateBC();
     }
 
@@ -93,6 +111,11 @@ class Trap{
         // End
         ctx.closePath();
         */
+
+        if (this.isDying > 0) {
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius * 2 , this.y - this.radius * 2, 2);
+            return;
+        }
 
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.radius - Trap.OFFSET , this.y - this.radius - Trap.OFFSET, 3);
     }
