@@ -26,10 +26,12 @@ class SceneManager {
         this.levelList = [levelOne, levelTwo];
 
         this.statusMusicPlaying = false;
+        this.sessionStarted = false; 
     };
 
     loadLevel(level, x = params.CANVAS_SIZE / 9, y = params.CANVAS_SIZE / 2, transition = false, title = "") {
         this.isInTitle = false;
+        this.sessionStarted = true;
         this.gameOver = false;
         this.title = title;
         this.level = level;
@@ -340,9 +342,6 @@ class SceneManager {
                     ASSET_MANAGER.pauseBackgroundMusic();
                     ASSET_MANAGER.playAsset("./music/title_music.mp3");
                 }
-            }
-            else {
-                ASSET_MANAGER.pauseBackgroundMusic();
             }
 
             let choice = this.mainMenu.update();

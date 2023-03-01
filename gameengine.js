@@ -199,6 +199,9 @@ class GameEngine {
                 this.reset();
                 this.camera.gameOver = false;
                 this.camera.isInTitle = true;
+                //Reset the music to title
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset("./music/title_music.mp3");
             }
             return;
         }
