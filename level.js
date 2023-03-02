@@ -1,4 +1,51 @@
 this.k = randomY()
+var test_forRecording = {
+    music: "./music/background_music.mp3",
+    label: "Test",
+    finish: 10000,
+    homebase: { x: 11000, y: params.CANVAS_SIZE / 2 },//Should be placed after the finish line
+    underground: false,
+    speed: 200,
+    //Fixed, X, W,H Fixed; Y random
+    tracks: [
+        //{ x: 400, y: this.k, w: 200, h: 10 },
+        
+    ],
+    //Fixed
+    // ghost.angle, ghost.radius, ghost.moveSpeed
+    ghosts: [
+        //{ x: 1800, y: 800, radius: 30 + randomInt(5), moveSpeed: 75, angle: Math.PI / 2  },
+        
+    ],
+    //Fixed
+    traps: [
+        { x: 1000, y: 500 },
+        { x: 2000, y: 500 },
+        { x: 3000, y: 500 },
+    ],
+    //Fixed: x, y random
+    rocks_type0: [
+       // { x: 800, y: randomY(), radius: 40 + randomInt(5), moveSpeed: 75, angle: Math.PI  },
+    ],
+    //Fixed: x, y random
+    rocks_type1: [
+        //{ x:1000, y: randomY(), radius: 55 + randomInt(5), moveSpeed: 75, angle: Math.PI },
+        //{ x:2000, y: randomY(), radius: 55 + randomInt(5), moveSpeed: 75, angle: Math.PI },
+        
+    ],
+    //Fixed: x, y random
+    // powerup_type0: [
+    //     { x: 1000, y: 500 },
+    // ],
+    // //Fixed: x, y random
+    // powerup_type1: [
+    //     { x: 2000, y: 500 },
+    // ],
+    // //Fixed: x, y random
+    // powerup_type2: [
+    //     { x: 3000, y: 500  },
+    // ],
+};
 var levelOne = {
     music: "./music/background_music.mp3",
     label: "1-1",
@@ -119,6 +166,7 @@ var levelOne = {
     ],
     //Fixed: x, y random
     powerup_type2: [
+        //{ x: params.CANVAS_SIZE / 9, y: params.CANVAS_SIZE / 2},
         { x: 1000, y: randomY() },
         { x: 3000, y: randomY() },
         { x: 1700, y: randomY() },

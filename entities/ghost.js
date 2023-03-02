@@ -86,7 +86,7 @@ class Ghost {
         //Spawn smaller rock if destroyed
         if (this.health <= 0) {
             if (this.isDying === false) {
-                this.isDying = 200;
+                this.isDying = 500;
                 this.animation = new Animator(this.deadSprite, 1, 8, 121, 123, 8, 0.1, 4);
                 this.game.camera.score += 15;//Bonus the player for destroying the enemy
                 ASSET_MANAGER.playAsset(this.deathSound);

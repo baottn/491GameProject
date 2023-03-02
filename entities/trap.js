@@ -68,7 +68,7 @@ class Trap{
 
     onDeath(){
         if (this.isDying === false) {
-            this.isDying = 100;//100 tick explosion
+            this.isDying = 300;//300 tick explosion
             this.animation = new Animator(this.deadSprite, 0, 8, 61, 52, 7, 0.1, 4);
             this.game.camera.score += 5;//Bonus the player for destroying the trap
 

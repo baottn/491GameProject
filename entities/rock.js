@@ -81,7 +81,7 @@ class Rock {
     //On dead action
     onDeath() {
         if (this.isDying === false) {
-            this.isDying = 100;//100 tick explosion
+            this.isDying = 400;//250 tick explosion
             this.animation = new Animator(this.deadSprite, 0, 1, 27, 27, 7, 0.1, 5);
             this.game.camera.score += 5;//Bonus the player for destroying the enemy
             if (this.type == 1){

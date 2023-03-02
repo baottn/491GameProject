@@ -23,6 +23,7 @@ class SceneManager {
         console.log(ASSET_MANAGER.getAsset("./img/titleScreen.png"));
         this.level = null;
         this.currentLevel = 0;
+       //this.levelList = [test_forRecording, levelOne, levelTwo];
         this.levelList = [levelOne, levelTwo];
 
         this.statusMusicPlaying = false;
