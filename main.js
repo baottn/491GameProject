@@ -2,6 +2,14 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
+//Music
+ASSET_MANAGER.queueDownload("./music/title_music.mp3");
+ASSET_MANAGER.queueDownload("./music/background_music.mp3");
+ASSET_MANAGER.queueDownload("./music/background_music_2.mp3");
+ASSET_MANAGER.queueDownload("./music/gameover_music.mp3");
+ASSET_MANAGER.queueDownload("./music/victory_music.mp3");
+ASSET_MANAGER.queueDownload("./music/background_infmode_music.mp3");
+
 //Sprite
 ASSET_MANAGER.queueDownload("./img/background.png");
 ASSET_MANAGER.queueDownload("./img/tank_body_fire.png");
@@ -22,15 +30,6 @@ ASSET_MANAGER.queueDownload("./img/rock_death_0.png");
 ASSET_MANAGER.queueDownload("./img/ghost_death.png"); 
 ASSET_MANAGER.queueDownload("./img/trap_death.png");  
 ASSET_MANAGER.queueDownload("./img/track_death.png");  
-
-
-//Music
-ASSET_MANAGER.queueDownload("./music/background_music.mp3");
-ASSET_MANAGER.queueDownload("./music/background_music_2.mp3");
-ASSET_MANAGER.queueDownload("./music/gameover_music.mp3");
-ASSET_MANAGER.queueDownload("./music/victory_music.mp3");
-ASSET_MANAGER.queueDownload("./music/title_music.mp3");
-ASSET_MANAGER.queueDownload("./music/background_infmode_music.mp3");
 
 //Sound effect (Play once)
 ASSET_MANAGER.queueDownload("./audio/select.mp3");
@@ -59,11 +58,11 @@ ASSET_MANAGER.queueDownload("./audio/player_hit_2.wav");
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
-
+	
+	ASSET_MANAGER.autoRepeat("./music/title_music.mp3");
 	ASSET_MANAGER.autoRepeat("./music/background_music.mp3");
 	ASSET_MANAGER.autoRepeat("./music/background_music_2.mp3");
 	ASSET_MANAGER.autoRepeat("./music/gameover_music.mp3");
-	ASSET_MANAGER.autoRepeat("./music/title_music.mp3");
 	ASSET_MANAGER.autoRepeat("./music/victory_music.mp3");
 	ASSET_MANAGER.autoRepeat("./music/background_infmode_music.mp3");
 

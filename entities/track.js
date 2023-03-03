@@ -44,7 +44,7 @@ class Track{
         }
         if (this.health <= 0){
             if (this.isDying === false) {
-                this.isDying = 300;
+                this.isDying = 500;
                 this.animation = new Animator(this.deadSprite, 0, 0, 120, 80, 5, 0.1, 5);
                 this.game.camera.score += 5;//Bonus the player for destroying the enemy
                 ASSET_MANAGER.playAsset(this.deathSound);
