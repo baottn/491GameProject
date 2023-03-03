@@ -16,7 +16,7 @@ ASSET_MANAGER.queueDownload("./img/Suriken.png");
 ASSET_MANAGER.queueDownload("./img/tank_explosion.png"); 
 ASSET_MANAGER.queueDownload("./img/titleScreen.png"); 
 ASSET_MANAGER.queueDownload("./img/homebase.png"); 
-ASSET_MANAGER.queueDownload("./img/victoryBackground.png"); 
+ASSET_MANAGER.queueDownload("./img/victoryBackground.png");
 ASSET_MANAGER.queueDownload("./img/gameOver.png"); 
 ASSET_MANAGER.queueDownload("./img/rock_death_0.png");
 ASSET_MANAGER.queueDownload("./img/ghost_death.png"); 

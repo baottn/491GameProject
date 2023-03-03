@@ -7,6 +7,8 @@ class Ollie {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
+        this.timer = 166;
+
         this.height = 60;
         this.width = 135;
 
@@ -217,37 +219,43 @@ class Ollie {
             this.invincibility = false;
         }
 
-        if (!this.trapped.activated) {
-            //Update boosting
-            if (this.game.spacePressed && this.thrusterVolume >= 0) {
-                if (!this.unlimitedBoost.status)
-                    this.thrusterVolume -= 0.5;
+
+        if(this.health > 0) {
+            if (!this.trapped.activated) {
+                //Update boosting
+                if (this.game.spacePressed && this.thrusterVolume >= 0) {
+                    if (!this.unlimitedBoost.status)
+                        this.thrusterVolume -= 0.5;
+                    else {
+                        this.thrusterVolume += 0.8;
+                        this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
+                    }
+
+                    if (this.forceY != Ollie.GRAVITY) {
+                        this.forceY += this.thrusterPower;
+                    }
+                    else {
+                        this.forceY = this.thrusterPower;
+                    }
+
+                    if (Math.abs(this.forceY) > Math.abs(this.maximumThrusterPower)) {
+                        this.forceY = this.maximumThrusterPower;
+                    }
+                    this.index = 0;
+                }
                 else {
+                    this.forceY = Ollie.GRAVITY;
                     this.thrusterVolume += 0.8;
                     this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
+                    this.index = 1;
                 }
-
-                if (this.forceY != Ollie.GRAVITY) {
-                    this.forceY += this.thrusterPower;
-                }
-                else {
-                    this.forceY = this.thrusterPower;
-                }
-
-                if (Math.abs(this.forceY) > Math.abs(this.maximumThrusterPower)) {
-                    this.forceY = this.maximumThrusterPower;
-                }
-                this.index = 0;
-            }
-            else {
-                this.forceY = Ollie.GRAVITY;
-                this.thrusterVolume += 0.8;
-                this.thrusterVolume = Math.min(this.thrusterVolume, this.maximumThursterVolume);
-                this.index = 1;
+            } else {
+                this.index = 2;
             }
         } else {
-            this.index = 2
+            this.index = 3;
         }
+
 
         if (this.unlimitedBoost.duration > 0)
             this.unlimitedBoost.duration--;
@@ -349,8 +357,17 @@ class Ollie {
         this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 30, 3);
         //this.animations[this.index].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);
 
-        this.drawTurnet(ctx);
-
+        if (this.index != 3) {
+            this.drawTurnet(ctx);
+        }
         ctx.closePath();
+
+        if (this.index == 3) {
+            this.timer--;
+        }
+
+        if (this.timer == 0) {
+            this.health = Number.MIN_VALUE
+        }
     };
 }

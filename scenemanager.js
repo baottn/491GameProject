@@ -1,7 +1,7 @@
 class SceneManager {
     static BORDER_WIDTH = 24;
     static BORDER_HEIGHT = 32;
-    static BORDER_SCALE = 3;
+    static BORDER_SCALE = 3; 
     constructor(game) {
         this.game = game;
         this.highScore = 0;
@@ -414,7 +414,7 @@ class SceneManager {
 
         //Going over bounds
         if (this.game.mainCharacter.y + this.game.mainCharacter.height < 0 || this.game.mainCharacter.y - this.game.mainCharacter.height > params.CANVAS_SIZE ||
-            this.game.mainCharacter.health <= 0//Health is <= 0
+            this.game.mainCharacter.health == Number.MIN_VALUE //Health is == smallest value
         ) {
             this.gameOver = true;
             if (!this.statusMusicPlaying) {

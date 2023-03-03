@@ -100,7 +100,7 @@ class Track{
             return;
         }
         
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);  
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, "custom", this.width, this.height);
         //Draw bounding box for debugging
         //this.BB.draw(ctx, this.game);
         

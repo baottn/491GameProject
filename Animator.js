@@ -7,7 +7,6 @@ class Animator {
     };
 
     drawFrameCustomAngle(tick, ctx, x, y, scale = 1, angle = null, customWidth, customHeight){
-        
         this.elapsedTime += tick;
         if (scale != "custom") {
             customWidth = this.width * scale;
@@ -22,28 +21,38 @@ class Animator {
             }
         }
 
-     
-
         let frame = this.currentFrame();
         if (this.reverse) frame = this.frameCount - frame - 1;
         if (angle){
-            ctx.save();
+            // ctx.save();
             
-            ctx.translate(x, y);
-            ctx.rotate(angle);
-            ctx.translate(-x, -y);
-            ctx.drawImage(this.spritesheet,
-                this.xStart + frame * (this.width + this.framePadding), this.yStart, //source from sheet
-                this.width, this.height,
-                x, y,
-                customWidth,
-                customHeight);
+            // ctx.translate(x, y);
+            // ctx.rotate(angle);
+            // ctx.translate(-x, -y);
+            // ctx.drawImage(this.spritesheet,
+            //     this.xStart + frame * (this.width + this.framePadding), this.yStart, //source from sheet
+            //     this.width, this.height,
+            //     x, y,
+            //     customWidth,
+            //     customHeight);
     
-            if (params.DEBUG) {
-                ctx.strokeStyle = 'Green';
-                ctx.strokeRect(x, y, this.width * scale, this.height * scale);
-            }
-            ctx.restore();
+            // if (params.DEBUG) {
+            //     ctx.strokeStyle = 'Green';
+            //     ctx.strokeRect(x, y, this.width * scale, this.height * scale);
+            // }
+            // ctx.restore();
+
+            let offscreenCanvas = document.createElement('canvas');
+            var size = Math.max(this.width, this.height);
+            offscreenCanvas.width = size;
+            offscreenCanvas.height = size;
+            let offscreenCtx = offscreenCanvas.getContext('2d');
+            offscreenCtx.save();
+            offscreenCtx.translate(size / 2, size / 2);
+            offscreenCtx.rotate(angle);
+            offscreenCtx.translate(0, 0);
+            offscreenCtx.drawImage(this.spritesheet, -(this.width / 2), -(this.height / 2));
+            offscreenCtx.restore();
         }
         else{
             ctx.drawImage(this.spritesheet,
@@ -60,8 +69,8 @@ class Animator {
         }
     }
 
-    drawFrame(tick, ctx, x, y, scale = 1, customWidth, customHeight) {
-        this.drawFrameCustomAngle(tick, ctx, x, y, scale, null, customWidth, customHeight);
+    drawFrame(tick, ctx, x, y, scale = 1, customWidth, customHeight, angle = null) {
+        this.drawFrameCustomAngle(tick, ctx, x, y, scale, angle, customWidth, customHeight);
     };
 
     //Class
@@ -72,20 +81,4 @@ class Animator {
     isDone() {
         return (this.elapsedTime >= this.totalTime);
     };
-
-    rotateAndCache (image, angle) {
-        var offscreenCanvas = document.createElement('canvas');
-        var size = Math.max(image.width, image.height);
-        offscreenCanvas.width = size;
-        offscreenCanvas.height = size;
-        var offscreenCtx = offscreenCanvas.getContext('2d');
-        offscreenCtx.save();
-        offscreenCtx.translate(size / 2, size / 2);
-        offscreenCtx.rotate(angle);
-        offscreenCtx.translate(0, 0);
-        offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
-        offscreenCtx.restore();
-        
-        return offscreenCanvas;
-    }
 };

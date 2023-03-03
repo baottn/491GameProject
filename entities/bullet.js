@@ -17,6 +17,14 @@ class Bullet {
 
         this.x = x1;
         this.y = y1;
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./img/bullet.png");
+        //this.rotateSprite = ASSET_MANAGER.rotateAndCache(this.spritesheet, 291, 125, angle);
+        this.loadAnimation();
+    }
+
+    loadAnimation() {
+        this.animation = new Animator(this.spritesheet, 0, 0, 291, 125, 1, 20);
     }
 
     updateBL() {
@@ -27,8 +35,6 @@ class Bullet {
         this.game.entities.forEach(entity => {
             if (entity.isDying === false) {
                 if (entity instanceof Rock || entity instanceof Trap || entity instanceof Ghost) {//entity instanceof Powerup || 
-
-
                     let res = this.BL.collide(entity.BC);
                     if (res && res.length != 0) {
                         this.removeFromWorld = true;
@@ -78,5 +84,6 @@ class Bullet {
 
     draw(ctx) {
         this.drawLine(ctx, this.x1 - this.game.camera.x, this.y1, this.x2 - this.game.camera.x, this.y2);
+        //this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3, null, null, this.angle);
     }
 }
