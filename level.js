@@ -8,7 +8,7 @@ var test_forRecording = {
     speed: 200,
     //Fixed, X, W,H Fixed; Y random
     tracks: [
-        //{ x: 400, y: this.k, w: 200, h: 10 },
+        //{ x: 1000, y: 500, w: 200, h: 100 },
         
     ],
     //Fixed
@@ -19,9 +19,9 @@ var test_forRecording = {
     ],
     //Fixed
     traps: [
-        { x: 1000, y: 500 },
-        { x: 2000, y: 500 },
-        { x: 3000, y: 500 },
+        // { x: 1000, y: 500 },
+        // { x: 2000, y: 500 },
+        // { x: 3000, y: 500 },
     ],
     //Fixed: x, y random
     rocks_type0: [

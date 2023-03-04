@@ -23,7 +23,7 @@ class SceneManager {
         console.log(ASSET_MANAGER.getAsset("./img/titleScreen.png"));
         this.level = null;
         this.currentLevel = 0;
-       //this.levelList = [test_forRecording, levelOne, levelTwo];
+        //this.levelList = [test_forRecording, levelOne, levelTwo];
         this.levelList = [levelOne, levelTwo];
 
         this.statusMusicPlaying = false;
@@ -414,7 +414,7 @@ class SceneManager {
 
         //Going over bounds
         if (this.game.mainCharacter.y + this.game.mainCharacter.height < 0 || this.game.mainCharacter.y - this.game.mainCharacter.height > params.CANVAS_SIZE ||
-            this.game.mainCharacter.health == Number.MIN_VALUE //Health is == smallest value
+            this.game.mainCharacter.dead //Health is == smallest value
         ) {
             this.gameOver = true;
             if (!this.statusMusicPlaying) {
@@ -475,6 +475,7 @@ class SceneManager {
         let healthBar = { width: params.CANVAS_SIZE / 50, height: params.CANVAS_SIZE / 3 };
 
         let healthBarVolume = player.health / Ollie.MAX_HEALTH;
+        healthBarVolume = Math.max(0, healthBarVolume);
 
         ctx.fillStyle = "red";
         ctx.strokeStyle = "red";

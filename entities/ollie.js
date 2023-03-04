@@ -74,6 +74,7 @@ class Ollie {
         };
 
         this.health = Ollie.MAX_HEALTH;
+        this.dead = false;
 
         this.hitSound = [
             "./audio/player_hit_0.wav",
@@ -95,14 +96,14 @@ class Ollie {
         this.animations[2] = new Animator(this.spritesheet, 0, 43, 45, 30, 2, 0.2);
 
         // Dying animation
-        this.animations[3] = new Animator(this.explosionSpritsheet, 0, 0, 77, 38, 7, 0.2);
+        this.animations[3] = new Animator(this.explosionSpritsheet, 0, 0, 77, 38, 7, 0.1);
     }
     shoot() {
         if (this.fasterShootRate.duration <= 0) {
             this.fasterShootRate.duration = 0;
             Ollie.RELOAD_SPEED = this.fasterShootRate.oriReloadSpeed;//return to normal
         }
-       
+
         //See if we are ready to shoot (reload = 0)
         if (this.reload <= 0 && this.game.shooting) {
 
@@ -178,6 +179,9 @@ class Ollie {
     }
 
     checkCollisionWithEntity() {
+        if (this.isDying > 0){
+            return;
+        }
         this.game.entities.forEach(entity => {
             if (entity instanceof Track) {
                 entity.checkCollisionWithPlayer(this, (player, track) => {
@@ -195,12 +199,12 @@ class Ollie {
                     ASSET_MANAGER.playAsset(track.bumpSound);
                 });
             }
-            else if (entity instanceof Powerup || entity instanceof Trap ) {
+            else if (entity instanceof Powerup || entity instanceof Trap) {
                 //Boost speed and invincibility
                 entity.checkCollisionWithPlayer(this);
                 //Unlimited boost
                 //Point 
-            } else if (entity instanceof Rock  || entity instanceof Ghost) {
+            } else if (entity instanceof Rock || entity instanceof Ghost) {
                 entity.checkCollisionWithPlayer(this);
 
             }
@@ -209,6 +213,12 @@ class Ollie {
     }
 
     updateStatus() {
+        if (this.health <= 0) {
+            this.isDying = 300;//Spend 300 ticks dying
+            this.index = 3;
+            this.health = 0;
+            return;
+        }
         //Check Horizontal Booster granted by power up
         if (this.booster > 0) {
             this.booster--;
@@ -220,7 +230,7 @@ class Ollie {
         }
 
 
-        if(this.health > 0) {
+        if (this.health > 0) {
             if (!this.trapped.activated) {
                 //Update boosting
                 if (this.game.spacePressed && this.thrusterVolume >= 0) {
@@ -252,14 +262,12 @@ class Ollie {
             } else {
                 this.index = 2;
             }
-        } else {
-            this.index = 3;
         }
 
 
         if (this.unlimitedBoost.duration > 0)
             this.unlimitedBoost.duration--;
-        else{
+        else {
             this.unlimitedBoost = {
                 duration: 0,
                 status: false,
@@ -277,6 +285,13 @@ class Ollie {
     }
 
     update() {
+        if (this.isDying > 0) {
+            this.isDying--;
+            if (this.isDying <= 0) {
+                this.dead = true;
+            }
+            return;
+        }
         this.updateStatus();
         this.updatePos();
         this.updateBB();
@@ -297,7 +312,7 @@ class Ollie {
         if (!this.trapped.activated) {
             ctx.drawImage(this.turnetSpritesheet, 0, 0, 20, 4, this.head.x - this.game.camera.x, this.head.y - 10, this.turnetWidth, 10);
         } else {
-            ctx.drawImage(this.turnetSpritesheet, 0, 6, 20, 4, this.head.x - this.game.camera.x, this.head.y -10, this.turnetWidth, 10);
+            ctx.drawImage(this.turnetSpritesheet, 0, 6, 20, 4, this.head.x - this.game.camera.x, this.head.y - 10, this.turnetWidth, 10);
         }
         ctx.restore();
     }
@@ -321,7 +336,7 @@ class Ollie {
         // ctx.fill();
         // ctx.stroke();
 
-       
+
 
         //Temporary drawing this, begin testing zone
         if (this.game.mouse && this.fasterShootRate.duration > 0) {
@@ -332,7 +347,7 @@ class Ollie {
             ctx.fill();
             ctx.stroke();
         }
-      
+
 
         // ctx.fillStyle = "blue";
         // ctx.strokeStyle = "blue";
@@ -343,7 +358,7 @@ class Ollie {
         // ctx.fill();
         // ctx.stroke();
 
-       
+
         //End testing and debugging zone
 
         if (this.invincibility) {//Not drawing to show invincibility
